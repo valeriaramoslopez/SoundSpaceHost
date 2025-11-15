@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="imagenes/logo.png">
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/carrito.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -39,9 +40,121 @@
         </div>
     </header>
 
-    <body>
-        
-    </body>
+    <main class="cart-page">
+        <div class="container">
+            <h1 class="section-title">Tu Carrito de Compras</h1>
+            
+            <div class="cart-layout">
+                
+                <div class="cart-items-container">
+                    <div class="cart-header-row">
+                        <span class="cart-col product-col">Producto</span>
+                        <span class="cart-col price-col">Precio Unitario</span>
+                        <span class="cart-col quantity-col">Cantidad</span>
+                        <span class="cart-col subtotal-col">Subtotal</span>
+                        <span class="cart-col actions-col"></span>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="cart-col product-col">
+                            <!--EJEMPLO DE PRODUCTO EN EL CARRITO-->
+                            <img src="imagenes/clasico.png" alt="Vinilo Clásico" class="cart-item-img">
+                            <div class="item-info">
+                                <h3>Vinilo: The Cosmic Echoes</h3>
+                                <p>Categoría: Rock Clásico</p>
+                            </div>
+                        </div>
+                        <span class="cart-col price-col" data-price="25.99">$25.99</span>
+                        <div class="cart-col quantity-col">
+                            <div class="quantity-control">
+                                <button class="quantity-btn decrement">-</button>
+                                <input type="number" value="1" min="1" class="item-quantity" data-id="1">
+                                <button class="quantity-btn increment">+</button>
+                            </div>
+                        </div>
+                        <span class="cart-col subtotal-col" data-subtotal="25.99">$25.99</span>
+                        <div class="cart-col actions-col">
+                            <button class="btn-remove" data-id="1"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="cart-col product-col">
+                            <!--EJEMPLO DE PRODUCTO EN EL CARRITO-->
+                            <img src="imagenes/clasico.png" alt="Auriculares Inalámbricos" class="cart-item-img">
+                            <div class="item-info">
+                                <h3>Auriculares: Nova Sound Pro</h3>
+                                <p>Categoría: Accesorios</p>
+                            </div>
+                        </div>
+                        <span class="cart-col price-col" data-price="89.50">$89.50</span>
+                        <div class="cart-col quantity-col">
+                            <div class="quantity-control">
+                                <button class="quantity-btn decrement">-</button>
+                                <input type="number" value="2" min="1" class="item-quantity" data-id="2">
+                                <button class="quantity-btn increment">+</button>
+                            </div>
+                        </div>
+                        <span class="cart-col subtotal-col" data-subtotal="179.00">$179.00</span>
+                        <div class="cart-col actions-col">
+                            <button class="btn-remove" data-id="2"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    </div>
+                
+                <div class="cart-summary-card">
+                    <h2>Resumen del Pedido</h2>
+                    
+                    <div class="coupon-section">
+                        <label for="coupon-code">Cupón de Descuento:</label>
+                        <div class="coupon-input-group">
+                            <input type="text" id="coupon-code" placeholder="Ej: SPACE10" value="SPACE10">
+                            <button class="btn-apply-coupon">Aplicar</button>
+                        </div>
+                        <p class="coupon-message success-message"><i class="fas fa-check-circle"></i> Cupón "SPACE10" aplicado (10% de descuento).</p>
+                        </div>
+
+                    <div class="shipping-section">
+                        <label for="country-select">Selecciona tu País:</label>
+                        <select id="country-select">
+                            <option value="MX" selected>México (IVA 16%, Envío $15.00)</option>
+                            <option value="US">Estados Unidos (Tax 8%, Envío $20.00)</option>
+                            <option value="CA">Canadá (Tax 13%, Envío $25.00)</option>
+                            <option value="ES">España (IVA 21%, Envío $30.00)</option>
+                        </select>
+                    </div>
+
+                    <div class="summary-details">
+                        <div class="summary-row">
+                            <span>Subtotal Productos:</span>
+                            <span id="summary-subtotal">$204.99</span>
+                        </div>
+                        <div class="summary-row discount-row">
+                            <span>Descuento por Cupón:</span>
+                            <span id="summary-discount">-$20.50</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Impuestos (16%):</span>
+                            <span id="summary-tax">$29.52</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Gastos de Envío:</span>
+                            <span id="summary-shipping">$15.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-total">
+                        <h3>Total General:</h3>
+                        <span id="summary-total-amount">$229.01</span>
+                    </div>
+                    
+                    <button class="btn-submit btn-checkout">Finalizar Compra <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+            
+        </div>
+    </main>
 
     <!-- Footer -->
     <footer id="contact">
@@ -82,5 +195,6 @@
     </footer>
 
     <script src="javascript/index.js"></script>
+    <script src="javascript/carrito.js"></script>
 </body>
 </html>

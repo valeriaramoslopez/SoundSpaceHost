@@ -36,5 +36,4 @@ async function testConnection() {
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-  console.log(`📝 Endpoint de login: POST http://localhost:${PORT}/api/auth/login`);
 });

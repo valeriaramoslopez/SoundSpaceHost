@@ -13,8 +13,8 @@ const {
 router.get('/', getProductos);
 router.get('/genero/:genero', getProductosByGenero);
 router.get('/:id', getProductosById);
-router.post('/createProducto', createProducto);
-router.put('/:id', updateProducto);
-router.delete('/:id', deleteProducto);
+router.post('/createProducto', createProducto); //Tienen que estar protegida
+router.put('/:id', updateProducto); //Tiene que estar protegida
+router.delete('/:id', deleteProducto); //tiene que estar protegida
 
 module.exports = router;

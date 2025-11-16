@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cantidadValue.textContent = cantidad;
             
             // Cargar datos del producto
-            document.getElementById("modalImagen").src = btn.dataset.imagen;
+            document.getElementById('modalImagen').src = `http://localhost:3000/uploads/${this.dataset.imagen}`;
             document.getElementById("modalNombre").textContent = btn.dataset.nombre;
             document.getElementById("modalDescripcion").textContent = btn.dataset.descripcion;
             document.getElementById("modalPrecio").textContent = btn.dataset.precio;
@@ -216,5 +216,256 @@ style.textContent = `
         border-radius: 3px;
     }
 `;
-document.head.appendChild(style);
 
+// API para obtener productos
+const productosAPI = {
+    async getProductos() {
+        try {
+            const response = await fetch("http://localhost:3000/api/productos", {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const data = await response.json();
+            console.log("✅ Productos cargados:", data);
+
+            if (response.ok) {
+                return data;
+            } else {
+                console.error("Error al obtener productos:", data.mensaje);
+                return [];
+            }
+        } catch (error) {
+            console.error("❌ Error de conexión:", error);
+            return [];
+        }
+    },
+
+    async getProductosByGenero(genero) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/productos/genero/${genero}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                return data.data;
+            } else {
+                return [];
+            }
+        } catch (error) {
+            console.error("❌ Error de conexión:", error);
+            return [];
+        }
+    }
+};
+
+// Cargar productos cuando la página esté lista
+document.addEventListener('DOMContentLoaded', function() {
+    cargarProductos();
+    configurarFiltros();
+    inicializarModal();
+});
+
+// Función principal para cargar productos
+async function cargarProductos() {
+    try {
+        const productos = await productosAPI.getProductos();
+        
+        if (productos && productos.length > 0) {
+            // Mostrar primeros 4 productos en "más vendidos"
+            mostrarProductos(productos.slice(0, 4), 'productos-mas-vendidos');
+            
+            // Mostrar siguientes 4 productos en "ofertas especiales"
+            if (productos.length > 4) {
+                mostrarProductos(productos.slice(4, 8), 'ofertas-especiales');
+            } else {
+                // Si hay menos de 4 productos, mostrar los mismos en ambas secciones
+                mostrarProductos(productos, 'ofertas-especiales');
+            }
+        } else {
+            // Si no hay productos de la API, mostrar mensaje
+            console.log("No se pudieron cargar los productos desde la API");
+            mostrarMensajeSinProductos();
+        }
+    } catch (error) {
+        console.error("Error al cargar productos:", error);
+        mostrarMensajeSinProductos();
+    }
+}
+
+function mostrarMensajeSinProductos() {
+    const mensaje = '<p class="no-productos">⚠️ No hay productos disponibles en este momento</p>';
+    
+    const contenedorVendidos = document.getElementById('productos-mas-vendidos');
+    const contenedorOfertas = document.getElementById('ofertas-especiales');
+    
+    if (contenedorVendidos) contenedorVendidos.innerHTML = mensaje;
+    if (contenedorOfertas) contenedorOfertas.innerHTML = mensaje;
+}
+
+// Mostrar productos en un contenedor específico
+function mostrarProductos(productos, contenedorId) {
+    const contenedor = document.getElementById(contenedorId);
+    if (!contenedor) return;
+
+    if (productos.length === 0) {
+        contenedor.innerHTML = '<p class="no-productos">No hay productos disponibles</p>';
+        return;
+    }
+
+    contenedor.innerHTML = productos.map(producto => `
+        <div class="producto-card">
+            ${producto.ventas > 10 ? '<span class="producto-badge">Popular</span>' : ''}
+            <img src="http://localhost:3000/uploads/${producto.imagen}" 
+                 alt="${producto.titulo}" 
+                 class="producto-img"
+                onerror="this.src='http://localhost:3000/uploads/${producto.imagen}'"
+            <div class="producto-info">
+                <h3>${producto.titulo}</h3>
+                <p class="producto-artista">${producto.artista}</p>
+                <p class="producto-descripcion">${producto.descripcion ? producto.descripcion.substring(0, 60) + '...' : 'Descripción no disponible'}</p>
+                <div class="producto-precio">
+                    $${producto.precio}
+                    <span class="producto-stock ${producto.disponibilidad > 0 ? 'en-stock' : 'agotado'}">
+                        ${producto.disponibilidad > 0 ? 'En stock' : 'Agotado'}
+                    </span>
+                </div>
+                <button class="btn-ver"
+                    data-nombre="${producto.titulo}"
+                    data-descripcion="${producto.descripcion || 'Descripción no disponible'}"
+                    data-precio="$${producto.precio}"
+                    data-disponibilidad="${producto.disponibilidad > 0 ? 'En stock' : 'Agotado'}"
+                    data-categoria="${producto.genero}"
+                    data-imagen="${producto.imagen}"
+                    data-artista="${producto.artista}">
+                    Ver Detalles
+                </button>
+            </div>
+        </div>
+    `).join('');
+
+    // Configurar botones "Ver" después de cargar los productos
+    configurarBotonesVer();
+}
+
+// Configurar filtros por categoría
+function configurarFiltros() {
+    const categorias = document.querySelectorAll('.categoria-card');
+    
+    categorias.forEach(categoria => {
+        categoria.addEventListener('click', async function() {
+            const genero = this.querySelector('h3').textContent.toLowerCase();
+            
+            // Remover activo de todas las categorías
+            categorias.forEach(c => c.classList.remove('active'));
+            // Agregar activo a la categoría clickeada
+            this.classList.add('active');
+            
+            let productosFiltrados = [];
+            
+            if (genero === 'rock' || genero === 'clasico' || genero === 'corrido') {
+                productosFiltrados = await productosAPI.getProductosByGenero(genero);
+            } else {
+                productosFiltrados = await productosAPI.getProductos();
+            }
+            
+            if (productosFiltrados.length > 0) {
+                mostrarProductos(productosFiltrados.slice(0, 4), 'productos-mas-vendidos');
+                mostrarProductos(productosFiltrados.slice(4, 8), 'ofertas-especiales');
+            }
+        });
+    });
+}
+
+// Configurar botones "Ver" para el modal
+function configurarBotonesVer() {
+    document.querySelectorAll('.btn-ver').forEach(btn => {
+        btn.addEventListener('click', function() {
+            abrirModalProducto(
+                this.dataset.nombre,
+                this.dataset.descripcion,
+                this.dataset.precio,
+                this.dataset.disponibilidad,
+                this.dataset.categoria,
+                this.dataset.imagen,
+                this.dataset.artista
+            );
+        });
+    });
+}
+
+// Función para abrir el modal con datos del producto
+function abrirModalProducto(nombre, descripcion, precio, disponibilidad, categoria, imagen, artista) {
+    document.getElementById('modalNombre').textContent = nombre;
+    document.getElementById('modalDescripcion').textContent = descripcion;
+    document.getElementById('modalPrecio').textContent = precio;
+    document.getElementById('modalDisponibilidad').textContent = disponibilidad;
+    document.getElementById('modalCategoria').textContent = categoria;
+    document.getElementById('modalImagen').src = `http://localhost:3000/uploads/${imagen}`;
+    
+    const modal = document.getElementById('modalProducto');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// Inicializar funcionalidad del modal
+function inicializarModal() {
+    const modal = document.getElementById('modalProducto');
+    const closeBtn = document.querySelector('.close');
+    let cantidad = 1;
+
+    // Botones de cantidad
+    document.getElementById('decreaseQty')?.addEventListener('click', () => {
+        if (cantidad > 1) {
+            cantidad--;
+            document.getElementById('cantidadValue').textContent = cantidad;
+        }
+    });
+
+    document.getElementById('increaseQty')?.addEventListener('click', () => {
+        cantidad++;
+        document.getElementById('cantidadValue').textContent = cantidad;
+    });
+
+    // Cerrar modal
+    closeBtn?.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        cantidad = 1;
+        document.getElementById('cantidadValue').textContent = cantidad;
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            cantidad = 1;
+            document.getElementById('cantidadValue').textContent = cantidad;
+        }
+    });
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            cantidad = 1;
+            document.getElementById('cantidadValue').textContent = cantidad;
+        }
+    });
+}
+
+// Función de copiar cupón
+function copiarCupon() {
+    const cupon = "ROCK25";
+    navigator.clipboard.writeText(cupon).then(() => {
+        alert("Cupón copiado: " + cupon);
+    }).catch(err => {
+        console.error('Error al copiar: ', err);
+    });
+}
+
+document.head.appendChild(style);

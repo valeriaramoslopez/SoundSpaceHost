@@ -693,8 +693,6 @@ footer {
     background: #444;
 }
 
-
-
 /* Estilos para cupones */
 .cupon-principal {
     margin: 40px 0;
@@ -2086,76 +2084,6 @@ footer {
         padding: 25px 15px;
     }
 }
-/* ===== Modal Styles ===== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 50px;
-    top: 50px;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.modal-content {
-    background-color: #111;
-    color: white;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 700px;
-    position: relative;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.close {
-    color: #fff;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.modal-img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.modal h2 {
-    margin-bottom: 10px;
-    color: #00bfff;
-}
-
-.modal p {
-    margin: 6px 0;
-}
-
-.modal strong {
-    color: #ffd700;
-}
-
-.btn-ver {
-    background-color: #8a2be2;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-family: 'Playfair Display', serif;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.btn-ver:hover {
-    background-color: #5e1cad;
-}
 
 /* ===== Modal Styles ===== */
 .modal {
@@ -2204,15 +2132,15 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    align-items: center; /* Esto centra verticalmente ambos lados */
-    min-height: 500px; /* Altura mínima para mejor centrado */
+    align-items: center;
+    min-height: 500px;
 }
 
 .modal-imagen-container {
     position: relative;
     display: flex;
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
+    align-items: center;
+    justify-content: center;
     height: 100%;
 }
 
@@ -2228,7 +2156,7 @@ footer {
     padding: 10px 0;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra el contenido verticalmente */
+    justify-content: center;
     height: 100%;
 }
 
@@ -2342,8 +2270,6 @@ footer {
     box-shadow: 0 5px 15px rgba(255, 82, 82, 0.4);
 }
 
-
-
 .modal-descripcion {
     border-top: 1px solid #333;
     padding-top: 25px;
@@ -2382,58 +2308,37 @@ footer {
     transform: translateY(-2px);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-        padding: 20px;
-        margin: 10% auto;
-    }
-    
-    .modal-producto-container {
-        grid-template-columns: 1fr;
-        gap: 25px;
-        min-height: auto;
-    }
-    
-    .modal-imagen-container {
-        height: auto;
-        min-height: 300px;
-    }
-    
-    .modal-info-container h2 {
-        font-size: 1.8rem;
-    }
-    
-    .modal-precio {
-        font-size: 1.6rem;
-    }
-    
-    .cantidad-selector {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
+/* Estilos para precios con oferta en modal */
+.precio-oferta-modal {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ff5252;
 }
 
-@media (max-width: 480px) {
-    .modal-content {
-        width: 95%;
-        padding: 15px;
-    }
-    
-    .modal-info-container h2 {
-        font-size: 1.5rem;
-    }
-    
-    .btn-agregar-carrito {
-        padding: 15px 20px;
-        font-size: 1rem;
-    }
-    
-    .modal-imagen-container {
-        min-height: 250px;
-    }
+.precio-original-modal {
+    font-size: 1em;
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 10px;
+}
+
+.descuento-modal {
+    background: #ff5252;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.oferta-badge-modal {
+    background: #ff5252;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
 /* Estilos para productos dinámicos de la API */
@@ -2552,6 +2457,36 @@ footer {
     gap: 10px;
 }
 
+/* Estilos para precios con oferta en productos */
+.producto-precio-oferta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+}
+
+.precio-original {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 1rem;
+}
+
+.precio-oferta {
+    color: #ff5252;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.descuento {
+    background: #ff5252;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
 /* Botón Ver mejorado */
 .btn-ver {
     background: linear-gradient(135deg, #8a2be2, #6a1cad);
@@ -2602,6 +2537,11 @@ footer {
     box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
 }
 
+.popular-badge {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    top: 50px;
+}
+
 /* Grid de productos responsivo */
 .productos-grid {
     display: grid;
@@ -2626,8 +2566,47 @@ footer {
     margin-bottom: 10px;
 }
 
+/* Estilos para búsqueda resaltada */
+.highlight {
+    background-color: #ff5252;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+        margin: 10% auto;
+    }
+    
+    .modal-producto-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        min-height: auto;
+    }
+    
+    .modal-imagen-container {
+        height: auto;
+        min-height: 300px;
+    }
+    
+    .modal-info-container h2 {
+        font-size: 1.8rem;
+    }
+    
+    .modal-precio {
+        font-size: 1.6rem;
+    }
+    
+    .cantidad-selector {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
     .productos-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
@@ -2654,6 +2633,24 @@ footer {
 }
 
 @media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .modal-info-container h2 {
+        font-size: 1.5rem;
+    }
+    
+    .btn-agregar-carrito {
+        padding: 15px 20px;
+        font-size: 1rem;
+    }
+    
+    .modal-imagen-container {
+        min-height: 250px;
+    }
+    
     .productos-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -2668,3 +2665,36 @@ footer {
         font-size: 1rem;
     }
 }
+
+.btn-cantidad:disabled {
+        background: #666 !important;
+        cursor: not-allowed !important;
+        transform: none !important;
+    }
+    
+    .btn-cantidad:disabled:hover {
+        background: #666 !important;
+        transform: none !important;
+    }
+    
+    .btn-agregar-carrito:disabled {
+        background: #666 !important;
+        cursor: not-allowed !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .btn-agregar-carrito:disabled:hover {
+        background: #666 !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .stock-maximo-mensaje, .stock-bajo-mensaje {
+        animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }

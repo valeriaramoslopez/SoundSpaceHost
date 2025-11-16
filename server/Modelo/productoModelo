@@ -19,10 +19,10 @@ async function getProductoByGenero(genero) {
 }
 
 //Crear nuevo Producto
-async function createProducto(titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen) {
+async function createProducto(titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta) {
     const[result] = await pool.query(
-        'INSERT INTO productos (titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen]
+        'INSERT INTO productos (titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta]
     );
     return result.insertId;
 }

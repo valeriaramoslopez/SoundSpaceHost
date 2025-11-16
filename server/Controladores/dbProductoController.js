@@ -53,12 +53,12 @@ const getProductosByGenero = async (req, res) => {
 const createProducto = async(req, res) => {
     try{
         console.log(req.body);
-        const {titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen} = req.body;
-        if(!titulo || !artista || !descripcion || precio === undefined || disponibilidad=== undefined || !genero || ventas=== undefined || !imagen) //puede llegar un 0 y tomarlo como falso, por eso se coloca undefined
+        const {titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta} = req.body;
+        if(!titulo || !artista || !descripcion || precio === undefined || disponibilidad=== undefined || !genero || ventas=== undefined || !imagen || oferta=== undefined) //puede llegar un 0 y tomarlo como falso, por eso se coloca undefined
             return res.status(400).json({mensaje: 'Faltan datos obligatorios'});
         console.log("1");
-        const id_insertado = await productoModelo.createProducto(titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen);
-        res.status(201).json({mensaje: 'Libro agregado', id_insertado});
+        const id_insertado = await productoModelo.createProducto(titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta);
+        res.status(201).json({mensaje: 'Producto agregado', id_insertado});
         console.log("2");
     }catch(error){
         console.error('Error al agregar el producto: ', error);

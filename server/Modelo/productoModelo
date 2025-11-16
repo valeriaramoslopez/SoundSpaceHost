@@ -36,6 +36,15 @@ async function updateDisponibilidadYventas(id, disponibilidad, ventas) {
     return result.affectedRows;
 }
 
+//actualizar oferta
+async function updateOferta(id, oferta) {
+    const[result] = await pool.query(
+        'UPDATE productos SET oferta = ? WHERE id = ?',
+        [oferta, id]
+    );
+    return result.affectedRows;
+}
+
 async function deleteProducto(id) {
     const [result] = await pool.query('DELETE FROM productos WHERE id = ?', [id]);
     return result.affectedRows;    
@@ -47,5 +56,6 @@ module.exports = {
     createProducto,
     deleteProducto,
     getProductoByGenero,
-    updateDisponibilidadYventas
+    updateDisponibilidadYventas,
+    updateOferta
 };

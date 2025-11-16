@@ -81,6 +81,21 @@ const updateProducto = async(req, res) => {
     }
 };
 
+//PUT /api/productos/oferta/:id
+const updateOferta = async(req, res) => {
+    try{
+        const {id} = req.params;
+        const {oferta} = req.body;
+        const filas = await productoModelo.updateOferta(id, oferta);
+        if(filas === 0)
+            return res.status(404).json({mensaje: 'Producto no encontrado'});
+        res.json({mensaje: 'Producto actualizado correctamente'});
+    }catch(error){
+        console.error('Error al actualizar el producto: ', error);
+        res.status(500).json({mensaje: 'Error al actualizar el producto'});
+    }
+};
+
 //Delete /api/productos/:id
 const deleteProducto = async (req, res) =>{
     try{
@@ -101,5 +116,6 @@ module.exports = {
     getProductosByGenero,
     createProducto,
     updateProducto,
+    updateOferta,
     deleteProducto
 };

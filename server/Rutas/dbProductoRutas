@@ -1,0 +1,20 @@
+const express = require('express');
+const router = express.Router();
+
+const {
+    getProductos,
+    getProductosById,
+    getProductosByGenero,
+    createProducto,
+    updateProducto,
+    deleteProducto //No se para que se usaria pero x
+} = require('../Controladores/dbProductoController');
+
+router.get('/', getProductos);
+router.get('/genero/:genero', getProductosByGenero);
+router.get('/:id', getProductosById);
+router.post('/createProducto', createProducto);
+router.put('/:id', updateProducto);
+router.delete('/:id', deleteProducto);
+
+module.exports = router;

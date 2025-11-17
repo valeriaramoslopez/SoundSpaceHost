@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Variable global para el controlador del modal
-let modalController;
+    let modalController;
 
     //Filtrado por categorías
     const categoryButtons = document.querySelectorAll('.category-btn');
@@ -743,3 +743,114 @@ function copiarCupon() {
         console.error('Error al copiar: ', err);
     });
 }
+
+// Función principal de búsqueda de productos
+window.buscarProductos = function() {
+    const searchTerm = document.getElementById('producto-search').value.toLowerCase().trim();
+    const productosCards = document.querySelectorAll('.producto-card');
+    let foundResults = false;
+    
+    console.log(`🔍 Buscando productos: "${searchTerm}"`);
+    
+    productosCards.forEach(card => {
+        const nombre = card.querySelector('h3').textContent.toLowerCase();
+        const artista = card.querySelector('.producto-artista')?.textContent.toLowerCase() || '';
+        const descripcion = card.querySelector('.producto-descripcion')?.textContent.toLowerCase() || '';
+        const categoria = card.querySelector('.btn-ver')?.dataset.categoria?.toLowerCase() || '';
+        
+        // Buscar en todos los campos
+        if (nombre.includes(searchTerm) || 
+            artista.includes(searchTerm) || 
+            descripcion.includes(searchTerm) || 
+            categoria.includes(searchTerm)) {
+            
+            card.style.display = 'block';
+            foundResults = true;
+            
+            // Resaltar término buscado (opcional)
+            if (searchTerm) {
+                const nombreElement = card.querySelector('h3');
+                const artistaElement = card.querySelector('.producto-artista');
+                const descripcionElement = card.querySelector('.producto-descripcion');
+                
+                // Resaltar en nombre
+                if (nombreElement) {
+                    const highlightedNombre = nombreElement.textContent.replace(
+                        new RegExp(searchTerm, 'gi'),
+                        match => `<span class="highlight-producto">${match}</span>`
+                    );
+                    nombreElement.innerHTML = highlightedNombre;
+                }
+                
+                // Resaltar en artista
+                if (artistaElement) {
+                    const highlightedArtista = artistaElement.textContent.replace(
+                        new RegExp(searchTerm, 'gi'),
+                        match => `<span class="highlight-producto">${match}</span>`
+                    );
+                    artistaElement.innerHTML = highlightedArtista;
+                }
+            }
+        } else {
+            card.style.display = 'none';
+        }
+    });   
+}
+
+// Función para mostrar todos los productos (resetear búsqueda)
+window.mostrarTodosProductos = function() {
+    const productosCards = document.querySelectorAll('.producto-card');
+    productosCards.forEach(card => {
+        card.style.display = 'block';
+    });
+    
+    // Remover mensaje de no resultados
+    const noResults = document.getElementById('no-results-productos');
+    if (noResults) {
+        noResults.remove();
+    }
+    
+    // Limpiar campo de búsqueda
+    document.getElementById('producto-search').value = '';
+    
+    // Remover resaltado
+    removerResaltado();
+    
+    // Ocultar contador
+    const contador = document.getElementById('contador-resultados');
+    if (contador) {
+        contador.remove();
+    }
+};
+
+
+// Remover resaltado de términos
+function removerResaltado() {
+    const highlightedElements = document.querySelectorAll('.highlight-producto');
+    highlightedElements.forEach(element => {
+        const parent = element.parentNode;
+        parent.innerHTML = parent.textContent;
+    });
+}
+
+// Permitir búsqueda con Enter
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscarProductos();
+            }
+        });
+        
+        // Búsqueda en tiempo real (opcional)
+        searchInput.addEventListener('input', function() {
+            const termino = this.value.trim();
+            if (termino.length >= 3) {
+                buscarProductos();
+            } else if (termino.length === 0) {
+                mostrarTodosProductos();
+            }
+        });
+    }
+});

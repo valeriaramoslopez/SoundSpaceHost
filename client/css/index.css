@@ -2698,3 +2698,31 @@ footer {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
+/* Estlos para la búsqueda de tienda */
+.highlight-producto {
+    background-color: #ff5252;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* Estilos para el contador de resultados */
+#contador-resultados {
+    transition: all 0.3s ease;
+}
+
+#contador-resultados p {
+    font-size: 1.1rem;
+}
+
+/* Estilos para el mensaje de no resultados */
+#no-results-productos {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

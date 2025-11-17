@@ -96,12 +96,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    //Permitir búsqueda con Enter
-    document.getElementById('faq-search').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            buscarFAQ();
-        }
-    });
+    //Permitir búsqueda con enter
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscarProductos();
+            }
+        });
+    }
 });
 
 // API para obtener productos
@@ -832,25 +835,3 @@ function removerResaltado() {
         parent.innerHTML = parent.textContent;
     });
 }
-
-// Permitir búsqueda con Enter
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('producto-search');
-    if (searchInput) {
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                buscarProductos();
-            }
-        });
-        
-        // Búsqueda en tiempo real (opcional)
-        searchInput.addEventListener('input', function() {
-            const termino = this.value.trim();
-            if (termino.length >= 3) {
-                buscarProductos();
-            } else if (termino.length === 0) {
-                mostrarTodosProductos();
-            }
-        });
-    }
-});

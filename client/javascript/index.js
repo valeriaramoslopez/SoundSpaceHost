@@ -1,3 +1,258 @@
+//--------------------------------------------------------------------------------------------------
+// ACCESIBILIDAD
+class AdministradorAccesibilidad {
+    constructor() {
+        this.config = {
+            tema: 'dark',
+            tamanoTexto: 'normal',
+            espaciado: 'normal'
+        };
+        
+        this.iniciar();
+    }
+
+    iniciar() {
+        this.cargarConfiguracion();
+        this.aplicarConfiguracion();
+        this.configurarEventos();
+        console.log('✅ Sistema de accesibilidad inicializado');
+    }
+
+    // Cargar configuración desde localStorage
+    cargarConfiguracion() {
+        const guardado = localStorage.getItem('configAccesibilidad');
+        if (guardado) {
+            this.config = { ...this.config, ...JSON.parse(guardado) };
+        }
+    }
+
+    //GUARDA TODO EN LOCALSTORAGE
+    guardarConfiguracion() {
+        localStorage.setItem('configAccesibilidad', JSON.stringify(this.config));
+        console.log("- Configuración guardada:", this.config);
+        console.log("- localStorage ahora contiene:", localStorage.getItem('configAccesibilidad'));
+    }
+
+    // Aplicar configuración actual
+    aplicarConfiguracion() {
+        const { tema, tamanoTexto, espaciado } = this.config;
+        
+        // Remover clases anteriores
+        document.body.className = document.body.className
+            .replace(/\b(light-theme|dark-theme)\b/g, '')
+            .replace(/\btext-(small|normal|large|xlarge)\b/g, '')
+            .replace(/\bspacing-(normal|large)\b/g, '');
+        
+        // Aplicar nuevas clases
+        document.body.classList.add(`${tema}-theme`, `text-${tamanoTexto}`, `spacing-${espaciado}`);
+        
+        // Actualizar botones activos
+        this.actualizarBotonesActivos();
+    }
+
+    // Configurar event listeners
+    configurarEventos() {
+        this.configurarAperturaPanel();
+        this.configurarTemas();
+        this.configurarTamanoTexto();
+        this.configurarEspaciado();
+        this.configurarReinicio();
+        this.configurarTeclado();
+    }
+
+    configurarAperturaPanel() {
+        const boton = document.getElementById('accessibilityToggle');
+        const panel = document.getElementById('accessibilityPanel');
+        const botonCerrar = document.querySelector('.close-panel');
+
+        if (boton && panel) {
+            boton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                panel.classList.toggle('show');
+                boton.setAttribute('aria-expanded', panel.classList.contains('show'));
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!panel.contains(e.target) && !boton.contains(e.target)) {
+                    panel.classList.remove('show');
+                    boton.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            if (botonCerrar) {
+                botonCerrar.addEventListener('click', () => {
+                    panel.classList.remove('show');
+                    boton.setAttribute('aria-expanded', 'false');
+                });
+            }
+        }
+    }
+
+    // Controles, botones, temas, tamaño de texto
+
+    configurarTemas() {
+        const botones = document.querySelectorAll('.toggle-btn');
+        if (botones.length === 0) return;
+
+        botones.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tema = e.target.closest('.toggle-btn').dataset.theme;
+                this.cambiarTema(tema);
+            });
+        });
+    }
+
+    configurarTamanoTexto() {
+        const botones = document.querySelectorAll('.size-btn');
+        if (botones.length === 0) return;
+
+        botones.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tamano = e.target.closest('.size-btn').dataset.size;
+                this.cambiarTamanoTexto(tamano);
+            });
+        });
+    }
+
+    configurarEspaciado() {
+        const botones = document.querySelectorAll('.spacing-btn');
+        if (botones.length === 0) return;
+
+        botones.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const espacio = e.target.closest('.spacing-btn').dataset.spacing;
+                this.cambiarEspaciado(espacio);
+            });
+        });
+    }
+
+    configurarReinicio() {
+        const btn = document.getElementById('resetAccessibility');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                this.restablecerConfiguracion();
+            });
+        }
+    }
+
+    configurarTeclado() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const panel = document.getElementById('accessibilityPanel');
+                const boton = document.getElementById('accessibilityToggle');
+                if (panel && panel.classList.contains('show')) {
+                    panel.classList.remove('show');
+                    boton.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
+    // Cambiar tema
+    cambiarTema(tema) {
+        this.config.tema = tema;
+        this.aplicarConfiguracion();
+        this.guardarConfiguracion();
+        this.mostrarNotificacion(`Modo ${tema === 'light' ? 'claro' : 'oscuro'} activado`);
+    }
+
+    // Cambiar tamaño de texto
+    cambiarTamanoTexto(tamano) {
+        this.config.tamanoTexto = tamano;
+        this.aplicarConfiguracion();
+        this.guardarConfiguracion();
+        
+        const nombres = {
+            small: 'pequeño',
+            normal: 'normal', 
+            large: 'grande',
+            xlarge: 'muy grande'
+        };
+        this.mostrarNotificacion(`Tamaño de texto ${nombres[tamano]}`);
+    }
+
+    // Cambiar espaciado
+    cambiarEspaciado(espaciado) {
+        this.config.espaciado = espaciado;
+        this.aplicarConfiguracion();
+        this.guardarConfiguracion();
+        this.mostrarNotificacion(`Espaciado ${espaciado === 'large' ? 'amplio' : 'normal'}`);
+    }
+
+    // Restablecer configuración
+    restablecerConfiguracion() {
+        this.config = {
+            tema: 'dark',
+            tamanoTexto: 'normal',
+            espaciado: 'normal'
+        };
+        this.aplicarConfiguracion();
+        this.guardarConfiguracion();
+        this.mostrarNotificacion('Configuración restablecida');
+    }
+
+    // Actualizar botones activos
+    actualizarBotonesActivos() {
+        const { tema, tamanoTexto, espaciado } = this.config;
+        
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            const activo = btn.dataset.theme === tema;
+            btn.classList.toggle('active', activo);
+            btn.setAttribute('aria-pressed', activo);
+        });
+        
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            const activo = btn.dataset.size === tamanoTexto;
+            btn.classList.toggle('active', activo);
+            btn.setAttribute('aria-pressed', activo);
+        });
+        
+        document.querySelectorAll('.spacing-btn').forEach(btn => {
+            const activo = btn.dataset.spacing === espaciado;
+            btn.classList.toggle('active', activo);
+            btn.setAttribute('aria-pressed', activo);
+        });
+    }
+
+    // Mostrar notificación
+    mostrarNotificacion(mensaje) {
+        const existente = document.querySelector('.accessibility-notification');
+        if (existente) existente.remove();
+
+        const alerta = document.createElement('div');
+        alerta.className = 'accessibility-notification';
+        alerta.textContent = mensaje;
+        alerta.setAttribute('role', 'alert');
+        alerta.setAttribute('aria-live', 'polite');
+        
+        document.body.appendChild(alerta);
+
+        setTimeout(() => {
+            alerta.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => {
+                if (alerta.parentNode) {
+                    alerta.parentNode.removeChild(alerta);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    obtenerConfiguracion() {
+        return { ...this.config };
+    }
+}
+
+//Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    window.administradorAccesibilidad = new AdministradorAccesibilidad();
+});
+
+//para debugging
+window.obtenerConfiguracionAccesibilidad = function() {
+    return window.administradorAccesibilidad?.obtenerConfiguracion() || 'Sistema no inicializado';
+};
+//--------------------------------------------------------------------------------------------------
+
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
     // Acordeón de preguntas
@@ -23,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Variable global para el controlador del modal
-let modalController;
+    let modalController;
 
     //Filtrado por categorías
     const categoryButtons = document.querySelectorAll('.category-btn');
@@ -96,12 +351,15 @@ let modalController;
         }
     };
 
-    //Permitir búsqueda con Enter
-    document.getElementById('faq-search').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            buscarFAQ();
-        }
-    });
+    //Permitir búsqueda con enter
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscarProductos();
+            }
+        });
+    }
 });
 
 // API para obtener productos
@@ -741,5 +999,94 @@ function copiarCupon() {
         alert("Cupón copiado: " + cupon);
     }).catch(err => {
         console.error('Error al copiar: ', err);
+    });
+}
+
+// Función principal de búsqueda de productos
+window.buscarProductos = function() {
+    const searchTerm = document.getElementById('producto-search').value.toLowerCase().trim();
+    const productosCards = document.querySelectorAll('.producto-card');
+    let foundResults = false;
+    
+    console.log(`🔍 Buscando productos: "${searchTerm}"`);
+    
+    productosCards.forEach(card => {
+        const nombre = card.querySelector('h3').textContent.toLowerCase();
+        const artista = card.querySelector('.producto-artista')?.textContent.toLowerCase() || '';
+        const descripcion = card.querySelector('.producto-descripcion')?.textContent.toLowerCase() || '';
+        const categoria = card.querySelector('.btn-ver')?.dataset.categoria?.toLowerCase() || '';
+        
+        // Buscar en todos los campos
+        if (nombre.includes(searchTerm) || 
+            artista.includes(searchTerm) || 
+            descripcion.includes(searchTerm) || 
+            categoria.includes(searchTerm)) {
+            
+            card.style.display = 'block';
+            foundResults = true;
+            
+            // Resaltar término buscado (opcional)
+            if (searchTerm) {
+                const nombreElement = card.querySelector('h3');
+                const artistaElement = card.querySelector('.producto-artista');
+                const descripcionElement = card.querySelector('.producto-descripcion');
+                
+                // Resaltar en nombre
+                if (nombreElement) {
+                    const highlightedNombre = nombreElement.textContent.replace(
+                        new RegExp(searchTerm, 'gi'),
+                        match => `<span class="highlight-producto">${match}</span>`
+                    );
+                    nombreElement.innerHTML = highlightedNombre;
+                }
+                
+                // Resaltar en artista
+                if (artistaElement) {
+                    const highlightedArtista = artistaElement.textContent.replace(
+                        new RegExp(searchTerm, 'gi'),
+                        match => `<span class="highlight-producto">${match}</span>`
+                    );
+                    artistaElement.innerHTML = highlightedArtista;
+                }
+            }
+        } else {
+            card.style.display = 'none';
+        }
+    });   
+}
+
+// Función para mostrar todos los productos (resetear búsqueda)
+window.mostrarTodosProductos = function() {
+    const productosCards = document.querySelectorAll('.producto-card');
+    productosCards.forEach(card => {
+        card.style.display = 'block';
+    });
+    
+    // Remover mensaje de no resultados
+    const noResults = document.getElementById('no-results-productos');
+    if (noResults) {
+        noResults.remove();
+    }
+    
+    // Limpiar campo de búsqueda
+    document.getElementById('producto-search').value = '';
+    
+    // Remover resaltado
+    removerResaltado();
+    
+    // Ocultar contador
+    const contador = document.getElementById('contador-resultados');
+    if (contador) {
+        contador.remove();
+    }
+};
+
+
+// Remover resaltado de términos
+function removerResaltado() {
+    const highlightedElements = document.querySelectorAll('.highlight-producto');
+    highlightedElements.forEach(element => {
+        const parent = element.parentNode;
+        parent.innerHTML = parent.textContent;
     });
 }

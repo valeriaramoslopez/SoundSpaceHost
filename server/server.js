@@ -2,6 +2,7 @@ const express = require('express'); //Servidor
 const dotenv = require('dotenv'); //Variables de entorno
 const cors = require('cors'); //Permisos
 const baseRutas = require('./Rutas/dbProductoRutas'); //Rutas
+const usuarioRutas = require("./Rutas/usuarioRutas"); // Ruta de registro
 const pool = require('./DB/conexion'); //Conexion
 const fs = require("fs");
 const path = require("path");
@@ -44,6 +45,7 @@ app.get('/', (req, res) => {
 
 //Rutas API de productos
 app.use('/api/productos', baseRutas);
+app.use("/api/usuarios", usuarioRutas);
 
 // Probar conexión a BD (opcional)
 async function testConnection() {

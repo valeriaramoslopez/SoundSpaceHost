@@ -61,111 +61,31 @@
                 <div class="categoria-card">
                     <i class="fas fa-music"></i>
                     <h3>Rock</h3>
-                    <p>Lo más aleatorio!!</p>
+                    <p>¡Energía que rompe esquemas!</p>
                 </div>
                 <div class="categoria-card">
                     <i class="fas fa-compact-disc"></i>
-                    <h3>Clásico</h3>
-                    <p>Vinilos y CDs</p>
+                    <h3>Clasico</h3>
+                    <p>VMelodías que trascienden el tiempo</p>
                 </div>
                 <div class="categoria-card">
                     <i class="fas fa-guitar"></i>
-                    <h3>Corridos</h3>
-                    <p>De cualquier época</p>
+                    <h3>Corrido</h3>
+                    <p>Historias que resuenan en cada verso</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Productos más vendidos -->
-    <section class="music">
-        <div class="container">
-            <h2 class="section-title">Productos más vendidos</h2>
-            <div class="productos-grid">
-                <!-- Producto 1 -->
-                <div class="producto-card">
-                    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Playera Oficial" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Playera Classic Black</h3>
-                        <p>Playera 100% algodón con diseño exclusivo</p>
-                        <div class="producto-precio">
-                            $24.99
-                            <span class="producto-precio-original">$29.99</span>
-                        </div>
-                        <button class="btn-ver"
-                            data-nombre="Playera Classic Black"
-                            data-descripcion="Playera 100% algodón con diseño exclusivo de SpaceSound. Material premium, cómodo y duradero. Disponible en tallas S, M, L, XL."
-                            data-precio="$24.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Ropa"
-                            data-imagen="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Producto 2 -->
-                <div class="producto-card">
-                    <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Vinilo" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Vinilo Limited Edition</h3>
-                        <p>Edición especial en vinilo de 180g</p>
-                        <div class="producto-precio">
-                            $34.99
-                            <span class="producto-precio-original">$39.99</span>
-                        </div>
-                        <button class="btn-ver"
-                            data-nombre="Vinilo Limited Edition"
-                            data-descripcion="Edición especial en vinilo de 180g de la banda SpaceSound. Incluye inserto exclusivo con letras y fotografías."
-                            data-precio="$34.99"
-                            data-disponibilidad="Últimas unidades"
-                            data-categoria="Vinilos"
-                            data-imagen="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Producto 3 -->
-                <div class="producto-card">
-                    <img src="https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Taza" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Taza SpaceSound Pro</h3>
-                        <p>Taza de cerámica premium 350ml</p>
-                        <div class="producto-precio">$16.99</div>
-                        <button class="btn-ver"
-                            data-nombre="Taza SpaceSound Pro"
-                            data-descripcion="Taza de cerámica premium con capacidad de 350ml. Diseño exclusivo de SpaceSound, apta para lavavajillas y microondas."
-                            data-precio="$16.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Accesorios"
-                            data-imagen="https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Producto 4 -->
-                <div class="producto-card">
-                    <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Gorra" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Gorra Ajustable</h3>
-                        <p>Gorra con diseño bordado premium</p>
-                        <div class="producto-precio">$22.99</div>
-                        <button class="btn-ver"
-                            data-nombre="Gorra Ajustable"
-                            data-descripcion="Gorra ajustable con diseño bordado premium de SpaceSound. Cierre trasero ajustable para mayor comodidad."
-                            data-precio="$22.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Accesorios"
-                            data-imagen="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-            </div>
+<!-- Productos más vendidos -->
+<section class="music">
+    <div class="container">
+        <h2 class="section-title">Productos</h2>
+        <div class="productos-grid" id="productos-mas-vendidos">
+            <div class="loading-products">Cargando productos...</div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Cupones -->
     <section class="cupon-banner">
@@ -184,102 +104,15 @@
         </div>
     </section>
 
-    <!-- Ofertas Especiales -->
-    <section class="ofertas">
-        <div class="container">
-            <h2 class="section-title">Ofertas Especiales</h2>
-            <div class="productos-grid">
-                <!-- Oferta 1 -->
-                <div class="producto-card">
-                    <span class="producto-badge">-30%</span>
-                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Hoodie" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Hoodie Limited</h3>
-                        <p>Sudadera con capucha edición limitada</p>
-                        <div class="producto-precio">
-                            $45.99
-                            <span class="producto-precio-original">$65.99</span>
-                        </div>
-                        <button class="btn-ver"
-                            data-nombre="Hoodie Limited"
-                            data-descripcion="Sudadera con capucha edición limitada de SpaceSound. Material suave y cálido, ideal para conciertos y uso diario."
-                            data-precio="$45.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Ropa"
-                            data-imagen="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Oferta 2 -->
-                <div class="producto-card">
-                    <span class="producto-badge">Pack</span>
-                    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Poster Pack" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Poster Collection</h3>
-                        <p>Pack de 3 posters exclusivos 50x70cm</p>
-                        <div class="producto-precio">
-                            $29.99
-                            <span class="producto-precio-original">$44.99</span>
-                        </div>
-                        <button class="btn-ver"
-                            data-nombre="Poster Collection"
-                            data-descripcion="Pack de 3 posters exclusivos de SpaceSound en tamaño 50x70cm. Impresión de alta calidad en papel premium."
-                            data-precio="$29.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Decoración"
-                            data-imagen="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Oferta 3 -->
-                <div class="producto-card">
-                    <span class="producto-badge">Nuevo</span>
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Audífonos" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Audífonos Pro</h3>
-                        <p>Audífonos profesionales con logo SpaceSound</p>
-                        <div class="producto-precio">$89.99</div>
-                        <button class="btn-ver"
-                            data-nombre="Audífonos Pro"
-                            data-descripcion="Audífonos profesionales con logo SpaceSound. Sonido de alta fidelidad, cancelación de ruido y diseño ergonómico."
-                            data-precio="$89.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Electrónicos"
-                            data-imagen="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Oferta 4 -->
-                <div class="producto-card">
-                    <span class="producto-badge">-25%</span>
-                    <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Mochila" class="producto-img">
-                    <div class="producto-info">
-                        <h3>Mochila Tour</h3>
-                        <p>Mochila resistente para conciertos</p>
-                        <div class="producto-precio">
-                            $37.99
-                            <span class="producto-precio-original">$50.99</span>
-                        </div>
-                        <button class="btn-ver"
-                            data-nombre="Mochila Tour"
-                            data-descripcion="Mochila resistente especialmente diseñada para conciertos. Múltiples compartimentos y material impermeable."
-                            data-precio="$37.99"
-                            data-disponibilidad="En stock"
-                            data-categoria="Accesorios"
-                            data-imagen="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80">
-                            Ver
-                        </button>
-                    </div>
-                </div>
-            </div>
+<!-- Ofertas Especiales -->
+<section class="ofertas">
+    <div class="container">
+        <h2 class="section-title">Ofertas Especiales</h2>
+        <div class="productos-grid" id="ofertas-especiales">
+            <div class="loading-products">Cargando ofertas...</div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Modal de Producto -->
 <div id="modalProducto" class="modal">
@@ -353,7 +186,6 @@
             </div>
         </div>
     </footer>
-    <script src="javascript/index.js"></script>
-    <script src="javascript/modal.js"></script>
-</body>
+<script src="./javascript/index.js"></script>
+
 </html>

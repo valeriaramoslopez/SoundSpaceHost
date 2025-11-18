@@ -118,7 +118,6 @@
     background: #0a0a0a;
     color: #fff;
     padding: 5px 0;
-    -moz-appearance: textfield; /* Para Firefox */
 }
 
 .quantity-control input::-webkit-outer-spin-button,

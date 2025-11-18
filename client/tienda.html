@@ -27,6 +27,54 @@
                 </ul> 
             </nav>
             <div class="user-actions">
+                <!-- Botón de Accesibilidad -->
+                <div class="accessibility-widget">
+                    <button class="accessibility-btn" id="accessibilityToggle">
+                        <i class="fas fa-universal-access"></i>
+                    </button>
+                    <div class="accessibility-panel" id="accessibilityPanel">
+                        <div class="accessibility-header">
+                            <h4>Accesibilidad</h4>
+                            <button class="close-panel">&times;</button>
+                        </div>
+                        
+                        <!-- Modo Contraste -->
+                        <div class="accessibility-option">
+                            <label>Modo de Contraste</label>
+                            <div class="toggle-switch">
+                                <button class="toggle-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Oscuro
+                                </button>
+                                <button class="toggle-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i> Claro
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Tamaño de Texto -->
+                        <div class="accessibility-option">
+                            <label>Tamaño de Texto</label>
+                            <div class="text-size-controls">
+                                <button class="size-btn" data-size="small">A-</button>
+                                <button class="size-btn active" data-size="normal">A</button>
+                                <button class="size-btn" data-size="large">A+</button>
+                                <button class="size-btn" data-size="xlarge">A++</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Espaciado -->
+                        <div class="accessibility-option">
+                            <label>Espaciado de Texto</label>
+                            <div class="spacing-controls">
+                                <button class="spacing-btn active" data-spacing="normal">Normal</button>
+                                <button class="spacing-btn" data-spacing="large">Amplio</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- Botones de cuenta y de carrito -->
                 <button class="user-btn" onclick="window.location.href='usuario.html'">
                     <i class="fas fa-user"></i>
                     Mi Cuenta

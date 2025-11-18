@@ -253,6 +253,41 @@ window.obtenerConfiguracionAccesibilidad = function() {
 };
 //--------------------------------------------------------------------------------------------------
 
+//REGISTRO
+document.getElementById("registration-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const nombreCompleto = document.getElementById("fullname").value;
+    const nombreUsuario = document.getElementById("username").value;
+    const pais = document.getElementById("country").value;
+    const contrasena = document.getElementById("password").value;
+    const confContra = document.getElementById("confirm-password").value;
+
+    const data = {
+        nombreCompleto,
+        nombreUsuario,
+        pais,
+        contrasena,
+        confContra
+    };
+
+    const respuesta = await fetch("http://localhost:3000/api/usuarios/registrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    const resultado = await respuesta.json();
+    console.log(resultado);
+
+    if (respuesta.ok) {
+        alert("✔ Registro exitoso");
+    } else {
+        alert("❌ " + resultado.mensaje);
+    }
+});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
     // Acordeón de preguntas

@@ -17,15 +17,6 @@
                 <img src="imagenes/logo.png" alt="SpaceSound Logo" class="logo-img">
                 <div class="logo">SpaceSound</div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="paginaprincipal.html">Inicio</a></li>
-                    <li><a href="nosotros.html" style="color: #ff5252;">Nosotros</a></li>
-                    <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contactanos.html">Contáctanos</a></li>
-                    <li><a href="tienda.html">Tienda</a></li>
-                </ul> 
-            </nav>
             <div class="user-actions">
                 <!-- Botón de Accesibilidad -->
                 <div class="accessibility-widget">
@@ -74,11 +65,32 @@
                 </div>
                 
                 <!-- Botones de cuenta y de carrito -->
-                <button class="user-btn" onclick="window.location.href='usuario.html'">
-                    <i class="fas fa-user"></i>
-                    Mi Cuenta
-                </button>
-                <button class="cart-btn" onclick="window.location.href='carrito.html'">
+                <!-- Botón de Cuenta -->
+                <div class="user-account">
+                    <button class="user-btn" id="accountToggle">
+                        <i class="fas fa-user"></i>
+                        <span id="accountName">Mi Cuenta</span>
+                    </button>
+
+                    <!-- ventanita -->
+                    <div class="account-panel" id="accountPanel">
+                        <div class="account-header">
+                            <h4>Mi Cuenta</h4>
+                            <button class="close-account">&times;</button>
+                        </div>
+
+                        <div class="account-info">
+                            <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>
+                            <p><strong>Cuenta:</strong> <span id="panel-username">-</span></p>
+                            <p><strong>Rol:</strong> <span id="panel-rol">-</span></p>
+                        </div>
+
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+                <button class="cart-btn">
                     <i class="fas fa-shopping-cart"></i>
                     Carrito
                 </button>

@@ -20,10 +20,9 @@
             <nav>
                 <ul>
                     <li><a href="paginaprincipal.html">Inicio</a></li>
-                    <li><a href="nosotros.html">Nosotros</a></li>
-                    <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
-                    <li><a href="contactanos.html">Contáctanos</a></li>
-                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="#music">Discos</a></li>
+                    <li><a href="#suscribirse">Suscribirse</a></li>
+                    <li><a href="#registrarse">Registrarse</a></li>
                 </ul> 
             </nav>
             <div class="user-actions">
@@ -97,20 +96,17 @@
                         <p>Ingresa tus credenciales para acceder</p>
                     </div>
 
-                    <form id="loginFormElement">
+                    <form id="loginFormElement" onsubmit="event.preventDefault(); loginUsuario();">
                         <div class="form-group">
-                            <label for="login-username">Nombre de Usuario o Email *</label>
-                            <input type="text" id="login-username" name="username" placeholder="Tu nombre de usuario o email" required>
+                            <label for="login-username">Nombre de Usuario</label>
+                            <input type="text" id="login-username" name="username" placeholder="Ingresa tu nombre de usuario" required>
                             <span class="error-message" id="usernameError"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="login-password">Contraseña</label>
                             <div class="password-input">
-                                <input type="password" id="login-password" name="password" required>
-                                <button type="button" class="toggle-password" onclick="togglePassword('login-password')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                                <input type="password" id="login-password" name="password" placeholder="Ingresa la contraseña">
                             </div>
                             <span class="error-message" id="passwordError"></span>
                         </div>
@@ -256,10 +252,9 @@
                     <h3>Enlaces Rápidos</h3>
                     <ul>
                         <li><a href="paginaprincipal.html">Inicio</a></li>
-                        <li><a href="nosotros.html">Nosotros</a></li>
-                        <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
-                        <li><a href="contactanos.html">Contáctanos</a></li>
-                        <li><a href="tienda.html">Tienda</a></li>
+                        <li><a href="#music">Discos</a></li>
+                        <li><a href="#suscribirse">Suscribirse</a></li>
+                        <li><a href="#registrarse">Registrarse</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

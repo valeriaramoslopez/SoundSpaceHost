@@ -254,39 +254,97 @@ window.obtenerConfiguracionAccesibilidad = function() {
 //--------------------------------------------------------------------------------------------------
 
 //REGISTRO
-document.getElementById("registration-form").addEventListener("submit", async function(e) {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("registration-form");
+    if (form){
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
 
-    const nombreCompleto = document.getElementById("fullname").value;
-    const nombreUsuario = document.getElementById("username").value;
-    const pais = document.getElementById("country").value;
-    const contrasena = document.getElementById("password").value;
-    const confContra = document.getElementById("confirm-password").value;
+            const nombreCompleto = document.getElementById("fullname").value;
+            const nombreUsuario = document.getElementById("username").value;
+            const pais = document.getElementById("country").value;
+            const rol = document.getElementById("rol").value;
+            const correo = document.getElementById("correo").value;
+            const contrasena = document.getElementById("password").value;
+            const confContra = document.getElementById("confirm-password").value;
 
-    const data = {
-        nombreCompleto,
-        nombreUsuario,
-        pais,
-        contrasena,
-        confContra
-    };
+            if (contrasena !== confContra) {
+                alert("Las contraseñas no coinciden");
+                return;
+            }
 
-    const respuesta = await fetch("http://localhost:3000/api/usuarios/registrar", {
+            const data = {
+                nombreCompleto,
+                nombreUsuario,
+                pais,
+                rol,
+                correo,
+                contrasena,
+            };
+
+            const respuesta = await fetch("http://localhost:3000/api/usuarios/registrar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const resultado = await respuesta.json();
+            console.log(resultado);
+
+            if (respuesta.ok) {
+                alert("✔ Registro exitoso");
+                form.reset();
+            } else {
+                alert("❌ " + resultado.mensaje);
+            }
+        });
+    }
+});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*PARA LOGIN*/
+async function loginUsuario() {
+    const nombreUsuario = document.getElementById("login-username").value;
+    const contrasena = document.getElementById("login-password").value;
+
+    const data = { nombreUsuario, contrasena };
+
+    const respuesta = await fetch("http://localhost:3000/api/usuarios/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     });
 
     const resultado = await respuesta.json();
-    console.log(resultado);
 
-    if (respuesta.ok) {
-        alert("✔ Registro exitoso");
-    } else {
+    if (!respuesta.ok){
         alert("❌ " + resultado.mensaje);
+        return;
     }
-});
-//////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+    alert("Bienvenido");
+
+    //Para mostrar nombre y cuenta al iniciar sesion
+    localStorage.setItem("usuario", JSON.stringify({
+        id: resultado.id,
+        username: resultado.nombreUsuario,
+        nombreCompleto: resultado.nombreCompleto,
+        rol: resultado.rol
+    }));
+    
+    // Guardar token
+    localStorage.setItem("token", resultado.token);
+    localStorage.setItem("rol", resultado.rol);
+
+    //Redirección según rol
+    if (resultado.rol === "admin") {
+        window.location.href = "administrador.html";
+    } else {
+        window.location.href = "tienda.html";
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////
+
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -1125,3 +1183,39 @@ function removerResaltado() {
         parent.innerHTML = parent.textContent;
     });
 }
+
+/*VENTANA DE MI CUENTA*/
+document.addEventListener("DOMContentLoaded", () => {
+    const accountToggle = document.getElementById("accountToggle");
+    const accountPanel = document.getElementById("accountPanel");
+    const closeAccount = document.querySelector(".close-account");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    // SI HAY USUARIO LOGUEADO MOSTRAR DATOS
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+    if (usuario){
+        document.getElementById("accountName").textContent = usuario.username;
+        document.getElementById("panel-username").textContent = usuario.username;
+        document.getElementById("panel-nombre").textContent = usuario.nombreCompleto;
+        document.getElementById("panel-rol").textContent = usuario.rol;
+    }
+
+    //Abrir ventanita
+    accountToggle.addEventListener("click", () => {
+        accountPanel.classList.toggle("active");
+    });
+
+    //Cerrar ventanita
+    closeAccount.addEventListener("click", () => {
+        accountPanel.classList.remove("active");
+    });
+
+    //Cerrar sesión
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("token");
+        window.location.href = "paginaprincipal.html";
+    });
+
+});

@@ -47,11 +47,17 @@ const loadImages = () => {
 exports.enviarContacto = async (req, res) => {
     const { nombre, email, telefono, asunto, mensaje } = req.body;
 
+    // ✅ Print form data in console
+    console.log("📩 Nuevo mensaje recibido:");
+    console.log("Nombre:", nombre);
+    console.log("Email:", email);
+    console.log("Teléfono:", telefono);
+    console.log("Asunto:", asunto);
+    console.log("Mensaje:", mensaje);
+
     try {
-        // 1️⃣ Cargar plantilla
         let html = loadTemplate();
 
-        // 2️⃣ Reemplazar variables del template
         html = html
             .replace(/{{nombre}}/g, nombre)
             .replace(/{{email}}/g, email)
@@ -59,7 +65,6 @@ exports.enviarContacto = async (req, res) => {
             .replace(/{{asunto}}/g, asunto)
             .replace(/{{mensaje}}/g, mensaje);
 
-        // 3️⃣ Enviar correo
         await transporter.sendMail({
             from: `"Mi Empresa" <${process.env.CORREO_APP}>`,
             to: email,
@@ -74,3 +79,4 @@ exports.enviarContacto = async (req, res) => {
         res.status(500).json({ message: "Error enviando correo ❌" });
     }
 };
+

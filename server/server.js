@@ -1,33 +1,29 @@
-const express = require('express'); //Servidor
-const dotenv = require('dotenv'); //Variables de entorno
-const cors = require('cors'); //Permisos
-const baseRutas = require('./Rutas/dbProductoRutas'); //Rutas
-const usuarioRutas = require("./Rutas/usuarioRutas"); // Ruta de registro
-const pool = require('./DB/conexion'); //Conexion
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const baseRutas = require('./Rutas/dbProductoRutas');
+const usuarioRutas = require("./Rutas/usuarioRutas");
+const correoRutas = require("./Rutas/correoRutas");
+const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
 
-// Cargar variables de entorno
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors()); //Habilita cors para permitir peticiones de otros dominios
-
-// Middleware para parsear JSON
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-////////////////////////////// IMAGENES ////////////////////////////
+// Carpeta pública para imágenes del email
+app.use("/public", express.static(path.join(__dirname, "public")));
 
-// Carpeta donde están las imágenes
+// Carpeta donde subes fotos
 const carpeta = path.join(__dirname, "uploads");
-
-// Hacer pública la carpeta /uploads para que se puedan ver las imágenes
 app.use("/uploads", express.static(carpeta));
 
-// Endpoint para obtener la lista de imágenes disponibles
 app.get("/imagenes", (req, res) => {
   try {
     const archivos = fs.readdirSync(carpeta);
@@ -37,28 +33,26 @@ app.get("/imagenes", (req, res) => {
   }
 });
 
-//////////////////////////// BASE DE DATOS ////////////////////////////
-
+// Rutas principales
 app.get('/', (req, res) => {
-  res.send('Api DataBase funcionando correctamente :D');
+  res.send('API funcionando correctamente 🚀');
 });
 
-//Rutas API de productos
 app.use('/api/productos', baseRutas);
-app.use("/api/usuarios", usuarioRutas);
+app.use('/api/usuarios', usuarioRutas);
+app.use('/api/correo', correoRutas);  // <-- NUEVA RUTA
 
-// Probar conexión a BD (opcional)
+// Probar conexión a BD
 async function testConnection() {
   try {
     const [rows] = await pool.query('SELECT 1 + 1 AS result');
-    console.log(' Conexión a la base de datos establecida. Resultado:', rows[0].result);
+    console.log(' Conexión a BD OK, resultado:', rows[0].result);
   } catch (error) {
-    console.error(' Error al conectar con la base de datos:', error.message);
+    console.error(' Error en conexión BD:', error.message);
   }
 }
 
-// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor en http://localhost:${PORT}`);
   testConnection();
 });

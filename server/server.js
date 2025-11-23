@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 // Carpeta pública para imágenes del email
 app.use("/public", express.static(path.join(__dirname, "public")));
 
@@ -40,7 +41,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/productos', baseRutas);
 app.use('/api/usuarios', usuarioRutas);
-app.use('/api/correo', correoRutas);  // <-- NUEVA RUTA
+app.use('/api/correo', correoRutas);  
 
 // Probar conexión a BD
 async function testConnection() {

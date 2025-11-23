@@ -302,6 +302,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// SUSCRIPCIÓN
+document.addEventListener("DOMContentLoaded", () => {
+    const formSuscripcion = document.getElementById("subscription-form");
+
+    if (formSuscripcion) {
+        formSuscripcion.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email-suscripcion").value;
+
+            const data = { email };
+
+            try {
+                const respuesta = await fetch("http://localhost:3000/api/correo/suscripcion", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const resultado = await respuesta.json();
+                console.log(resultado);
+
+                if (respuesta.ok) {
+                    alert("✔ Te has suscrito correctamente");
+                    formSuscripcion.reset();
+                } else {
+                    alert("❌ " + (resultado.mensaje || "Error al suscribirte"));
+                }
+            } catch (error) {
+                console.error("❌ Error al enviar suscripción:", error);
+                alert("Error al conectar con la API");
+            }
+        });
+    }
+});
+
+
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;

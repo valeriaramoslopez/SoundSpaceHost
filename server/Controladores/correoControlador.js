@@ -80,3 +80,55 @@ exports.enviarContacto = async (req, res) => {
     }
 };
 
+// CARGAR TEMPLATE email2.html
+const loadTemplate2 = () => {
+  return fs.readFileSync(
+    path.join(__dirname, "../email2.html"), // debe existir: server/email2.html
+    "utf8"
+  );
+};
+
+// CARGAR SÓLO LAS 3 IMÁGENES DE LA SUSCRIPCIÓN
+const loadImages2 = () => {
+  const imgDir = path.join(__dirname, "../uploads");
+  const selectedImages = [
+    "d3ad6d5706d88328a51ff404a2591a50.png",
+    "dd7b59e793dcfe6e47f4cde80d34b0de.png",
+    "2e07a545492769fc9c4c1763dff59f5e.png"
+  ];
+
+  return selectedImages.map((file, index) => ({
+    filename: file,
+    path: path.join(imgDir, file),
+    cid: `img${index}` // img0, img1, img2
+  }));
+};
+
+// CONTROLADOR — SUSCRIPCIÓN
+exports.enviarSuscripcion = async (req, res) => {
+  const { email } = req.body;
+
+  // Validación básica
+  if (!email) {
+    return res.status(400).json({ message: "Correo requerido ❌" });
+  }
+
+  console.log("🟡 Nueva suscripción:", { email });
+
+  try {
+    let html = loadTemplate2(); // email2.html NO debe tener {{nombre}}
+
+    await transporter.sendMail({
+      from: `"Mi Empresa" <${process.env.CORREO_APP}>`,
+      to: email,
+      subject: "¡Gracias por suscribirte! 🎉",
+      html,
+      attachments: loadImages2()
+    });
+
+    res.json({ message: "Correo de suscripción enviado ✔" });
+  } catch (error) {
+    console.error("Error enviando suscripción:", error);
+    res.status(500).json({ message: "Error enviando correo ❌" });
+  }
+};

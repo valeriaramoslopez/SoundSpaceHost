@@ -290,6 +290,53 @@ async function loginUsuario() {
 }
 ////////////////////////////////////////////////////////////////////////////////////
 
+//Para que se vea en todas las páginas la cuenta
+document.addEventListener("DOMContentLoaded", () => {
+    const accountToggle = document.getElementById("accountToggle");
+    const accountPanel = document.getElementById("accountPanel");
+    const closeAccount = document.querySelector(".close-account");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+    // Cargar datos del usuario en el panel
+    if (usuario) {
+        const accountName = document.getElementById("accountName");
+        const panelUsername = document.getElementById("panel-username");
+        const panelNombre = document.getElementById("panel-nombre");
+        const panelRol = document.getElementById("panel-rol");
+
+        if (accountName) accountName.textContent = usuario.username;
+        if (panelUsername) panelUsername.textContent = usuario.username;
+        if (panelNombre) panelNombre.textContent = usuario.nombreCompleto;
+        if (panelRol) panelRol.textContent = usuario.rol;
+    }
+
+    // Abrir panel
+    if (accountToggle && accountPanel) {
+        accountToggle.addEventListener("click", () => {
+            accountPanel.classList.toggle("active");
+        });
+    }
+
+    // Cerrar panel
+    if (closeAccount && accountPanel) {
+        closeAccount.addEventListener("click", () => {
+            accountPanel.classList.remove("active");
+        });
+    }
+
+    // Logout
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("token");
+            window.location.href = "paginaprincipal.html";
+        });
+    }
+
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {

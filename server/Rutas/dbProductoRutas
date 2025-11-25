@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const verificarToken = require("../Middleware/verificarToken");
+const verificarAdmin = require("../Middleware/verificarAdmin");
 
 const {
     getProductos,

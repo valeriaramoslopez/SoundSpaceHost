@@ -247,11 +247,51 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+/*CAPTCHA*/
+let captchaId = null;
+
+async function cargarCaptcha() {
+    const res = await fetch("http://localhost:3000/api/captcha/generar");
+    const data = await res.json();
+
+    captchaId = data.id;
+    
+    localStorage.setItem("captchaId", data.id);
+    document.getElementById("captchaImage").innerHTML = data.image;
+}
+
+function refreshCaptcha() {
+    cargarCaptcha();
+}
+
+window.addEventListener("DOMContentLoaded", cargarCaptcha);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
     const contrasena = document.getElementById("login-password").value;
+    const captchaIngresado = document.getElementById("captcha-input").value;
 
+    // Primero validar captcha en backend
+    const validar = await fetch("http://localhost:3000/api/captcha/validar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id: localStorage.getItem("captchaId"),
+            respuesta: captchaIngresado
+        })
+    });
+
+    const validacion = await validar.json();
+
+    if (!validar.ok) {
+        alert("❌ CAPTCHA incorrecto o expirado");
+        refreshCaptcha();  
+        return;
+    }
+
+    // Si el captcha ya pasó, ahora sí enviar login
     const data = { nombreUsuario, contrasena };
 
     const respuesta = await fetch("http://localhost:3000/api/usuarios/login", {
@@ -262,7 +302,7 @@ async function loginUsuario() {
 
     const resultado = await respuesta.json();
 
-    if (!respuesta.ok){
+    if (!respuesta.ok) {
         alert("❌ " + resultado.mensaje);
         return;
     }
@@ -288,7 +328,6 @@ async function loginUsuario() {
         window.location.href = "tienda.html";
     }
 }
-////////////////////////////////////////////////////////////////////////////////////
 
 //Para que se vea en todas las páginas la cuenta
 document.addEventListener("DOMContentLoaded", () => {

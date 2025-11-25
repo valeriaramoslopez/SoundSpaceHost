@@ -210,43 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// SUSCRIPCIÓN
-document.addEventListener("DOMContentLoaded", () => {
-    const formSuscripcion = document.getElementById("subscription-form");
-
-    if (formSuscripcion) {
-        formSuscripcion.addEventListener("submit", async function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById("email-suscripcion").value;
-
-            const data = { email };
-
-            try {
-                const respuesta = await fetch("http://localhost:3000/api/correo/suscripcion", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
-
-                const resultado = await respuesta.json();
-                console.log(resultado);
-
-                if (respuesta.ok) {
-                    alert("✔ Te has suscrito correctamente");
-                    formSuscripcion.reset();
-                } else {
-                    alert("❌ " + (resultado.mensaje || "Error al suscribirte"));
-                }
-            } catch (error) {
-                console.error("❌ Error al enviar suscripción:", error);
-                alert("Error al conectar con la API");
-            }
-        });
-    }
-});
-
-
 /*CAPTCHA*/
 let captchaId = null;
 
@@ -266,7 +229,6 @@ function refreshCaptcha() {
 
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
@@ -329,6 +291,7 @@ async function loginUsuario() {
     }
 }
 
+
 //Para que se vea en todas las páginas la cuenta
 document.addEventListener("DOMContentLoaded", () => {
     const accountToggle = document.getElementById("accountToggle");
@@ -376,6 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -1214,39 +1178,3 @@ function removerResaltado() {
         parent.innerHTML = parent.textContent;
     });
 }
-
-/*VENTANA DE MI CUENTA*/
-document.addEventListener("DOMContentLoaded", () => {
-    const accountToggle = document.getElementById("accountToggle");
-    const accountPanel = document.getElementById("accountPanel");
-    const closeAccount = document.querySelector(".close-account");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    // SI HAY USUARIO LOGUEADO MOSTRAR DATOS
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-
-    if (usuario){
-        document.getElementById("accountName").textContent = usuario.username;
-        document.getElementById("panel-username").textContent = usuario.username;
-        document.getElementById("panel-nombre").textContent = usuario.nombreCompleto;
-        document.getElementById("panel-rol").textContent = usuario.rol;
-    }
-
-    //Abrir ventanita
-    accountToggle.addEventListener("click", () => {
-        accountPanel.classList.toggle("active");
-    });
-
-    //Cerrar ventanita
-    closeAccount.addEventListener("click", () => {
-        accountPanel.classList.remove("active");
-    });
-
-    //Cerrar sesión
-    logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("token");
-        window.location.href = "paginaprincipal.html";
-    });
-
-});

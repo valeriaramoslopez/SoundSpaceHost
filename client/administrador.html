@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chatAdmin.css">
 </head>
 <body>
     <!-- Header -->
@@ -99,7 +100,13 @@
     </header>
 
     <body>
-        
+        <main class="admin-chat-page">
+            <h1>Panel de Mensajes (Admin)</h1>
+
+            <div id="adminList" class="admin-list">
+            <div class="loading">Cargando mensajes...</div>
+            </div>
+        </main>
     </body>
 
     <!-- Footer -->
@@ -141,5 +148,6 @@
     </footer>
 
     <script src="javascript/index.js"></script>
+    <script src="javascript/admin_chat.js"></script>
 </body>
 </html>

@@ -92,6 +92,8 @@ async function loginUsuario(req, res) {
             { expiresIn: "3h" }
         );
 
+        console.log(`[LOGIN] Usuario "${usuario.nombreUsuario}" inició sesión. Token: ${token}`);
+
         return res.json({
             mensaje: "Login correcto",
             token,
@@ -107,7 +109,20 @@ async function loginUsuario(req, res) {
     }
 }
 
+async function logoutUsuario(req, res) {
+    try {
+        console.log(`[LOGOUT] Usuario cerró sesión:`, req.usuario);
+
+        return res.json({ mensaje: "Logout exitoso" });
+
+    } catch (error) {
+        console.error("[LOGOUT] Error:", error);
+        res.status(500).json({ mensaje: "Error en logout" });
+    }
+}
+
 module.exports = {
     registrarUsuario,
-    loginUsuario
+    loginUsuario,
+    logoutUsuario
 };

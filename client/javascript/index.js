@@ -86,10 +86,6 @@ class AdministradorAccesibilidad {
         console.log("🔍 Botón accesibilidad:", boton);
         console.log("🔍 Panel accesibilidad:", panel);
 
-        if (!boton || !panel) {
-            console.warn("❌ No se encontró el panel o el botón de accesibilidad.");
-            return;
-        }
 
         boton.addEventListener('click', () => {
             console.log("👆 Clic en botón accesibilidad");
@@ -327,18 +323,33 @@ document.addEventListener("DOMContentLoaded", () => {
             accountPanel.classList.remove("active");
         });
     }
-
-    // Logout
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("usuario");
-            localStorage.removeItem("token");
-            window.location.href = "paginaprincipal.html";
-        });
-    }
-
 });
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+/*LOGOUT*/
+logoutBtn.addEventListener("click", async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+        await fetch("http://localhost:3000/api/usuarios/logout", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+        console.log("[FRONT] Logout enviado al servidor");
+    } catch (error) {
+        console.warn("[FRONT] No se pudo notificar logout", error);
+    }
+
+    // Finalmente borra localStorage
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
+
+    window.location.href = "paginaprincipal.html";
+});
+
+//////////////////////////////////////////////////////////////////////////////////////7
 
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)

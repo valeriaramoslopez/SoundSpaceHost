@@ -1,0 +1,129 @@
+/* ================================
+   PANEL ADMINISTRADOR — ESTILOS
+   ================================ */
+
+/* Contenedor principal */
+.admin-chat-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Título */
+.admin-chat-page h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #8c1111;
+    letter-spacing: 1px;
+}
+
+/* Lista de mensajes */
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Caja individual de mensaje */
+.admin-msg {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    color: black;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-left: 6px solid #8c1111;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.admin-msg:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.20);
+}
+
+/* Información superior (usuario, fecha, id) */
+.admin-msg .info {
+    font-size: 14px;
+    color: #231b1b;
+    margin-bottom: 10px;
+}
+
+/* Texto del mensaje original */
+.admin-msg .body {
+    font-size: 16px;
+    background: #f7f7f7;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #b73535;
+}
+
+/* Área de respuesta */
+.response-area textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+    font-size: 15px;
+    outline: none;
+}
+
+.response-area textarea:focus {
+    border-color: #8c1111;
+    box-shadow: 0 0 4px rgba(140, 17, 17, 0.4);
+}
+
+/* Botones */
+.small-btn {
+    background: #8c1111;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.small-btn:hover {
+    background: #b51d1d;
+}
+
+/* Botón refrescar */
+.small-btn[data-action="refresh"] {
+    background: #555;
+}
+
+.small-btn[data-action="refresh"]:hover {
+    background: #777;
+}
+
+/* Mensaje de carga */
+.loading {
+    text-align: center;
+    font-size: 16px;
+    padding: 20px;
+    color: #333;
+}
+
+/* Modo claro */
+body.light-theme .admin-msg {
+    background: #f8f8f8;
+    border-left-color: #007bff;
+}
+
+body.light-theme .admin-msg .body {
+    background: #fff;
+    border-left-color: #007bff;
+}
+
+body.light-theme .small-btn {
+    background: #007bff;
+}
+
+body.light-theme .small-btn:hover {
+    background: #0067d4;
+}

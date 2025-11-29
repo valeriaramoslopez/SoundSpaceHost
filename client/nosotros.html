@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <!-- Header -->
@@ -266,6 +267,24 @@
         </div>
     </section>
 
+    <!-- Botón flotante -->
+    <div id="chatToggle" class="chat-toggle">💬</div>
+
+    <!-- Panel de chat -->
+    <div id="chatPanel" class="chat-panel">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button id="closeChat" class="close-chat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+            <button id="sendChat">Enviar</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -304,5 +323,7 @@
     </footer>
 
     <script src="javascript/index.js"></script>
+    <script src="javascript/carrito.js"></script>
+    <script src="javascript/chat.js"></script>
 </body>
 </html>

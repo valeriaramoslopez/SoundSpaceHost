@@ -10,13 +10,10 @@ module.exports = {
                 return res.status(400).json({ mensaje: "Faltan datos" });
             }
 
-            const respuesta = generarRespuesta(mensaje);
-
-            await chatModelo.guardarMensaje(idUsuario, mensaje, respuesta);
+            await chatModelo.guardarMensaje(idUsuario, mensaje);
 
             return res.json({
-                mensaje: "Mensaje procesado",
-                respuesta
+                mensaje: "Mensaje procesado"
             });
 
         } catch (error) {
@@ -38,5 +35,4 @@ module.exports = {
             res.status(500).json({ mensaje: "Error en el servidor" });
         }
     }
-
 };

@@ -86,7 +86,6 @@ class AdministradorAccesibilidad {
         console.log("🔍 Botón accesibilidad:", boton);
         console.log("🔍 Panel accesibilidad:", panel);
 
-
         boton.addEventListener('click', () => {
             console.log("👆 Clic en botón accesibilidad");
             panel.classList.toggle('show');
@@ -1188,4 +1187,38 @@ function removerResaltado() {
         const parent = element.parentNode;
         parent.innerHTML = parent.textContent;
     });
+}
+
+async function verCategoria(genero) {
+    const contenedor = document.getElementById('productos-categoria');
+    contenedor.innerHTML = '<p class="loading-products">Cargando productos...</p>';
+
+    try {
+        // Petición a tu backend
+        const respuesta = await fetch(`http://localhost:3000/api/productos/genero/${genero}`);
+        const data = await respuesta.json();
+
+        if (!data.success || data.count === 0) {
+            contenedor.innerHTML = `<p class="no-productos">No hay productos para la categoría ${genero}</p>`;
+            return;
+        }
+
+        // Revisar si hay usuario logueado
+        const usuario = JSON.parse(localStorage.getItem('usuario')); 
+
+        contenedor.innerHTML = data.data.map(producto => `
+            <div class="producto-card">
+                <img src="http://localhost:3000/uploads/${producto.imagen}" alt="${producto.titulo}">
+                <h3>${producto.titulo}</h3>
+                <p>Artista: ${producto.artista}</p>
+                <p>Precio: $${producto.precio}</p>
+                <p>${producto.descripcion}</p>
+                <button class="btn" ${usuario ? '' : 'disabled title="Inicia sesión para comprar"'}>Añadir al carrito</button>
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error(error);
+        contenedor.innerHTML = '<p class="error">Error al cargar los productos.</p>';
+    }
 }

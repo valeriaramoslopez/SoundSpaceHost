@@ -51,24 +51,29 @@
         <div class="container">
             <h2 class="section-title">Categorías</h2>
             <div class="categories-grid">
-                <div class="category-card">
+                <div class="category-card" onclick="verCategoria('rock')">
                     <img src="http://localhost:3000/uploads/image10.png" alt="SpaceSound rock" class="rock-img"> 
                     <div class="category-info">
                         <h3>Rock</h3>
                     </div>
                 </div>
-                <div class="category-card">
+                <div class="category-card" onclick="verCategoria('clasico')">
                     <img src="http://localhost:3000/uploads/image2.png" alt="SpaceSound clasico" class="clasico-img">
                     <div class="category-info">
                         <h3>Clásico</h3>
                     </div>
                 </div>
-                <div class="category-card">
+                <div class="category-card" onclick="verCategoria('corrido')">
                     <img src="http://localhost:3000/uploads/image21.png" alt="SpaceSound corridos" class="corridos-img">
                     <div class="category-info">
                         <h3>Corridos</h3>
                     </div>
                 </div>
+            </div>
+
+            <!-- Contenedor para mostrar los productos -->
+            <div class="productos-grid" id="productos-categoria">
+                <p class="mensaje-categoria">Selecciona una categoría para ver los productos.</p>
             </div>
         </div>
     </section>

@@ -10,6 +10,11 @@
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
+<<<<<<< HEAD
+    <link rel="stylesheet" href="css/chatAdmin.css">
+=======
+    <link rel="stylesheet" href="css/administrador.css">
+>>>>>>> origin/feature/compra
 </head>
 <body>
     <!-- Header -->
@@ -98,10 +103,190 @@
                 </button>
             </div>
         </div>
-    </header>
+        </header>
+        <main class="admin-chat-page">
+            <h1>Panel de Mensajes (Admin)</h1>
 
-    <body>
+            <div id="adminList" class="admin-list">
+            <div class="loading">Cargando mensajes...</div>
+            </div>
+        </main>
+        <main class="admin-page">
+            <div class="container">
+                <h1 class="section-title">🚀 Panel de Administración SpaceSound</h1>
+                
+                <div class="admin-layout">
+                    
+                    <div class="admin-reports">
+                        
+                        <div class="report-card sales-card">
+                            <h2><i class="fas fa-chart-line"></i> Ventas Totales Acumuladas</h2>
+                            <p class="metric-value" id="total-sales">$1,540,892.50</p>
+                            <small>Suma de todas las compras realizadas hasta la fecha.</small>
+                        </div>
+                        
+                        <div class="report-card inventory-summary-card">
+                            <h2><i class="fas fa-boxes"></i> Inventario Total (Unidades)</h2>
+                            <p class="metric-value" id="total-inventory">3,548</p>
+                            <small>Total de existencias en todas las categorías.</small>
+                        </div>
         
+                        <div class="report-section inventory-detail-card">
+                            <h2><i class="fas fa-list-ol"></i> Reporte de Existencias por Producto</h2>
+                            <p class="report-description">Existencias, ventas y detalles distribuidos por géneros:</p>
+                            
+                            <table class="data-table inventory-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th> <th>Título</th>
+                                        <th>Artista</th>
+                                        <th>Género</th>
+                                        <th>Precio</th>
+                                        <th>Ventas Acum. (Unidades)</th>
+                                        <th>Existencias (Stock)</th>
+                                        <th>Imagen</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-body">
+                                    <tr class="loading-row">
+                                        <td colspan="8">Cargando productos...</td>
+                                    </tr>
+                                    <!-- Rows will be rendered dynamically from the DB -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="admin-product-management">
+                        <div class="management-card product-crud-card">
+                            <h2><i class="fas fa-box"></i> Gestión de Productos (Alta, Baja, Modificación)</h2>
+                            
+                            <div class="tabs-container">
+                                <button class="tab-btn active" data-tab="add">Dar de Alta</button>
+                                <button class="tab-btn" data-tab="modify">Modificar/Eliminar</button>
+                            </div>
+
+                            <form id="add-product-form" class="product-form active">
+                                <h3 class="form-title">Nuevo Producto</h3>
+                                
+                                <div class="form-group">
+                                    <label for="p-title">Título del Álbum/Producto</label>
+                                    <input type="text" id="p-title" placeholder="Ej: Vinilo Edición Limitada" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="p-artist">Artista/Grupo Musical</label>
+                                    <input type="text" id="p-artist" placeholder="Ej: Los Hermanos Cósmicos" required>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="p-genre">Género</label> 
+                                        <select id="p-genre" required>
+                                            <option value="" disabled selected>Seleccione un género</option>
+                                            <option value="clasico">Clásico</option>
+                                            <option value="rock">Rock</option>
+                                            <option value="corridos">Corridos</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="p-price">Precio ($)</label>
+                                        <input type="number" id="p-price" step="0.01" min="0.01" placeholder="Ej: 49.99" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="p-stock">Inventario Inicial (Stock)</label>
+                                        <input type="number" id="p-stock" min="0" placeholder="Ej: 150" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="p-image">Nombre Archivo Imagen (con extensión)</label>
+                                        <input type="text" id="p-image" placeholder="Ej: album_nuevo.jpg" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="p-description">Descripción</label>
+                                    <textarea id="p-description" rows="3" placeholder="Descripción breve del producto..."></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn-submit btn-add-product"><i class="fas fa-plus-circle"></i> Agregar Producto</button>
+                            </form>
+
+                            <div id="modify-product-section" class="product-form hidden">
+                                <h3 class="form-title">Buscar y Gestionar</h3>
+                                
+                                <div class="form-group search-group">
+                                    <label for="search-product">Buscar Producto por Título o ID</label>
+                                    <div class="search-input-group">
+                                        <input type="text" id="search-product" placeholder="Escribe el título o ID...">
+                                        <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                                
+                                <div id="search-results" class="search-results-box hidden">
+                                    <div class="result-item">
+                                        
+                                        <form class="update-form">
+                                            <h4 class="product-title-display">Modificar: Vinilo 'The Cosmic Echoes'</h4>
+                                            <p class="product-metadata">ID: 101 | Ventas Acumuladas: <span class="sales-value-display">150</span></p>
+
+                                            <div class="form-group">
+                                                <label for="m-title">Título</label>
+                                                <input type="text" id="m-title" value="The Cosmic Echoes" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="m-artist">Artista</label>
+                                                <input type="text" id="m-artist" value="Synth Riders" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="m-description">Descripción</label>
+                                                <textarea id="m-description" rows="3" required>Vinilo de color edición limitada con 12 pistas de Synthwave puro.</textarea>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="m-genre">Género</label>
+                                                    <select id="m-genre" required>
+                                                        <option value="rock" selected>Rock</option>
+                                                        <option value="clasico">Clásico</option>
+                                                        <option value="corridos">Corridos</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="m-price">Precio ($)</label>
+                                                    <input type="number" id="m-price" value="25.99" step="0.01" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="m-stock">Disponibilidad (Stock)</label>
+                                                    <input type="number" id="m-stock" value="50" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="m-image">Nombre Archivo Imagen</label>
+                                                    <input type="text" id="m-image" value="cosmic_echoes.jpg" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="action-buttons">
+                                                <button type="button" class="btn-submit btn-update-product"><i class="fas fa-save"></i> Guardar Cambios</button>
+                                                <button type="button" class="btn-submit btn-delete-product"><i class="fas fa-trash-alt"></i> Dar de Baja</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <p class="no-results-message hidden">No se encontraron productos con ese criterio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>      
     </body>
 
     <!-- Footer -->
@@ -143,5 +328,10 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
+<<<<<<< HEAD
+    <script src="javascript/admin_chat.js"></script>
+=======
+    <script src="javascript/administrador.js"></script>
+>>>>>>> origin/feature/compra
 </body>
 </html>

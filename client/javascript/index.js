@@ -86,11 +86,6 @@ class AdministradorAccesibilidad {
         console.log("🔍 Botón accesibilidad:", boton);
         console.log("🔍 Panel accesibilidad:", panel);
 
-        if (!boton || !panel) {
-            console.warn("❌ No se encontró el panel o el botón de accesibilidad.");
-            return;
-        }
-
         boton.addEventListener('click', () => {
             console.log("👆 Clic en botón accesibilidad");
             panel.classList.toggle('show');
@@ -450,35 +445,77 @@ document.addEventListener("DOMContentLoaded", () => {
             accountPanel.classList.remove("active");
         });
     }
+});
 
-    // Logout
-    // Logout CORREGIDO
+//LOGOUT
+// LOGOUT MEJORADO - Combina ambas versiones
 if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-        // Mostrar SweetAlert primero
+    logoutBtn.addEventListener("click", async () => {
+        const token = localStorage.getItem("token");
+
+        // Mostrar SweetAlert de confirmación
         Swal.fire({
-            title: 'Sesión cerrada correctamente',
-            text: 'Gracias por visitarnos',
-            icon: 'success',
-            confirmButtonText: 'Continuar',
+            title: '¿Cerrar sesión?',
+            text: 'Estás a punto de cerrar tu sesión',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar sesión',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
             showClass: {
                 popup: 'animate__animated animate__zoomIn'
             },
             hideClass: {
                 popup: 'animate__animated animate__zoomOut'
             }
-        }).then((result) => {
-            // Cuando el usuario hace clic en "Continuar", ejecutar el logout
+        }).then(async (result) => {
             if (result.isConfirmed) {
+                try {
+                    // Notificar al servidor (de la versión 2)
+                    if (token) {
+                        await fetch("http://localhost:3000/api/usuarios/logout", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            }
+                        });
+                        console.log("[FRONT] Logout notificado al servidor");
+                    }
+                } catch (error) {
+                    console.warn("[FRONT] No se pudo notificar logout al servidor", error);
+                    // Continuamos igual con el logout local
+                }
+
+                // Limpiar localStorage (combinación de ambas versiones)
                 localStorage.removeItem("usuario");
                 localStorage.removeItem("token");
-                localStorage.removeItem("rol"); // También remover el rol si existe
-                window.location.href = "paginaprincipal.html";
+                localStorage.removeItem("rol");
+                localStorage.removeItem("captchaId"); // Limpiar también el captcha
+
+                // Mostrar mensaje de éxito (de la versión 1)
+                Swal.fire({
+                    title: 'Sesión cerrada correctamente',
+                    text: 'Gracias por visitarnos',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    timer: 2000,
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                }).then(() => {
+                    // Redirigir después del mensaje
+                    window.location.href = "paginaprincipal.html";
+                });
             }
         });
     });
 }
-});
+//////////////////////////////////////////////////////////////////////////////////////7
+
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -1579,7 +1616,6 @@ function removerResaltado() {
             });
             
             // Función para filtrar productos por rango de precio
-            // Función para filtrar productos por rango de precio - VERSIÓN CORREGIDA
 function filterProductsByPrice(priceRange) {
     const productos = document.querySelectorAll('.producto-card');
     let visibleCount = 0;
@@ -1893,8 +1929,7 @@ function showLogin() {
         securityQuestionForm.style.display = 'none';
     }
 }
-
-// Función para alternar visibilidad de contraseña (si no existe)
+// Función para alternar visibilidad de contraseña - CORREGIDA
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
     const icon = input.parentNode.querySelector('i');
@@ -1906,4 +1941,39 @@ function togglePassword(inputId) {
         input.type = 'password';
         icon.className = 'fas fa-eye';
     }
-}
+} // ✅ CIERRE CORRECTO de la función
+
+// Función para ver categorías - SEPARADA CORRECTAMENTE
+async function verCategoria(genero) {
+    const contenedor = document.getElementById('productos-categoria');
+    contenedor.innerHTML = '<p class="loading-products">Cargando productos...</p>';
+
+    try {
+        // Petición a tu backend
+        const respuesta = await fetch(`http://localhost:3000/api/productos/genero/${genero}`);
+        const data = await respuesta.json();
+
+        if (!data.success || data.count === 0) {
+            contenedor.innerHTML = `<p class="no-productos">No hay productos para la categoría ${genero}</p>`;
+            return;
+        }
+
+        // Revisar si hay usuario logueado
+        const usuario = JSON.parse(localStorage.getItem('usuario')); 
+
+        contenedor.innerHTML = data.data.map(producto => `
+            <div class="producto-card">
+                <img src="http://localhost:3000/uploads/${producto.imagen}" alt="${producto.titulo}">
+                <h3>${producto.titulo}</h3>
+                <p>Artista: ${producto.artista}</p>
+                <p>Precio: $${producto.precio}</p>
+                <p>${producto.descripcion}</p>
+                <button class="btn" ${usuario ? '' : 'disabled title="Inicia sesión para comprar"'}>Añadir al carrito</button>
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error(error);
+        contenedor.innerHTML = '<p class="error">Error al cargar los productos.</p>';
+    }
+} // ✅ CIERRE CORRECTO

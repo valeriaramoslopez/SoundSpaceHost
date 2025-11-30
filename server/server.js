@@ -5,6 +5,8 @@ const baseRutas = require('./Rutas/dbProductoRutas');
 const usuarioRutas = require("./Rutas/usuarioRutas");
 const correoRutas = require("./Rutas/correoRutas");
 const captchaRutas = require('./Rutas/captchaRutas'); 
+const chatRutas = require('./Rutas/chatRutas');
+const chatAdminRutas = require('./Rutas/chatAdminRutas');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
@@ -44,6 +46,8 @@ app.use('/api/productos', baseRutas);
 app.use('/api/usuarios', usuarioRutas);
 app.use('/api/correo', correoRutas);  
 app.use('/api/captcha', captchaRutas);
+app.use('/api/chat', chatRutas);
+app.use('/api/chat-admin', chatAdminRutas);
 
 // Probar conexión a BD
 async function testConnection() {

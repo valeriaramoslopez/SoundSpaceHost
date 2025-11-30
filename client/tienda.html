@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <!-- Header -->
@@ -146,33 +147,34 @@
             </div>
         </div>
     </section>
+    </section>
 
-<!-- Productos más vendidos -->
-<section class="music">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Productos</h2>
-            <div class="sort-by-container">
-                <span class="sort-by-label">Ordenar por:</span>
-                <div class="sort-by-dropdown" id="sortByDropdown">
-                    <button class="sort-by-btn" id="sortByBtn">
-                        <span id="selectedSortOption">Todos los productos</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="sort-by-options">
-                        <div class="sort-option active" data-range="all">Todos los productos</div>
-                        <div class="sort-option" data-range="300-400">Precio: $300 - $400</div>
-                        <div class="sort-option" data-range="400-500">Precio: $400 - $500</div>
-                        <div class="sort-option" data-range="500-700">Precio: $500 - $700</div>
+    <!-- Productos más vendidos -->
+    <section class="music">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Productos</h2>
+                <div class="sort-by-container">
+                    <span class="sort-by-label">Ordenar por:</span>
+                    <div class="sort-by-dropdown" id="sortByDropdown">
+                        <button class="sort-by-btn" id="sortByBtn">
+                            <span id="selectedSortOption">Todos los productos</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="sort-by-options">
+                            <div class="sort-option active" data-range="all">Todos los productos</div>
+                            <div class="sort-option" data-range="300-400">Precio: $300 - $400</div>
+                            <div class="sort-option" data-range="400-500">Precio: $400 - $500</div>
+                            <div class="sort-option" data-range="500-700">Precio: $500 - $700</div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="productos-grid" id="productos-mas-vendidos">
+                <div class="loading-products">Cargando productos...</div>
+            </div>
         </div>
-        <div class="productos-grid" id="productos-mas-vendidos">
-            <div class="loading-products">Cargando productos...</div>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- Cupones -->
     <section class="cupon-banner">
@@ -191,51 +193,69 @@
         </div>
     </section>
 
-<!-- Ofertas Especiales -->
-<section class="ofertas">
-    <div class="container">
-        <h2 class="section-title">Ofertas Especiales</h2>
-        <div class="productos-grid" id="ofertas-especiales">
-            <div class="loading-products">Cargando ofertas...</div>
+    <!-- Ofertas Especiales -->
+    <section class="ofertas">
+        <div class="container">
+            <h2 class="section-title">Ofertas Especiales</h2>
+            <div class="productos-grid" id="ofertas-especiales">
+                <div class="loading-products">Cargando ofertas...</div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Modal de Producto -->
-<div id="modalProducto" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="modal-producto-container">
-            <div class="modal-imagen-container">
-                <img id="modalImagen" class="modal-img" src="" alt="Producto">
-            </div>
-            <div class="modal-info-container">
-                <h2 id="modalNombre"></h2>
-                <div class="modal-precio" id="modalPrecio"></div>
-                <div class="modal-disponibilidad" id="modalDisponibilidad"></div>
-                <div class="modal-categoria" id="modalCategoria"></div>
-                
-                <div class="cantidad-selector">
-                    <span>Cantidad:</span>
-                    <div class="cantidad-controls">
-                        <button class="btn-cantidad" id="decreaseQty">-</button>
-                        <span class="cantidad-value" id="cantidadValue">1</span>
-                        <button class="btn-cantidad" id="increaseQty">+</button>
-                    </div>
+    <div id="modalProducto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-producto-container">
+                <div class="modal-imagen-container">
+                    <img id="modalImagen" class="modal-img" src="" alt="Producto">
                 </div>
-                
-                <button class="btn-agregar-carrito">
-                    <i class="fas fa-shopping-cart"></i> Añadir al Carrito
-                </button>
-                
-                <div class="modal-descripcion">
-                    <h3>Descripción</h3>
-                    <p id="modalDescripcion"></p>
+                <div class="modal-info-container">
+                    <h2 id="modalNombre"></h2>
+                    <div class="modal-precio" id="modalPrecio"></div>
+                    <div class="modal-disponibilidad" id="modalDisponibilidad"></div>
+                    <div class="modal-categoria" id="modalCategoria"></div>
+                    
+                    <div class="cantidad-selector">
+                        <span>Cantidad:</span>
+                        <div class="cantidad-controls">
+                            <button class="btn-cantidad" id="decreaseQty">-</button>
+                            <span class="cantidad-value" id="cantidadValue">1</span>
+                            <button class="btn-cantidad" id="increaseQty">+</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-agregar-carrito">
+                        <i class="fas fa-shopping-cart"></i> Añadir al Carrito
+                    </button>
+                    
+                    <div class="modal-descripcion">
+                        <h3>Descripción</h3>
+                        <p id="modalDescripcion"></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Botón flotante -->
+    <div id="chatToggle" class="chat-toggle">💬</div>
+
+    <!-- Panel de chat -->
+    <div id="chatPanel" class="chat-panel">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button id="closeChat" class="close-chat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+            <button id="sendChat">Enviar</button>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer id="contact">
@@ -275,4 +295,6 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
+    <script src="javascript/chat.js"></script>
+</body>
 </html>

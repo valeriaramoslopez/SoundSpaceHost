@@ -2,16 +2,16 @@
 // ACCESIBILIDAD
 class AdministradorAccesibilidad {
     constructor() {
-        console.log("Inicializando sistema de accesibilidad...");
+        console.log("Inicializando sistema de accesibilidad...");//
 
         this.usuario = JSON.parse(localStorage.getItem("usuario"));
-        console.log("Usuario detectado:", this.usuario);
+        console.log("Usuario detectado:", this.usuario);//
 
         this.storageKey = this.usuario
             ? `configAccesibilidad_${this.usuario.id}`
             : "configAccesibilidad_default";
 
-        console.log("🗝 Usando storageKey:", this.storageKey);
+        console.log("🗝 Usando storageKey:", this.storageKey);//
 
         this.config = {
             tema: 'dark',
@@ -108,7 +108,19 @@ class AdministradorAccesibilidad {
         document.querySelectorAll('.toggle-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const tema = e.target.closest('.toggle-btn').dataset.theme;
-                console.log("Tema cambiado a:", tema);
+                Swal.fire({
+                    title: 'Tema cambiado',
+                    text: 'Se ha cambiado el tema correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                console.log("Tema cambiado a:", tema);//
                 this.config.tema = tema;
                 this.aplicarConfiguracion();
                 this.guardarConfiguracion();
@@ -120,7 +132,19 @@ class AdministradorAccesibilidad {
         document.querySelectorAll('.size-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const tamano = e.target.closest('.size-btn').dataset.size;
-                console.log("Tamaño de texto cambiado a:", tamano);
+                Swal.fire({
+                    title: 'Tamaño de texto cambiado',
+                    text: 'Se ha cambiado el tamaño del texto correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                console.log("Tamaño de texto cambiado a:", tamano);//
                 this.config.tamanoTexto = tamano;
                 this.aplicarConfiguracion();
                 this.guardarConfiguracion();
@@ -132,7 +156,19 @@ class AdministradorAccesibilidad {
         document.querySelectorAll('.spacing-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const esp = e.target.closest('.spacing-btn').dataset.spacing;
-                console.log("Espaciado cambiado a:", esp);
+                Swal.fire({
+                    title: 'Espaciado cambiado',
+                    text: 'Se ha cambiado el espaciado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                console.log("Espaciado cambiado a:", esp);//
                 this.config.espaciado = esp;
                 this.aplicarConfiguracion();
                 this.guardarConfiguracion();
@@ -177,7 +213,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const confContra = document.getElementById("confirm-password").value;
 
             if (contrasena !== confContra) {
-                alert("Las contraseñas no coinciden");
+                Swal.fire({
+                        title: '¡Las contraseñas no coinciden!',
+                        text: 'Por favor, intentelo de nuevo',
+                        icon: 'warning',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                 return;
             }
 
@@ -197,14 +244,37 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const resultado = await respuesta.json();
-            console.log(resultado);
+            console.log(resultado);//
 
             if (respuesta.ok) {
-                alert("✔ Registro exitoso");
+                Swal.fire({
+                    title: '¡Registro Exitoso!',
+                    text: 'Tu cuenta ha sido creada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                 form.reset();
             } else {
-                alert("❌ " + resultado.mensaje);
-            }
+                Swal.fire({
+                        title: resultado.mensaje,
+                        text: 'Por favor, intentelo de nuevo',
+                        icon: 'error',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
+                form.reset();
+            }//else
         });
     }
 });
@@ -230,10 +300,28 @@ function refreshCaptcha() {
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*PARA LOGIN*/
+/*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
     const contrasena = document.getElementById("login-password").value;
     const captchaIngresado = document.getElementById("captcha-input").value;
+
+    // Validar que todos los campos estén llenos
+    if (!nombreUsuario || !contrasena || !captchaIngresado) {
+        Swal.fire({
+            title: 'Campos incompletos',
+            text: 'Por favor completa todos los campos',
+            icon: 'warning',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        return;
+    }
 
     // Primero validar captcha en backend
     const validar = await fetch("http://localhost:3000/api/captcha/validar", {
@@ -248,7 +336,19 @@ async function loginUsuario() {
     const validacion = await validar.json();
 
     if (!validar.ok) {
-        alert("❌ CAPTCHA incorrecto o expirado");
+        Swal.fire({
+            title: 'Error de CAPTCHA',
+            text: 'El código de verificación es incorrecto o ha expirado',
+            icon: 'error',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+
         refreshCaptcha();  
         return;
     }
@@ -265,30 +365,52 @@ async function loginUsuario() {
     const resultado = await respuesta.json();
 
     if (!respuesta.ok) {
-        alert("❌ " + resultado.mensaje);
+        Swal.fire({
+            title: 'Error de inicio de sesión',
+            text: resultado.mensaje || 'Credenciales incorrectas',
+            icon: 'error',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
         return;
     }
 
-    alert("Bienvenido");
+    Swal.fire({
+        title: '¡Bienvenido!',
+        text: `Hola ${resultado.nombreCompleto || resultado.nombreUsuario}`,
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        timer: 3000,
+        showClass: {
+            popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__zoomOut'
+        }
+    }).then(() => {
+        localStorage.setItem("usuario", JSON.stringify({
+            id: resultado.id,
+            username: resultado.nombreUsuario,
+            nombreCompleto: resultado.nombreCompleto,
+            rol: resultado.rol
+        }));
+        
+        // Guardar token
+        localStorage.setItem("token", resultado.token);
+        localStorage.setItem("rol", resultado.rol);
 
-    //Para mostrar nombre y cuenta al iniciar sesion
-    localStorage.setItem("usuario", JSON.stringify({
-        id: resultado.id,
-        username: resultado.nombreUsuario,
-        nombreCompleto: resultado.nombreCompleto,
-        rol: resultado.rol
-    }));
-    
-    // Guardar token
-    localStorage.setItem("token", resultado.token);
-    localStorage.setItem("rol", resultado.rol);
-
-    //Redirección según rol
-    if (resultado.rol === "admin") {
-        window.location.href = "administrador.html";
-    } else {
-        window.location.href = "tienda.html";
-    }
+        // Redirección según rol
+        if (resultado.rol === "admin") {
+            window.location.href = "administrador.html";
+        } else {
+            window.location.href = "tienda.html";
+        }
+    });
 }
 
 
@@ -329,17 +451,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Logout
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("usuario");
-            localStorage.removeItem("token");
-            window.location.href = "paginaprincipal.html";
+    // Logout CORREGIDO
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        // Mostrar SweetAlert primero
+        Swal.fire({
+            title: 'Sesión cerrada correctamente',
+            text: 'Gracias por visitarnos',
+            icon: 'success',
+            confirmButtonText: 'Continuar',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        }).then((result) => {
+            // Cuando el usuario hace clic en "Continuar", ejecutar el logout
+            if (result.isConfirmed) {
+                localStorage.removeItem("usuario");
+                localStorage.removeItem("token");
+                localStorage.removeItem("rol"); // También remover el rol si existe
+                window.location.href = "paginaprincipal.html";
+            }
         });
-    }
-
+    });
+}
 });
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -460,7 +598,7 @@ const productosAPI = {
             });
 
             const data = await response.json();
-            console.log("✅ Productos cargados:", data);
+            console.log("Productos cargados:", data);
 
             if (response.ok) {
                 return data;
@@ -469,7 +607,7 @@ const productosAPI = {
                 return [];
             }
         } catch (error) {
-            console.error("❌ Error de conexión:", error);
+            console.error("Error de conexión:", error);
             return [];
         }
     },
@@ -490,7 +628,7 @@ const productosAPI = {
             return [];
 
         } catch (error) {
-            console.error("❌ Error de conexión:", error);
+            console.error("Error de conexión:", error);
             return [];
         }
     },
@@ -510,7 +648,7 @@ const productosAPI = {
                 return [];
             }
         } catch (error) {
-            console.error("❌ Error de conexión:", error);
+            console.error("Error de conexión:", error);
             return [];
         }
     }
@@ -584,7 +722,7 @@ function configurarBotonesVerOferta(contenedorId) {
 
     contenedor.querySelectorAll('.btn-ver').forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log("🔄 Botón Ver Detalles clickeado en oferta:", this.dataset.nombre);
+            console.log("Botón Ver Detalles clickeado en oferta:", this.dataset.nombre);
             abrirModalProducto(
                 this.dataset.nombre,
                 this.dataset.descripcion,
@@ -606,7 +744,19 @@ function configurarBotonesVerOferta(contenedorId) {
 document.querySelector(".btn-agregar-carrito").addEventListener("click", function() {
     // Verificar si el botón está deshabilitado (producto agotado)
     if (this.disabled) {
-        console.log("❌ Producto agotado, no se puede agregar al carrito");
+        Swal.fire({
+                    title: 'Producto agotado, no se puede agregar al carrito',
+                    text: 'Suscríbete y sé de los primeros en obtenerlo cuando vuelva',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        console.log("Producto agotado, no se puede agregar al carrito");//
         return;
     }
     
@@ -618,17 +768,19 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", functio
     };
     
     // Aquí puedes agregar la lógica para añadir al carrito
+    Swal.fire({
+        title: 'Producto añadido al carrito',
+        text: 'Tu cuenta ha sido creada correctamente',
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+    });
     console.log("Producto añadido al carrito:", producto);
-    
-    // Mostrar mensaje de confirmación
-    const originalText = this.innerHTML;
-    this.innerHTML = '<i class="fas fa-check"></i> Añadido al Carrito';
-    this.style.background = '#4CAF50';
-    
-    setTimeout(() => {
-        this.innerHTML = originalText;
-        this.style.background = '#ff5252';
-    }, 2000);
 });
 
 function mostrarMensajeSinProductos() {
@@ -718,7 +870,7 @@ function configurarFiltros() {
         categoria.addEventListener('click', async function() {
             const genero = this.querySelector('h3').textContent.toLowerCase();
             
-            console.log(`🎯 Filtrando por categoría: ${genero}`);
+            console.log(`Filtrando por categoría: ${genero}`);
             
             // Remover activo de todas las categorías
             categorias.forEach(c => c.classList.remove('active'));
@@ -733,13 +885,13 @@ function configurarFiltros() {
                 productosFiltrados = await productosAPI.getProductos();
             }
             
-            console.log(`📊 Productos filtrados para ${genero}:`, productosFiltrados.length);
+            console.log(`Productos filtrados para ${genero}:`, productosFiltrados.length);
             
             if (productosFiltrados.length > 0) {
                 const productosNormales = productosFiltrados.filter(p => Number(p.oferta) === 0);
                 const productosOferta = productosFiltrados.filter(p => Number(p.oferta) > 0);
 
-                console.log(`📈 Productos normales: ${productosNormales.length}, Ofertas: ${productosOferta.length}`);
+                console.log(`Productos normales: ${productosNormales.length}, Ofertas: ${productosOferta.length}`);
 
                 mostrarProductos(productosNormales, 'productos-mas-vendidos');
                 mostrarProductosOferta(productosOferta, 'ofertas-especiales');
@@ -753,7 +905,7 @@ function configurarFiltros() {
 // Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
 // Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
 function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
-    console.log("🔍 Datos del producto para modal:", { 
+    console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 
         precioOriginal, 
@@ -782,14 +934,14 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     // Mostrar precio con oferta si corresponde
     const esOferta = oferta === 'true';
     if (esOferta && precioOriginal) {
-        console.log("🎯 Mostrando producto en oferta en modal");
+        console.log("Mostrando producto en oferta en modal");
         precioElement.innerHTML = `
             <span class="precio-oferta-modal">${precio}</span>
             <span class="precio-original-modal">${precioOriginal}</span>
             <span class="descuento-modal">-${porcentajeOferta}%</span>
         `;
     } else {
-        console.log("📌 Mostrando producto normal en modal");
+        console.log("Mostrando producto normal en modal");
         precioElement.textContent = precio;
     }
     
@@ -808,7 +960,7 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
         badge.className = 'oferta-badge-modal';
         badge.textContent = '🔥 OFERTA ESPECIAL';
         modalHeader.appendChild(badge);
-        console.log("✅ Badge de oferta agregado al modal");
+        console.log("Badge de oferta agregado al modal");
     }
     
     // Actualizar existencias en el controlador del modal
@@ -821,15 +973,15 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     if (modal) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
-        console.log("✅ Modal abierto correctamente. Existencias:", existencias);
+        console.log("Modal abierto correctamente. Existencias:", existencias);
     } else {
-        console.error("❌ No se encontró el modal");
+        console.error("No se encontró el modal");
     }
 }
 
 // Configurar botones "Ver" para el modal - VERSIÓN CORREGIDA
 function configurarBotonesVer() {
-    console.log("🔄 Configurando botones Ver Detalles...");
+    console.log("Configurando botones Ver Detalles...");
     
     document.querySelectorAll('.btn-ver').forEach(btn => {
         // Remover event listeners anteriores para evitar duplicados
@@ -839,7 +991,7 @@ function configurarBotonesVer() {
     // Volver a seleccionar después del clone
     document.querySelectorAll('.btn-ver').forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log("🔄 Botón Ver Detalles clickeado:", this.dataset.nombre);
+            console.log("Botón Ver Detalles clickeado:", this.dataset.nombre);
             abrirModalProducto(
                 this.dataset.nombre,
                 this.dataset.descripcion,
@@ -862,18 +1014,18 @@ function configurarBotonesVer() {
 async function debugProductosOferta() {
     try {
         const productosOferta = await productosAPI.getProductosOferta();
-        console.log("🔍 DEBUG - Productos en oferta:", productosOferta);
+        console.log("DEBUG - Productos en oferta:", productosOferta);
         
         if (productosOferta && productosOferta.length > 0) {
-            console.log("✅ Se encontraron productos en oferta:");
+            console.log("Se encontraron productos en oferta:");
             productosOferta.forEach((producto, index) => {
                 console.log(`   ${index + 1}. ${producto.titulo} - Oferta: ${producto.oferta}% - Precio: $${producto.precio}`);
             });
         } else {
-            console.log("❌ No se encontraron productos en oferta");
+            console.log("No se encontraron productos en oferta");
         }
     } catch (error) {
-        console.error("❌ Error en debug:", error);
+        console.error("Error en debug:", error);
     }
 }
 
@@ -885,15 +1037,15 @@ async function cargarProductos() {
         
         const todosProductos = await productosAPI.getProductos();
         
-        console.log("📦 Todos los productos:", todosProductos);
+        console.log("Todos los productos:", todosProductos);
         
         if (todosProductos && todosProductos.length > 0) {
             // Separar productos normales y productos en oferta
             const productosNormales = todosProductos.filter(p => Number(p.oferta) === 0);
             const productosConOferta = todosProductos.filter(p => Number(p.oferta) > 0);
 
-            console.log("📊 Productos normales:", productosNormales.length);
-            console.log("🔥 Productos en oferta:", productosConOferta.length);
+            console.log("Productos normales:", productosNormales.length);
+            console.log("Productos en oferta:", productosConOferta.length);
 
             // MOSTRAR TODOS LOS PRODUCTOS en "más vendidos" (sin límite de 4)
             mostrarProductos(productosNormales, 'productos-mas-vendidos');
@@ -1084,63 +1236,265 @@ document.addEventListener('DOMContentLoaded', function() {
 function copiarCupon() {
     const cupon = "ROCK25";
     navigator.clipboard.writeText(cupon).then(() => {
-        alert("Cupón copiado: " + cupon);
+        Swal.fire({
+            title: 'Cupón copiado',
+            text: 'Se ha copiado el cupon correctamente',
+            icon: 'success',
+            confirmButtonText: 'Continuar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
     }).catch(err => {
-        console.error('Error al copiar: ', err);
+        Swal.fire({
+            title: 'ERROR',
+            text: 'No se ha copiado el cupon correctamente',
+            icon: 'error',
+            confirmButtonText: 'Continuar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        console.error('Error al copiar: ', err);//
     });
 }
-
 // Función principal de búsqueda de productos
 window.buscarProductos = function() {
     const searchTerm = document.getElementById('producto-search').value.toLowerCase().trim();
     const productosCards = document.querySelectorAll('.producto-card');
     let foundResults = false;
-    
+    let resultadosCount = 0;
+
     console.log(`🔍 Buscando productos: "${searchTerm}"`);
-    
+
+    // Si el término de búsqueda está vacío, mostrar todos los productos
+    if (!searchTerm) {
+        mostrarTodosProductos();
+        return;
+    }
+
     productosCards.forEach(card => {
         const nombre = card.querySelector('h3').textContent.toLowerCase();
         const artista = card.querySelector('.producto-artista')?.textContent.toLowerCase() || '';
         const descripcion = card.querySelector('.producto-descripcion')?.textContent.toLowerCase() || '';
         const categoria = card.querySelector('.btn-ver')?.dataset.categoria?.toLowerCase() || '';
-        
-        // Buscar en todos los campos
-        if (nombre.includes(searchTerm) || 
-            artista.includes(searchTerm) || 
-            descripcion.includes(searchTerm) || 
-            categoria.includes(searchTerm)) {
-            
+
+        const coincide =
+            nombre.includes(searchTerm) ||
+            artista.includes(searchTerm) ||
+            descripcion.includes(searchTerm) ||
+            categoria.includes(searchTerm);
+
+        if (coincide) {
             card.style.display = 'block';
             foundResults = true;
-            
-            // Resaltar término buscado (opcional)
-            if (searchTerm) {
-                const nombreElement = card.querySelector('h3');
-                const artistaElement = card.querySelector('.producto-artista');
-                const descripcionElement = card.querySelector('.producto-descripcion');
-                
-                // Resaltar en nombre
-                if (nombreElement) {
-                    const highlightedNombre = nombreElement.textContent.replace(
-                        new RegExp(searchTerm, 'gi'),
-                        match => `<span class="highlight-producto">${match}</span>`
-                    );
-                    nombreElement.innerHTML = highlightedNombre;
-                }
-                
-                // Resaltar en artista
-                if (artistaElement) {
-                    const highlightedArtista = artistaElement.textContent.replace(
-                        new RegExp(searchTerm, 'gi'),
-                        match => `<span class="highlight-producto">${match}</span>`
-                    );
-                    artistaElement.innerHTML = highlightedArtista;
-                }
-            }
+            resultadosCount++;
+
+            resaltarTermino(card, searchTerm);
         } else {
             card.style.display = 'none';
         }
-    });   
+    });
+
+    // Mostrar/ocultar mensaje de resultados
+    mostrarMensajeResultados(foundResults, resultadosCount, searchTerm);
+
+    const style = document.createElement('style');
+    style.textContent = `
+        .btn-ver {
+            background-color: #222;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-ver:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+    `;
+    document.head.appendChild(style);
+};
+
+
+
+// Función para resaltar el término buscado
+function resaltarTermino(card, searchTerm) {
+    if (!searchTerm) return;
+    
+    const elementos = [
+        { selector: 'h3', prop: 'textContent' },
+        { selector: '.producto-artista', prop: 'textContent' },
+        { selector: '.producto-descripcion', prop: 'textContent' }
+    ];
+    
+    elementos.forEach(({ selector, prop }) => {
+        const elemento = card.querySelector(selector);
+        if (elemento) {
+            const texto = elemento[prop];
+            const highlighted = texto.replace(
+                new RegExp(searchTerm, 'gi'),
+                match => `<span class="highlight-producto" style="background-color: #ffeb3b; color: #000; padding: 2px 4px; border-radius: 3px;">${match}</span>`
+            );
+            elemento.innerHTML = highlighted;
+        }
+    });
+}
+
+// Función para mostrar mensaje de resultados
+function mostrarMensajeResultados(foundResults, count, searchTerm) {
+    // Remover mensajes anteriores
+    const mensajeAnterior = document.getElementById('no-results-productos');
+    const contadorAnterior = document.getElementById('contador-resultados');
+    
+    if (mensajeAnterior) mensajeAnterior.remove();
+    if (contadorAnterior) contadorAnterior.remove();
+    
+    // Obtener contenedor de productos
+    const contenedorProductos = document.querySelector('.productos-grid') || 
+                               document.getElementById('productos-mas-vendidos') ||
+                               document.querySelector('.container');
+    
+    if (!contenedorProductos) return;
+    
+    if (!foundResults && searchTerm) {
+        // Mostrar mensaje de no resultados
+        const noResults = document.createElement('div');
+        noResults.id = 'no-results-productos';
+        noResults.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: #666; background: #f8f9fa; border-radius: 10px; margin: 15px 0;">
+                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <h3 style="margin-bottom: 10px; font-size: 1.2rem;">No se encontraron resultados</h3>
+                <p style="margin-bottom: 15px;">No hay productos que coincidan con "<strong>${searchTerm}</strong>"</p>
+                <button onclick="mostrarTodosProductos()" 
+                        style="margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s ease;">
+                    <i class="fas fa-undo"></i> Mostrar todos los productos
+                </button>
+            </div>
+        `;
+        contenedorProductos.parentNode.insertBefore(noResults, contenedorProductos);
+    } else if (foundResults && searchTerm) {
+        // Mostrar contador de resultados
+        const contador = document.createElement('div');
+        contador.id = 'contador-resultados';
+        contador.innerHTML = `
+            <div style="background: #e7f3ff; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #007bff; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #333;">
+                    <i class="fas fa-check-circle" style="color: #007bff; font-size: 1rem;"></i> 
+                    <span>Se encontraron <strong style="color: #007bff;">${count}</strong> producto(s) para "<strong>${searchTerm}</strong>"</span>
+                </div>
+                <button onclick="mostrarTodosProductos()" 
+                        style="padding: 6px 12px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.3s ease; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-times" style="font-size: 0.7rem;"></i> Limpiar búsqueda
+                </button>
+            </div>
+        `;
+        contenedorProductos.parentNode.insertBefore(contador, contenedorProductos);
+        
+        // Agregar estilos hover dinámicamente
+        setTimeout(() => {
+            const cleanButton = document.querySelector('#contador-resultados button');
+            if (cleanButton) {
+                cleanButton.addEventListener('mouseenter', function() {
+                    this.style.background = '#5a6268';
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                });
+                
+                cleanButton.addEventListener('mouseleave', function() {
+                    this.style.background = '#6c757d';
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+                
+                cleanButton.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 1px 2px rgba(0,0,0,0.2)';
+                });
+                
+                cleanButton.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                });
+            }
+        }, 100);
+    }
+}
+
+// Función para mostrar todos los productos (resetear búsqueda) - MEJORADA
+window.mostrarTodosProductos = function() {
+    const productosCards = document.querySelectorAll('.producto-card');
+    
+    // Mostrar todos los productos
+    productosCards.forEach(card => {
+        card.style.display = 'block';
+    });
+    
+    // Remover resaltado
+    removerResaltado();
+    
+    // Limpiar campo de búsqueda
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    // Remover mensajes
+    const noResults = document.getElementById('no-results-productos');
+    const contador = document.getElementById('contador-resultados');
+    
+    if (noResults) noResults.remove();
+    if (contador) contador.remove();
+    
+    console.log("🔄 Búsqueda limpiada - Mostrando todos los productos");
+};
+
+// Remover resaltado de términos - MEJORADA
+function removerResaltado() {
+    const highlightedElements = document.querySelectorAll('.highlight-producto');
+    highlightedElements.forEach(element => {
+        const parent = element.parentNode;
+        // Restaurar el texto original
+        if (parent) {
+            parent.textContent = parent.textContent;
+        }
+    });
+}
+
+// Búsqueda en tiempo real (opcional)
+function configurarBusquedaEnTiempoReal() {
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        let timeoutId;
+        
+        searchInput.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                if (this.value.trim() !== '') {
+                    buscarProductos();
+                } else {
+                    mostrarTodosProductos();
+                }
+            }, 300); // 300ms de delay
+        });
+        
+        // También permitir búsqueda con Enter
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscarProductos();
+            }
+        });
+    }
 }
 
 // Función para mostrar todos los productos (resetear búsqueda)

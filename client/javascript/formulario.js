@@ -15,14 +15,35 @@ document.getElementById("contactForm").addEventListener("submit", async (e) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-
+        
         const result = await response.json();
-        document.getElementById("formMessage").innerText = result.message;
 
+        Swal.fire({
+            title: result.message,
+            text: 'Gracias por sus comentarios',
+            icon: 'success',
+            confirmButtonText: 'Continuar',
+            showClass: {
+            popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__zoomOut'
+        }
+    });
     } catch (error) {
         console.error("Error al enviar formulario:", error);
-        document.getElementById("formMessage").innerText =
-            "Error al enviar formulario ❌";
+        Swal.fire({
+            title: result.message,
+            text: 'Error al enviar el formulario',
+            icon: 'error',
+            confirmButtonText: 'Continuar',
+            showClass: {
+            popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__zoomOut'
+        }
+    });
     }
 });
 

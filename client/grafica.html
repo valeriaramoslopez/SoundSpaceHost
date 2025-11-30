@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador - SpaceSound</title>
+    <title>Grafica - SpaceSound</title>
     <link rel="icon" type="image/png" href="http://localhost:3000/uploads/logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../client/css/grafica.css">
 </head>
 <body>
     <!-- Header -->
@@ -25,72 +26,14 @@
                     <button class="accessibility-btn" id="accessibilityToggle">
                         <i class="fas fa-universal-access"></i>
                     </button>
-                    <div class="accessibility-panel" id="accessibilityPanel">
-                        <div class="accessibility-header">
-                            <h4>Accesibilidad</h4>
-                            <button class="close-panel">&times;</button>
-                        </div>
-                        
-                        <!-- Modo Contraste -->
-                        <div class="accessibility-option">
-                            <label>Modo de Contraste</label>
-                            <div class="toggle-switch">
-                                <button class="toggle-btn active" data-theme="dark">
-                                    <i class="fas fa-moon"></i> Oscuro
-                                </button>
-                                <button class="toggle-btn" data-theme="light">
-                                    <i class="fas fa-sun"></i> Claro
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Tamaño de Texto -->
-                        <div class="accessibility-option">
-                            <label>Tamaño de Texto</label>
-                            <div class="text-size-controls">
-                                <button class="size-btn" data-size="small">A-</button>
-                                <button class="size-btn active" data-size="normal">A</button>
-                                <button class="size-btn" data-size="large">A+</button>
-                                <button class="size-btn" data-size="xlarge">A++</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Espaciado -->
-                        <div class="accessibility-option">
-                            <label>Espaciado de Texto</label>
-                            <div class="spacing-controls">
-                                <button class="spacing-btn active" data-spacing="normal">Normal</button>
-                                <button class="spacing-btn" data-spacing="large">Amplio</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- Botones de cuenta y de carrito -->
-                <!-- Botón de Cuenta -->
                 <div class="user-account">
                     <button class="user-btn" id="accountToggle">
                         <i class="fas fa-user"></i>
                         <span id="accountName">Mi Cuenta</span>
                     </button>
-
-                    <!-- ventanita -->
-                    <div class="account-panel" id="accountPanel">
-                        <div class="account-header">
-                            <h4>Mi Cuenta</h4>
-                            <button class="close-account">&times;</button>
-                        </div>
-
-                        <div class="account-info">
-                            <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>
-                            <p><strong>Cuenta:</strong> <span id="panel-username">-</span></p>
-                            <p><strong>Rol:</strong> <span id="panel-rol">-</span></p>
-                        </div>
-
-                        <button class="logout-btn" id="logoutBtn">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </button>
-                    </div>
                 </div>
                 <button class="cart-btn">
                     <i class="fas fa-shopping-cart"></i>
@@ -100,9 +43,59 @@
         </div>
     </header>
 
-    <body>
-        
-    </body>
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h1>Dashboard de Ventas</h1>
+            <p>Visualiza las estadísticas de ventas de discos en tiempo real</p>
+        </div>
+
+        <!-- Tarjetas de Estadísticas -->
+        <div class="stats-cards">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h3>Total de Discos</h3>
+                <p id="total-products">0</p>
+                <span>Productos en catálogo</span>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Ventas Totales</h3>
+                <p id="total-sales">0</p>
+                <span>Unidades vendidas</span>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Disco Más Vendido</h3>
+                <p id="top-sales">0</p>
+                <span id="top-product-name">-</span>
+            </div>
+        </div>
+
+        <!-- Gráfica de Discos Más Vendidos -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2 class="chart-title">Discos Más Vendidos</h2>
+                <div class="chart-controls">
+                    <button class="chart-btn" id="refreshChart">
+                        <i class="fas fa-sync-alt"></i> Actualizar
+                    </button>
+                    <button class="chart-btn" id="exportChart">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </main>
 
     <!-- Footer -->
     <footer id="contact">
@@ -141,7 +134,8 @@
             </div>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="javascript/index.js"></script>
+    <script src="/client/javascript/grafica.js"></script>
 </body>
 </html>

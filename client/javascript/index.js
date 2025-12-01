@@ -1023,7 +1023,7 @@ function configurarFiltros() {
 }
 
 // Función para abrir el modal con datos del producto 
-function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
+function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta, productoId) {
     console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 

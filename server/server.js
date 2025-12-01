@@ -6,13 +6,10 @@ const adminRutas = require('./Rutas/administrador.routes');
 const usuarioRutas = require("./Rutas/usuarioRutas");
 const correoRutas = require("./Rutas/correoRutas");
 const captchaRutas = require('./Rutas/captchaRutas'); 
-<<<<<<< HEAD
 const chatRutas = require('./Rutas/chatRutas');
 const chatAdminRutas = require('./Rutas/chatAdminRutas');
-=======
 const carritoRutas = require('./Rutas/carrito.routes');
 const suscripcionRutas = require('./Rutas/suscripcion.routes');
->>>>>>> origin/feature/compra
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");

@@ -1,0 +1,192 @@
+/* --- PAGINA FINALIZAR COMPRA --- */
+
+.checkout-page {
+    padding: 150px 0 80px;
+    background-color: #0a0a0a;
+}
+
+.checkout-page .section-title {
+    margin-bottom: 50px;
+}
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 3fr 1.5fr; /* Diseño ligeramente diferente para dar espacio a los formularios */
+    gap: 40px;
+    align-items: start;
+}
+
+.checkout-section {
+    background: #1a1a1a;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid #333;
+}
+
+.checkout-section h2 {
+    font-family: 'Momo Trust Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #ff5252;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+/* Reutilizando estilos de formulario de contacto */
+.checkout-details-container .form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* --- Métodos de Pago --- */
+.payment-options {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment-option-label {
+    display: block;
+    cursor: pointer;
+}
+
+.payment-info-box {
+    background: #0a0a0a;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 2px solid #333;
+    transition: all 0.3s;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.payment-info-box i {
+    color: #ff5252;
+    font-size: 1.2rem;
+}
+
+.payment-option-label input[type="radio"] {
+    display: none;
+}
+
+/* Efecto al seleccionar el método de pago */
+.payment-option-label input[type="radio"]:checked + .payment-info-box {
+    border-color: #ff5252;
+    background: #111;
+    box-shadow: 0 0 10px rgba(255, 82, 82, 0.3);
+}
+
+/* Contenedores de formulario de pago */
+.payment-form-container {
+    padding: 20px;
+    background: #111;
+    border-radius: 10px;
+    border: 1px dashed #333;
+}
+
+.payment-form {
+    transition: opacity 0.3s, max-height 0.3s;
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+}
+
+.payment-form.active {
+    opacity: 1;
+    max-height: 500px; /* Suficientemente alto para mostrar el contenido */
+}
+
+.payment-form .form-group {
+    margin-bottom: 20px;
+}
+
+.payment-info-text {
+    color: #ccc;
+    font-style: italic;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-left: 3px solid #ff5252;
+}
+
+
+/* --- Resumen del Pedido en Checkout --- */
+.checkout-page .cart-summary-card {
+    position: sticky;
+    top: 100px;
+}
+
+.order-items-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+}
+
+.order-items-summary p {
+    font-weight: 600;
+}
+
+.btn-edit-cart {
+    color: #ccc;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.btn-edit-cart:hover {
+    color: #ff5252;
+}
+
+.btn-finalizar-pago {
+    background: #4CAF50; /* Botón de pago con un color diferente */
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.btn-finalizar-pago:hover {
+    background: #43a047;
+}
+
+.btn-finalizar-pago:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.payment-secure-message {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.payment-secure-message i {
+    color: #4CAF50;
+    margin-right: 5px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .checkout-details-container .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkout-section {
+        padding: 20px;
+    }
+}

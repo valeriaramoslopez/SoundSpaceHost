@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrador - SpaceSound</title>
     <link rel="icon" type="image/png" href="http://localhost:3000/uploads/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-<<<<<<< HEAD
     <link rel="stylesheet" href="css/chatAdmin.css">
-=======
     <link rel="stylesheet" href="css/administrador.css">
->>>>>>> origin/feature/compra
 </head>
 <body>
     <!-- Header -->
@@ -95,20 +94,18 @@
                         </button>
                     </div>
                 </div>
+                
                 <button class="cart-btn">
                     <i class="fas fa-shopping-cart"></i>
                     Carrito
                 </button>
+                <a href="grafica.html" class="chart-btn">
+                    <i class="fas fa-chart-bar"></i>
+                    Gráfica
+                </a>
             </div>
         </div>
         </header>
-        <main class="admin-chat-page">
-            <h1>Panel de Mensajes (Admin)</h1>
-
-            <div id="adminList" class="admin-list">
-            <div class="loading">Cargando mensajes...</div>
-            </div>
-        </main>
         <main class="admin-page">
             <div class="container">
                 <h1 class="section-title">🚀 Panel de Administración SpaceSound</h1>
@@ -298,6 +295,13 @@
                 </div>
             </div>
         </main>      
+        <main class="admin-chat-page">
+            <h1 class="section-title"> Sección de mensajería</h1>
+            <hr>
+            <div id="adminList" class="admin-list">
+            <div class="loading">Cargando mensajes...</div>
+            </div>
+        </main>
     </body>
 
     <!-- Footer -->
@@ -307,16 +311,6 @@
                 <div class="footer-section">
                     <h3>Space Sound</h3>
                     <p>"La ciudad donde la música nunca deja de girar"</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <ul>
-                        <li><a href="paginaprincipal.html">Inicio</a></li>
-                        <li><a href="nosotros.html">Nosotros</a></li>
-                        <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
-                        <li><a href="contactanos.html">Contáctanos</a></li>
-                        <li><a href="tienda.html">Tienda</a></li>
-                    </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Síguenos</h3>
@@ -337,12 +331,9 @@
             </div>
         </div>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
-<<<<<<< HEAD
     <script src="javascript/admin_chat.js"></script>
-=======
     <script src="javascript/administrador.js"></script>
->>>>>>> origin/feature/compra
 </body>
 </html>

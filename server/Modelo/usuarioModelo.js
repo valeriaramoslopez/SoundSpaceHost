@@ -1,7 +1,7 @@
 const pool = require("../DB/conexion");
 
-async function crearUsuario(nombreCompleto, nombreUsuario, pais, contrasena, rol, correo) {
-    const sql = `INSERT INTO usuarios (nombreCompleto, nombreUsuario, pais, correo, contrasena, rol)
+async function crearUsuario(nombreCompleto, nombreUsuario, pais, contrasena, palabra, correo) {
+    const sql = `INSERT INTO usuarios (nombreCompleto, nombreUsuario, pais, correo, contrasena, palabra)
         VALUES (?, ?, ?, ?, ?, ?)
     `;
 
@@ -11,7 +11,7 @@ async function crearUsuario(nombreCompleto, nombreUsuario, pais, contrasena, rol
         pais,
         correo,
         contrasena,
-        rol
+        palabra
     ]);
 
     return result.insertId;
@@ -46,10 +46,20 @@ async function reiniciarIntentos(id) {
     );
 }
 
+// usuarioModelo.js - VERSIÓN CORREGIDA
+async function updateContrasena(id, nuevaContrasena) {
+    const [result] = await pool.query(
+        "UPDATE usuarios SET contrasena = ? WHERE id = ?",
+        [nuevaContrasena, id]
+    );
+    return result.affectedRows;
+}
+
 module.exports = {
     crearUsuario,
     getUsuarioPorNombre,
     aumentarIntentoFallido,
     bloquearCuenta,
-    reiniciarIntentos
+    reiniciarIntentos,
+    updateContrasena
 };

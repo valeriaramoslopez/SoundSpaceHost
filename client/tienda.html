@@ -6,6 +6,8 @@
     <title>Tienda - SpaceSound</title>
     <link rel="icon" type="image/png" href="http://localhost:3000/uploads/logo.png">
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/chat.css">
@@ -145,11 +147,29 @@
             </div>
         </div>
     </section>
+    </section>
 
     <!-- Productos más vendidos -->
     <section class="music">
         <div class="container">
-            <h2 class="section-title">Productos</h2>
+            <div class="section-header">
+                <h2 class="section-title">Productos</h2>
+                <div class="sort-by-container">
+                    <span class="sort-by-label">Ordenar por:</span>
+                    <div class="sort-by-dropdown" id="sortByDropdown">
+                        <button class="sort-by-btn" id="sortByBtn">
+                            <span id="selectedSortOption">Todos los productos</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="sort-by-options">
+                            <div class="sort-option active" data-range="all">Todos los productos</div>
+                            <div class="sort-option" data-range="300-400">Precio: $300 - $400</div>
+                            <div class="sort-option" data-range="400-500">Precio: $400 - $500</div>
+                            <div class="sort-option" data-range="500-700">Precio: $500 - $700</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="productos-grid" id="productos-mas-vendidos">
                 <div class="loading-products">Cargando productos...</div>
             </div>
@@ -273,6 +293,7 @@
             </div>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
     <script src="javascript/chat.js"></script>
 </body>

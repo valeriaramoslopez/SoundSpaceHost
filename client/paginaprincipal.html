@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpaceSound</title>
     <link rel="icon" type="image/png" href="http://localhost:3000/uploads/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
@@ -73,7 +75,7 @@
 
             <!-- Contenedor para mostrar los productos -->
             <div class="productos-grid" id="productos-categoria">
-                <p class="mensaje-categoria">Selecciona una categoría para ver los productos.</p>
+                <p class="mensaje-categoria">Selecciona una categoría...</p>
             </div>
         </div>
     </section>
@@ -84,14 +86,14 @@
         <h3 class="section-subtitle">¡Mantente al día con los nuevos productos!</h3>
         
         <div class="form-container">
-            <form id="subscription-form" class="subscription-form">
-                <div class="form-group">
-                    <label for="email-suscripcion">Correo electrónico:</label>
-                    <input type="email" id="email-suscripcion" name="email" placeholder="tucorreo@ejemplo.com" required>
-                </div>
-                <button type="submit" class="btn-submit">Suscribirse</button>
-            </form>
+    <form id="subscription-form" class="subscription-form">
+        <div class="form-group">
+            <label for="email-suscripcion">Correo electrónico:</label>
+            <input type="email" id="email-suscripcion" name="email" placeholder="tucorreo@ejemplo.com" required>
         </div>
+        <button type="submit" class="btn-submit" id="botonSuscripcion">Suscribirse</button>
+    </form>
+</div>
     </div>
 </section>
     <!-- Sección de registrarse -->
@@ -118,15 +120,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="rol">Rol:</label>
-                        <select id="rol" name="rol" required>
-                            <option value="">Selecciona tu rol</option>
-                            <option value="usuario">Usuario</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="country">País:</label>
                         <select id="country" name="country" required>
                             <option value="">Selecciona tu país</option>
@@ -148,6 +141,17 @@
                     <div class="form-group">
                         <label for="confirm-password">Confirmar contraseña:</label>
                         <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite tu contraseña" required>
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="rol">Rol:</label>
+                        <select id="rol" name="rol" required>
+                            <option value=""></option>
+                            <option value="usuario">Usuario</option>
+                            <option value="admin">Administrador</option>
+                        </select> -->
+                        <label for="palabra">En caso de olvidar tu contraseña...</label>
+                        <label for="palabra">¿Cuál es el nombre de tu primera mascota?</label>
+                        <input type="text" id="palabra" name="palabra" placeholder="Ejemplo: Panchita" required>
                     </div>
                     <button type="submit" class="btn-submit">Registrarse</button>
                 </form>
@@ -191,8 +195,9 @@
             </div>
         </div>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
     <script src="javascript/paginaprincipal.js"></script>
+    <script src="javascript/suscribirse.js"></script>
 </body>
 </html>

@@ -2,16 +2,16 @@
 // ACCESIBILIDAD
 class AdministradorAccesibilidad {
     constructor() {
-        console.log("Inicializando sistema de accesibilidad...");
+        console.log("Inicializando sistema de accesibilidad...");//
 
         this.usuario = JSON.parse(localStorage.getItem("usuario"));
-        console.log("Usuario detectado:", this.usuario);
+        console.log("Usuario detectado:", this.usuario);//
 
         this.storageKey = this.usuario
             ? `configAccesibilidad_${this.usuario.id}`
             : "configAccesibilidad_default";
 
-        console.log("🗝 Usando storageKey:", this.storageKey);
+        console.log("🗝 Usando storageKey:", this.storageKey);//
 
         this.config = {
             tema: 'dark',
@@ -103,7 +103,19 @@ class AdministradorAccesibilidad {
         document.querySelectorAll('.toggle-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const tema = e.target.closest('.toggle-btn').dataset.theme;
-                console.log("Tema cambiado a:", tema);
+                Swal.fire({
+                    title: 'Tema cambiado',
+                    text: 'Se ha cambiado el tema correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                console.log("Tema cambiado a:", tema);//
                 this.config.tema = tema;
                 this.aplicarConfiguracion();
                 this.guardarConfiguracion();
@@ -115,7 +127,19 @@ class AdministradorAccesibilidad {
         document.querySelectorAll('.size-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const tamano = e.target.closest('.size-btn').dataset.size;
-                console.log("Tamaño de texto cambiado a:", tamano);
+                Swal.fire({
+                    title: 'Tamaño de texto cambiado',
+                    text: 'Se ha cambiado el tamaño del texto correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                console.log("Tamaño de texto cambiado a:", tamano);//
                 this.config.tamanoTexto = tamano;
                 this.aplicarConfiguracion();
                 this.guardarConfiguracion();
@@ -127,7 +151,19 @@ class AdministradorAccesibilidad {
         document.querySelectorAll('.spacing-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const esp = e.target.closest('.spacing-btn').dataset.spacing;
-                console.log("Espaciado cambiado a:", esp);
+                Swal.fire({
+                    title: 'Espaciado cambiado',
+                    text: 'Se ha cambiado el espaciado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                console.log("Espaciado cambiado a:", esp);//
                 this.config.espaciado = esp;
                 this.aplicarConfiguracion();
                 this.guardarConfiguracion();
@@ -166,13 +202,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const nombreCompleto = document.getElementById("fullname").value;
             const nombreUsuario = document.getElementById("username").value;
             const pais = document.getElementById("country").value;
-            const rol = document.getElementById("rol").value;
+            // const rol = document.getElementById("rol").value;
+            const palabra = document.getElementById("palabra").value;
             const correo = document.getElementById("correo").value;
             const contrasena = document.getElementById("password").value;
             const confContra = document.getElementById("confirm-password").value;
 
             if (contrasena !== confContra) {
-                alert("Las contraseñas no coinciden");
+                Swal.fire({
+                        title: '¡Las contraseñas no coinciden!',
+                        text: 'Por favor, intentelo de nuevo',
+                        icon: 'warning',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                 return;
             }
 
@@ -180,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 nombreCompleto,
                 nombreUsuario,
                 pais,
-                rol,
+                palabra,
                 correo,
                 contrasena,
             };
@@ -192,14 +240,37 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const resultado = await respuesta.json();
-            console.log(resultado);
+            console.log(resultado);//
 
             if (respuesta.ok) {
-                alert("✔ Registro exitoso");
+                Swal.fire({
+                    title: '¡Registro Exitoso!',
+                    text: 'Tu cuenta ha sido creada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                 form.reset();
             } else {
-                alert("❌ " + resultado.mensaje);
-            }
+                Swal.fire({
+                        title: resultado.mensaje,
+                        text: 'Por favor, intentelo de nuevo',
+                        icon: 'error',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
+                form.reset();
+            }//else
         });
     }
 });
@@ -236,10 +307,28 @@ function refreshCaptcha() {
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*PARA LOGIN*/
+/*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
     const contrasena = document.getElementById("login-password").value;
     const captchaIngresado = document.getElementById("captcha-input").value;
+
+    // Validar que todos los campos estén llenos
+    if (!nombreUsuario || !contrasena || !captchaIngresado) {
+        Swal.fire({
+            title: 'Campos incompletos',
+            text: 'Por favor completa todos los campos',
+            icon: 'warning',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        return;
+    }
 
     // Primero validar captcha en backend
     const validar = await fetch("http://localhost:3000/api/captcha/validar", {
@@ -254,7 +343,19 @@ async function loginUsuario() {
     const validacion = await validar.json();
 
     if (!validar.ok) {
-        alert("❌ CAPTCHA incorrecto o expirado");
+        Swal.fire({
+            title: 'Error de CAPTCHA',
+            text: 'El código de verificación es incorrecto o ha expirado',
+            icon: 'error',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+
         refreshCaptcha();  
         return;
     }
@@ -271,30 +372,52 @@ async function loginUsuario() {
     const resultado = await respuesta.json();
 
     if (!respuesta.ok) {
-        alert("❌ " + resultado.mensaje);
+        Swal.fire({
+            title: 'Error de inicio de sesión',
+            text: resultado.mensaje || 'Credenciales incorrectas',
+            icon: 'error',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
         return;
     }
 
-    alert("Bienvenido");
+    Swal.fire({
+        title: '¡Bienvenido!',
+        text: `Hola ${resultado.nombreCompleto || resultado.nombreUsuario}`,
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        timer: 3000,
+        showClass: {
+            popup: 'animate__animated animate__zoomIn'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__zoomOut'
+        }
+    }).then(() => {
+        localStorage.setItem("usuario", JSON.stringify({
+            id: resultado.id,
+            username: resultado.nombreUsuario,
+            nombreCompleto: resultado.nombreCompleto,
+            rol: resultado.rol
+        }));
+        
+        // Guardar token
+        localStorage.setItem("token", resultado.token);
+        localStorage.setItem("rol", resultado.rol);
 
-    //Para mostrar nombre y cuenta al iniciar sesion
-    localStorage.setItem("usuario", JSON.stringify({
-        id: resultado.id,
-        username: resultado.nombreUsuario,
-        nombreCompleto: resultado.nombreCompleto,
-        rol: resultado.rol
-    }));
-    
-    // Guardar token
-    localStorage.setItem("token", resultado.token);
-    localStorage.setItem("rol", resultado.rol);
-
-    //Redirección según rol
-    if (resultado.rol === "admin") {
-        window.location.href = "administrador.html";
-    } else {
-        window.location.href = "tienda.html";
-    }
+        // Redirección según rol
+        if (resultado.rol === "admin") {
+            window.location.href = "administrador.html";
+        } else {
+            window.location.href = "tienda.html";
+        }
+    });
 }
 
 
@@ -334,31 +457,74 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-/////////////////////////////////////////////////////////////////////////////////////////////
 
-/*LOGOUT*/
-logoutBtn.addEventListener("click", async () => {
-    const token = localStorage.getItem("token");
+//LOGOUT
+// LOGOUT MEJORADO - Combina ambas versiones
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+        const token = localStorage.getItem("token");
 
-    try {
-        await fetch("http://localhost:3000/api/usuarios/logout", {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + token
+        // Mostrar SweetAlert de confirmación
+        Swal.fire({
+            title: '¿Cerrar sesión?',
+            text: 'Estás a punto de cerrar tu sesión',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar sesión',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    // Notificar al servidor (de la versión 2)
+                    if (token) {
+                        await fetch("http://localhost:3000/api/usuarios/logout", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            }
+                        });
+                        console.log("[FRONT] Logout notificado al servidor");
+                    }
+                } catch (error) {
+                    console.warn("[FRONT] No se pudo notificar logout al servidor", error);
+                    // Continuamos igual con el logout local
+                }
+
+                // Limpiar localStorage (combinación de ambas versiones)
+                localStorage.removeItem("usuario");
+                localStorage.removeItem("token");
+                localStorage.removeItem("rol");
+                localStorage.removeItem("captchaId"); // Limpiar también el captcha
+
+                // Mostrar mensaje de éxito (de la versión 1)
+                Swal.fire({
+                    title: 'Sesión cerrada correctamente',
+                    text: 'Gracias por visitarnos',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    timer: 2000,
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                }).then(() => {
+                    // Redirigir después del mensaje
+                    window.location.href = "paginaprincipal.html";
+                });
             }
         });
-        console.log("[FRONT] Logout enviado al servidor");
-    } catch (error) {
-        console.warn("[FRONT] No se pudo notificar logout", error);
-    }
-
-    // Finalmente borra localStorage
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("token");
-
-    window.location.href = "paginaprincipal.html";
-});
-
+    });
+}
 //////////////////////////////////////////////////////////////////////////////////////7
 
 
@@ -481,7 +647,7 @@ const productosAPI = {
             });
 
             const data = await response.json();
-            console.log("✅ Productos cargados:", data);
+            console.log("Productos cargados:", data);
 
             if (response.ok) {
                 return data;
@@ -490,7 +656,7 @@ const productosAPI = {
                 return [];
             }
         } catch (error) {
-            console.error("❌ Error de conexión:", error);
+            console.error("Error de conexión:", error);
             return [];
         }
     },
@@ -511,7 +677,7 @@ const productosAPI = {
             return [];
 
         } catch (error) {
-            console.error("❌ Error de conexión:", error);
+            console.error("Error de conexión:", error);
             return [];
         }
     },
@@ -531,7 +697,7 @@ const productosAPI = {
                 return [];
             }
         } catch (error) {
-            console.error("❌ Error de conexión:", error);
+            console.error("Error de conexión:", error);
             return [];
         }
     }
@@ -606,7 +772,7 @@ function configurarBotonesVerOferta(contenedorId) {
 
     contenedor.querySelectorAll('.btn-ver').forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log("🔄 Botón Ver Detalles clickeado en oferta:", this.dataset.nombre);
+            console.log("Botón Ver Detalles clickeado en oferta:", this.dataset.nombre);
             abrirModalProducto(
                 this.dataset.nombre,
                 this.dataset.descripcion,
@@ -629,7 +795,19 @@ function configurarBotonesVerOferta(contenedorId) {
 document.querySelector(".btn-agregar-carrito").addEventListener("click", async function() {
     // Verificar si el botón está deshabilitado (producto agotado)
     if (this.disabled) {
-        console.log("❌ Producto agotado, no se puede agregar al carrito");
+        Swal.fire({
+                    title: 'Producto agotado, no se puede agregar al carrito',
+                    text: 'Suscríbete y sé de los primeros en obtenerlo cuando vuelva',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        console.log("Producto agotado, no se puede agregar al carrito");//
         return;
     }
     
@@ -708,6 +886,20 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         this.innerHTML = originalText;
         this.style.background = '#ff5252';
     }, 2000);
+    // Aquí puedes agregar la lógica para añadir al carrito
+    Swal.fire({
+        title: 'Producto añadido al carrito',
+        text: 'Tu cuenta ha sido creada correctamente',
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+    });
+    console.log("Producto añadido al carrito:", producto);
 });
 
 function mostrarMensajeSinProductos() {
@@ -798,7 +990,7 @@ function configurarFiltros() {
         categoria.addEventListener('click', async function() {
             const genero = this.querySelector('h3').textContent.toLowerCase();
             
-            console.log(`🎯 Filtrando por categoría: ${genero}`);
+            console.log(`Filtrando por categoría: ${genero}`);
             
             // Remover activo de todas las categorías
             categorias.forEach(c => c.classList.remove('active'));
@@ -813,13 +1005,13 @@ function configurarFiltros() {
                 productosFiltrados = await productosAPI.getProductos();
             }
             
-            console.log(`📊 Productos filtrados para ${genero}:`, productosFiltrados.length);
+            console.log(`Productos filtrados para ${genero}:`, productosFiltrados.length);
             
             if (productosFiltrados.length > 0) {
                 const productosNormales = productosFiltrados.filter(p => Number(p.oferta) === 0);
                 const productosOferta = productosFiltrados.filter(p => Number(p.oferta) > 0);
 
-                console.log(`📈 Productos normales: ${productosNormales.length}, Ofertas: ${productosOferta.length}`);
+                console.log(`Productos normales: ${productosNormales.length}, Ofertas: ${productosOferta.length}`);
 
                 mostrarProductos(productosNormales, 'productos-mas-vendidos');
                 mostrarProductosOferta(productosOferta, 'ofertas-especiales');
@@ -830,9 +1022,9 @@ function configurarFiltros() {
     });
 }
 
-// Función para abrir el modal con datos del producto
-function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta, productoId) {
-    console.log("🔍 Datos del producto para modal:", { 
+// Función para abrir el modal con datos del producto 
+function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
+    console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 
         precioOriginal, 
@@ -861,14 +1053,14 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     // Mostrar precio con oferta si corresponde
     const esOferta = oferta === 'true';
     if (esOferta && precioOriginal) {
-        console.log("🎯 Mostrando producto en oferta en modal");
+        console.log("Mostrando producto en oferta en modal");
         precioElement.innerHTML = `
             <span class="precio-oferta-modal">${precio}</span>
             <span class="precio-original-modal">${precioOriginal}</span>
             <span class="descuento-modal">-${porcentajeOferta}%</span>
         `;
     } else {
-        console.log("📌 Mostrando producto normal en modal");
+        console.log("Mostrando producto normal en modal");
         precioElement.textContent = precio;
     }
     
@@ -887,7 +1079,7 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
         badge.className = 'oferta-badge-modal';
         badge.textContent = '🔥 OFERTA ESPECIAL';
         modalHeader.appendChild(badge);
-        console.log("✅ Badge de oferta agregado al modal");
+        console.log("Badge de oferta agregado al modal");
     }
     
     // Actualizar existencias en el controlador del modal
@@ -901,9 +1093,9 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     if (modal) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
-        console.log("✅ Modal abierto correctamente. Existencias:", existencias);
+        console.log("Modal abierto correctamente. Existencias:", existencias);
     } else {
-        console.error("❌ No se encontró el modal");
+        console.error("No se encontró el modal");
     }
     // Guardar id y nombre_imagen (archivo) para el botón de agregar al carrito
     if (agregarBtn) {
@@ -915,7 +1107,7 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
 
 // Configurar botones "Ver" para el modal 
 function configurarBotonesVer() {
-    console.log("🔄 Configurando botones Ver Detalles...");
+    console.log("Configurando botones Ver Detalles...");
     
     document.querySelectorAll('.btn-ver').forEach(btn => {
         // Remover event listeners anteriores para evitar duplicados
@@ -925,7 +1117,7 @@ function configurarBotonesVer() {
     // Volver a seleccionar después del clone
     document.querySelectorAll('.btn-ver').forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log("🔄 Botón Ver Detalles clickeado:", this.dataset.nombre);
+            console.log("Botón Ver Detalles clickeado:", this.dataset.nombre);
             abrirModalProducto(
                 this.dataset.nombre,
                 this.dataset.descripcion,
@@ -948,18 +1140,18 @@ function configurarBotonesVer() {
 async function debugProductosOferta() {
     try {
         const productosOferta = await productosAPI.getProductosOferta();
-        console.log("🔍 DEBUG - Productos en oferta:", productosOferta);
+        console.log("DEBUG - Productos en oferta:", productosOferta);
         
         if (productosOferta && productosOferta.length > 0) {
-            console.log("✅ Se encontraron productos en oferta:");
+            console.log("Se encontraron productos en oferta:");
             productosOferta.forEach((producto, index) => {
                 console.log(`   ${index + 1}. ${producto.titulo} - Oferta: ${producto.oferta}% - Precio: $${producto.precio}`);
             });
         } else {
-            console.log("❌ No se encontraron productos en oferta");
+            console.log("No se encontraron productos en oferta");
         }
     } catch (error) {
-        console.error("❌ Error en debug:", error);
+        console.error("Error en debug:", error);
     }
 }
 
@@ -971,15 +1163,15 @@ async function cargarProductos() {
         
         const todosProductos = await productosAPI.getProductos();
         
-        console.log("📦 Todos los productos:", todosProductos);
+        console.log("Todos los productos:", todosProductos);
         
         if (todosProductos && todosProductos.length > 0) {
             // Separar productos normales y productos en oferta
             const productosNormales = todosProductos.filter(p => Number(p.oferta) === 0);
             const productosConOferta = todosProductos.filter(p => Number(p.oferta) > 0);
 
-            console.log("📊 Productos normales:", productosNormales.length);
-            console.log("🔥 Productos en oferta:", productosConOferta.length);
+            console.log("Productos normales:", productosNormales.length);
+            console.log("Productos en oferta:", productosConOferta.length);
 
             // MOSTRAR TODOS LOS PRODUCTOS en "más vendidos" (sin límite de 4)
             mostrarProductos(productosNormales, 'productos-mas-vendidos');
@@ -1169,63 +1361,265 @@ document.addEventListener('DOMContentLoaded', function() {
 function copiarCupon() {
     const cupon = "ROCK25";
     navigator.clipboard.writeText(cupon).then(() => {
-        alert("Cupón copiado: " + cupon);
+        Swal.fire({
+            title: 'Cupón copiado',
+            text: 'Se ha copiado el cupon correctamente',
+            icon: 'success',
+            confirmButtonText: 'Continuar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
     }).catch(err => {
-        console.error('Error al copiar: ', err);
+        Swal.fire({
+            title: 'ERROR',
+            text: 'No se ha copiado el cupon correctamente',
+            icon: 'error',
+            confirmButtonText: 'Continuar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        console.error('Error al copiar: ', err);//
     });
 }
-
 // Función principal de búsqueda de productos
 window.buscarProductos = function() {
     const searchTerm = document.getElementById('producto-search').value.toLowerCase().trim();
     const productosCards = document.querySelectorAll('.producto-card');
     let foundResults = false;
-    
+    let resultadosCount = 0;
+
     console.log(`🔍 Buscando productos: "${searchTerm}"`);
-    
+
+    // Si el término de búsqueda está vacío, mostrar todos los productos
+    if (!searchTerm) {
+        mostrarTodosProductos();
+        return;
+    }
+
     productosCards.forEach(card => {
         const nombre = card.querySelector('h3').textContent.toLowerCase();
         const artista = card.querySelector('.producto-artista')?.textContent.toLowerCase() || '';
         const descripcion = card.querySelector('.producto-descripcion')?.textContent.toLowerCase() || '';
         const categoria = card.querySelector('.btn-ver')?.dataset.categoria?.toLowerCase() || '';
-        
-        // Buscar en todos los campos
-        if (nombre.includes(searchTerm) || 
-            artista.includes(searchTerm) || 
-            descripcion.includes(searchTerm) || 
-            categoria.includes(searchTerm)) {
-            
+
+        const coincide =
+            nombre.includes(searchTerm) ||
+            artista.includes(searchTerm) ||
+            descripcion.includes(searchTerm) ||
+            categoria.includes(searchTerm);
+
+        if (coincide) {
             card.style.display = 'block';
             foundResults = true;
-            
-            // Resaltar término buscado (opcional)
-            if (searchTerm) {
-                const nombreElement = card.querySelector('h3');
-                const artistaElement = card.querySelector('.producto-artista');
-                const descripcionElement = card.querySelector('.producto-descripcion');
-                
-                // Resaltar en nombre
-                if (nombreElement) {
-                    const highlightedNombre = nombreElement.textContent.replace(
-                        new RegExp(searchTerm, 'gi'),
-                        match => `<span class="highlight-producto">${match}</span>`
-                    );
-                    nombreElement.innerHTML = highlightedNombre;
-                }
-                
-                // Resaltar en artista
-                if (artistaElement) {
-                    const highlightedArtista = artistaElement.textContent.replace(
-                        new RegExp(searchTerm, 'gi'),
-                        match => `<span class="highlight-producto">${match}</span>`
-                    );
-                    artistaElement.innerHTML = highlightedArtista;
-                }
-            }
+            resultadosCount++;
+
+            resaltarTermino(card, searchTerm);
         } else {
             card.style.display = 'none';
         }
-    });   
+    });
+
+    // Mostrar/ocultar mensaje de resultados
+    mostrarMensajeResultados(foundResults, resultadosCount, searchTerm);
+
+    const style = document.createElement('style');
+    style.textContent = `
+        .btn-ver {
+            background-color: #222;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-ver:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+    `;
+    document.head.appendChild(style);
+};
+
+
+
+// Función para resaltar el término buscado
+function resaltarTermino(card, searchTerm) {
+    if (!searchTerm) return;
+    
+    const elementos = [
+        { selector: 'h3', prop: 'textContent' },
+        { selector: '.producto-artista', prop: 'textContent' },
+        { selector: '.producto-descripcion', prop: 'textContent' }
+    ];
+    
+    elementos.forEach(({ selector, prop }) => {
+        const elemento = card.querySelector(selector);
+        if (elemento) {
+            const texto = elemento[prop];
+            const highlighted = texto.replace(
+                new RegExp(searchTerm, 'gi'),
+                match => `<span class="highlight-producto" style="background-color: #ffeb3b; color: #000; padding: 2px 4px; border-radius: 3px;">${match}</span>`
+            );
+            elemento.innerHTML = highlighted;
+        }
+    });
+}
+
+// Función para mostrar mensaje de resultados
+function mostrarMensajeResultados(foundResults, count, searchTerm) {
+    // Remover mensajes anteriores
+    const mensajeAnterior = document.getElementById('no-results-productos');
+    const contadorAnterior = document.getElementById('contador-resultados');
+    
+    if (mensajeAnterior) mensajeAnterior.remove();
+    if (contadorAnterior) contadorAnterior.remove();
+    
+    // Obtener contenedor de productos
+    const contenedorProductos = document.querySelector('.productos-grid') || 
+                               document.getElementById('productos-mas-vendidos') ||
+                               document.querySelector('.container');
+    
+    if (!contenedorProductos) return;
+    
+    if (!foundResults && searchTerm) {
+        // Mostrar mensaje de no resultados
+        const noResults = document.createElement('div');
+        noResults.id = 'no-results-productos';
+        noResults.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: #666; background: #f8f9fa; border-radius: 10px; margin: 15px 0;">
+                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <h3 style="margin-bottom: 10px; font-size: 1.2rem;">No se encontraron resultados</h3>
+                <p style="margin-bottom: 15px;">No hay productos que coincidan con "<strong>${searchTerm}</strong>"</p>
+                <button onclick="mostrarTodosProductos()" 
+                        style="margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s ease;">
+                    <i class="fas fa-undo"></i> Mostrar todos los productos
+                </button>
+            </div>
+        `;
+        contenedorProductos.parentNode.insertBefore(noResults, contenedorProductos);
+    } else if (foundResults && searchTerm) {
+        // Mostrar contador de resultados
+        const contador = document.createElement('div');
+        contador.id = 'contador-resultados';
+        contador.innerHTML = `
+            <div style="background: #e7f3ff; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #007bff; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #333;">
+                    <i class="fas fa-check-circle" style="color: #007bff; font-size: 1rem;"></i> 
+                    <span>Se encontraron <strong style="color: #007bff;">${count}</strong> producto(s) para "<strong>${searchTerm}</strong>"</span>
+                </div>
+                <button onclick="mostrarTodosProductos()" 
+                        style="padding: 6px 12px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.3s ease; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-times" style="font-size: 0.7rem;"></i> Limpiar búsqueda
+                </button>
+            </div>
+        `;
+        contenedorProductos.parentNode.insertBefore(contador, contenedorProductos);
+        
+        // Agregar estilos hover dinámicamente
+        setTimeout(() => {
+            const cleanButton = document.querySelector('#contador-resultados button');
+            if (cleanButton) {
+                cleanButton.addEventListener('mouseenter', function() {
+                    this.style.background = '#5a6268';
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                });
+                
+                cleanButton.addEventListener('mouseleave', function() {
+                    this.style.background = '#6c757d';
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+                
+                cleanButton.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 1px 2px rgba(0,0,0,0.2)';
+                });
+                
+                cleanButton.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-1px)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                });
+            }
+        }, 100);
+    }
+}
+
+// Función para mostrar todos los productos (resetear búsqueda) - MEJORADA
+window.mostrarTodosProductos = function() {
+    const productosCards = document.querySelectorAll('.producto-card');
+    
+    // Mostrar todos los productos
+    productosCards.forEach(card => {
+        card.style.display = 'block';
+    });
+    
+    // Remover resaltado
+    removerResaltado();
+    
+    // Limpiar campo de búsqueda
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    // Remover mensajes
+    const noResults = document.getElementById('no-results-productos');
+    const contador = document.getElementById('contador-resultados');
+    
+    if (noResults) noResults.remove();
+    if (contador) contador.remove();
+    
+    console.log("Búsqueda limpiada - Mostrando todos los productos");
+};
+
+// Remover resaltado de términos - MEJORADA
+function removerResaltado() {
+    const highlightedElements = document.querySelectorAll('.highlight-producto');
+    highlightedElements.forEach(element => {
+        const parent = element.parentNode;
+        // Restaurar el texto original
+        if (parent) {
+            parent.textContent = parent.textContent;
+        }
+    });
+}
+
+// Búsqueda en tiempo real (opcional)
+function configurarBusquedaEnTiempoReal() {
+    const searchInput = document.getElementById('producto-search');
+    if (searchInput) {
+        let timeoutId;
+        
+        searchInput.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                if (this.value.trim() !== '') {
+                    buscarProductos();
+                } else {
+                    mostrarTodosProductos();
+                }
+            }, 300); // 300ms de delay
+        });
+        
+        // También permitir búsqueda con Enter
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscarProductos();
+            }
+        });
+    }
 }
 
 // Función para mostrar todos los productos (resetear búsqueda)
@@ -1264,6 +1658,379 @@ function removerResaltado() {
     });
 }
 
+// Código para el menú desplegable Sort By
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortByDropdown = document.getElementById('sortByDropdown');
+            const sortByBtn = document.getElementById('sortByBtn');
+            const selectedSortOption = document.getElementById('selectedSortOption');
+            const sortOptions = document.querySelectorAll('.sort-option');
+            
+            // Alternar la visibilidad del menú desplegable
+            sortByBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                sortByDropdown.classList.toggle('active');
+            });
+            
+            // Seleccionar una opción del menú
+            sortOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover la clase active de todas las opciones
+                    sortOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Agregar la clase active a la opción seleccionada
+                    this.classList.add('active');
+                    
+                    // Actualizar el texto del botón
+                    selectedSortOption.textContent = this.textContent;
+                    
+                    // Cerrar el menú desplegable
+                    sortByDropdown.classList.remove('active');
+                    
+                    // Obtener el rango seleccionado
+                    const selectedRange = this.getAttribute('data-range');
+                    
+                    // Filtrar productos según el rango de precio seleccionado
+                    filterProductsByPrice(selectedRange);
+                    
+                    // Mostrar mensaje de filtro aplicado
+                    showFilterMessage(this.textContent);
+                });
+            });
+            
+            // Cerrar el menú desplegable al hacer clic fuera de él
+            document.addEventListener('click', function() {
+                sortByDropdown.classList.remove('active');
+            });
+            
+            // Función para filtrar productos por rango de precio
+function filterProductsByPrice(priceRange) {
+    const productos = document.querySelectorAll('.producto-card');
+    let visibleCount = 0;
+    
+    productos.forEach(producto => {
+        let precio = 0;
+        
+        // Buscar precio en productos normales
+        const precioElement = producto.querySelector('.producto-precio');
+        if (precioElement) {
+            const precioTexto = precioElement.textContent;
+            precio = parseFloat(precioTexto.replace(/[^0-9.]/g, ''));
+        }
+        
+        // Si no se encontró precio normal, buscar en productos con oferta
+        if (precio === 0 || isNaN(precio)) {
+            const precioOfertaElement = producto.querySelector('.precio-oferta');
+            if (precioOfertaElement) {
+                const precioOfertaTexto = precioOfertaElement.textContent;
+                precio = parseFloat(precioOfertaTexto.replace(/[^0-9.]/g, ''));
+            }
+        }
+        
+        // Si aún no se encontró precio, buscar en cualquier elemento que contenga precio
+        if (precio === 0 || isNaN(precio)) {
+            const precioCualquierElemento = producto.querySelector('[class*="precio"]');
+            if (precioCualquierElemento) {
+                const precioTexto = precioCualquierElemento.textContent;
+                precio = parseFloat(precioTexto.replace(/[^0-9.]/g, ''));
+            }
+        }
+        
+        console.log(`Producto: ${producto.querySelector('h3')?.textContent}, Precio encontrado: ${precio}`);
+        
+        // Mostrar u ocultar según el rango seleccionado
+        let mostrarProducto = false;
+        
+        switch(priceRange) {
+            case 'all':
+                mostrarProducto = true;
+                break;
+            case '300-400':
+                mostrarProducto = (precio >= 300 && precio <= 400);
+                break;
+            case '400-500':
+                mostrarProducto = (precio >= 400 && precio <= 500);
+                break;
+            case '500-700':
+                mostrarProducto = (precio >= 500 && precio <= 700);
+                break;
+            default:
+                mostrarProducto = true;
+        }
+        
+        if (mostrarProducto) {
+            producto.style.display = 'block';
+            visibleCount++;
+        } else {
+            producto.style.display = 'none';
+        }
+    });
+    
+    console.log(`Productos visibles después del filtro: ${visibleCount}`);
+    
+    // Si no hay productos visibles, mostrar mensaje
+    if (visibleCount === 0 && priceRange !== 'all') {
+        const productosGrid = document.getElementById('productos-mas-vendidos');
+        productosGrid.innerHTML = `
+            <div class="no-products-message">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron productos en este rango de precio</h3>
+                <p>Intenta con otro rango o <a href="#" class="reset-filter">mostrar todos los productos</a></p>
+            </div>
+        `;
+        
+        // Agregar evento al enlace de reset
+        const resetLink = document.querySelector('.reset-filter');
+        if (resetLink) {
+            resetLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Encontrar y hacer clic en la opción "Todos los productos"
+                const allOption = document.querySelector('.sort-option[data-range="all"]');
+                if (allOption) {
+                    allOption.click();
+                }
+            });
+        }
+    }
+}
+            
+            // Función para mostrar mensaje de filtro aplicado
+            function showFilterMessage(filterText) {
+                // Puedes implementar aquí un toast o notificación si lo deseas
+                console.log(`Filtro aplicado: ${filterText}`);
+            }
+        });
+
+// Agrega estas funciones al final de tu archivo JavaScript
+
+// Función para mostrar el formulario de recuperación de contraseña
+function showForgotPassword() {
+    // Ocultar otros formularios
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    
+    // Mostrar formulario de pregunta de seguridad
+    const securityQuestionForm = document.getElementById('securityQuestionForm') || createSecurityQuestionForm();
+    securityQuestionForm.style.display = 'block';
+}
+
+// Función para crear el formulario de pregunta de seguridad si no existe
+function createSecurityQuestionForm() {
+    const authContainer = document.querySelector('.auth-container');
+    
+    const securityQuestionForm = document.createElement('div');
+    securityQuestionForm.className = 'auth-form';
+    securityQuestionForm.id = 'securityQuestionForm';
+    securityQuestionForm.style.display = 'none';
+    
+    securityQuestionForm.innerHTML = `
+        <div class="form-header">
+            <h2>Verificación de Seguridad</h2>
+            <p>Responde tu pregunta de seguridad para recuperar tu contraseña</p>
+        </div>
+
+        <form id="securityQuestionFormElement">
+            <div class="form-group">
+                <label for="security-username">Nombre de Usuario</label>
+                <input type="text" id="security-username" name="username" placeholder="Ingresa tu nombre de usuario" required>
+                <span class="error-message" id="securityUsernameError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="security-question">Pregunta de Seguridad</label>
+                <div class="security-question-display">
+                    <p><strong>¿Cuál es el nombre de tu primera mascota?</strong></p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="security-answer">Respuesta</label>
+                <input type="text" id="security-answer" name="security_answer" placeholder="Ingresa tu respuesta" required>
+                <span class="error-message" id="securityAnswerError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="new-password">Nueva Contraseña</label>
+                <div class="password-input">
+                    <input type="password" id="new-password" name="new_password" placeholder="Ingresa tu nueva contraseña" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('new-password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <span class="error-message" id="newPasswordError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-new-password">Confirmar Nueva Contraseña</label>
+                <div class="password-input">
+                    <input type="password" id="confirm-new-password" name="confirm_new_password" placeholder="Confirma tu nueva contraseña" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('confirm-new-password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <span class="error-message" id="confirmNewPasswordError"></span>
+            </div>
+
+            <button type="submit" class="btn-submit" id="securitySubmitBtn">
+                <i class="fas fa-key"></i>
+                Restablecer Contraseña
+            </button>
+
+            <div class="auth-switch">
+                <p><a href="#" onclick="showLogin()">Volver al inicio de sesión</a></p>
+            </div>
+        </form>
+    `;
+    
+    authContainer.appendChild(securityQuestionForm);
+    
+    // Configurar el evento del formulario
+    document.getElementById('securityQuestionFormElement').addEventListener('submit', function(e) {
+        e.preventDefault();
+        verifySecurityQuestion();
+    });
+    
+    return securityQuestionForm;
+}
+
+// Función para verificar la pregunta de seguridad y restablecer la contraseña
+async function verifySecurityQuestion() {
+    const username = document.getElementById('security-username').value;
+    const securityAnswer = document.getElementById('security-answer').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+    // Validaciones básicas
+    if (!username || !securityAnswer || !newPassword || !confirmNewPassword) {
+        Swal.fire({
+            title: 'Campos incompletos',
+            text: 'Por favor completa todos los campos',
+            icon: 'warning',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+        return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        Swal.fire({
+            title: 'Contraseñas no coinciden',
+            text: 'Las contraseñas deben ser iguales',
+            icon: 'error',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+        return;
+    }
+
+    // Mostrar loading
+    const submitBtn = document.getElementById('securitySubmitBtn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+    submitBtn.disabled = true;
+
+    try {
+        // Llamar a la API para verificar la pregunta de seguridad
+        const response = await fetch("http://localhost:3000/api/usuarios/recuperar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombreUsuario: username,
+                respuestaSeguridad: securityAnswer,
+                nuevaContrasena: newPassword
+            })
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+            Swal.fire({
+                title: '¡Contraseña restablecida!',
+                text: 'Tu contraseña ha sido cambiada exitosamente',
+                icon: 'success',
+                confirmButtonText: 'Iniciar Sesión',
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                }
+            }).then(() => {
+                // Limpiar formulario y volver al login
+                document.getElementById('securityQuestionFormElement').reset();
+                showLogin();
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: resultado.mensaje || 'Respuesta incorrecta o usuario no encontrado',
+                icon: 'error',
+                confirmButtonText: 'Intentar de nuevo',
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error al recuperar contraseña:', error);
+        Swal.fire({
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor',
+            icon: 'error',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+    } finally {
+        // Restaurar botón
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Función para mostrar el formulario de login (ya debería existir, pero por si acaso)
+function showLogin() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    
+    const securityQuestionForm = document.getElementById('securityQuestionForm');
+    if (securityQuestionForm) {
+        securityQuestionForm.style.display = 'none';
+    }
+}
+// Función para alternar visibilidad de contraseña - CORREGIDA
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.parentNode.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+} // ✅ CIERRE CORRECTO de la función
+
+// Función para ver categorías - SEPARADA CORRECTAMENTE
 async function verCategoria(genero) {
     const contenedor = document.getElementById('productos-categoria');
     contenedor.innerHTML = '<p class="loading-products">Cargando productos...</p>';
@@ -1296,4 +2063,4 @@ async function verCategoria(genero) {
         console.error(error);
         contenedor.innerHTML = '<p class="error">Error al cargar los productos.</p>';
     }
-}
+} // ✅ CIERRE CORRECTO

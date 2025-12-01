@@ -3385,7 +3385,6 @@ body.spacing-large .btn {
     transform: scale(1.03);
 }
 
-<<<<<<< HEAD
 /* ===== ESTILOS PARA FORMULARIO DE RECUPERACIÓN DE CONTRASEÑA ===== */
 
 /* Formulario de seguridad */
@@ -3691,7 +3690,6 @@ body.spacing-large #securityQuestionForm .auth-switch {
     padding-top: 25px;
 }
 
-=======
 /* Contenedor de productos */
 #productos-categoria {
 display: grid;
@@ -3783,4 +3781,4 @@ background-color: #1565c0;
 background-color: #999;
 cursor: not-allowed;
 }
->>>>>>> 0a142d6027fd1958e5db27d4d5bcd9b9338aed95
+

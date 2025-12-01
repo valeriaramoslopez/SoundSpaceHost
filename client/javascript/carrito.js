@@ -98,10 +98,10 @@
         
             cartItemEl.innerHTML = `
                 <div class="cart-col product-col">
-                    <img src="imagenes/${item.nombre_imagen}" alt="${item.titulo}" class="cart-item-img">
+                    <img src="../../server/uploads/${item.nombre_imagen}" alt="${item.titulo}" class="cart-item-img">
                     <div class="item-info">
-                        <h3>${item.titulo}</h3>
-                        <p>Categoría: ${item.artista}</p>
+                        <h4>${item.titulo}</h4>
+                        <p>${item.artista}</p>
                     </div>
                 </div>
                 <span class="cart-col price-col" data-price="${precioUnitario.toFixed(2)}">$${precioUnitario.toFixed(2)}</span>

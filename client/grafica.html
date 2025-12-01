@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../client/css/grafica.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chatAdmin.css">
+    <link rel="stylesheet" href="css/administrador.css">
 </head>
 <body>
     <!-- Header -->
@@ -26,19 +29,73 @@
                     <button class="accessibility-btn" id="accessibilityToggle">
                         <i class="fas fa-universal-access"></i>
                     </button>
+                    <div class="accessibility-panel" id="accessibilityPanel">
+                        <div class="accessibility-header">
+                            <h4>Accesibilidad</h4>
+                            <button class="close-panel">&times;</button>
+                        </div>
+                        
+                        <!-- Modo Contraste -->
+                        <div class="accessibility-option">
+                            <label>Modo de Contraste</label>
+                            <div class="toggle-switch">
+                                <button class="toggle-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Oscuro
+                                </button>
+                                <button class="toggle-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i> Claro
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Tamaño de Texto -->
+                        <div class="accessibility-option">
+                            <label>Tamaño de Texto</label>
+                            <div class="text-size-controls">
+                                <button class="size-btn" data-size="small">A-</button>
+                                <button class="size-btn active" data-size="normal">A</button>
+                                <button class="size-btn" data-size="large">A+</button>
+                                <button class="size-btn" data-size="xlarge">A++</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Espaciado -->
+                        <div class="accessibility-option">
+                            <label>Espaciado de Texto</label>
+                            <div class="spacing-controls">
+                                <button class="spacing-btn active" data-spacing="normal">Normal</button>
+                                <button class="spacing-btn" data-spacing="large">Amplio</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Botones de cuenta y de carrito -->
+                <!-- Botón de Cuenta -->
                 <div class="user-account">
                     <button class="user-btn" id="accountToggle">
                         <i class="fas fa-user"></i>
                         <span id="accountName">Mi Cuenta</span>
                     </button>
+
+                    <!-- ventanita -->
+                    <div class="account-panel" id="accountPanel">
+                        <div class="account-header">
+                            <h4>Mi Cuenta</h4>
+                            <button class="close-account">&times;</button>
+                        </div>
+
+                        <div class="account-info">
+                            <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>
+                            <p><strong>Cuenta:</strong> <span id="panel-username">-</span></p>
+                            <p><strong>Rol:</strong> <span id="panel-rol">-</span></p>
+                        </div>
+
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
                 </div>
-                <button class="cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    Carrito
-                </button>
             </div>
         </div>
     </header>
@@ -46,6 +103,7 @@
     <!-- Contenido Principal -->
     <main class="main-content">
         <div class="dashboard-header">
+            <br><br>
             <h1>Dashboard de Ventas</h1>
             <p>Visualiza las estadísticas de ventas de discos en tiempo real</p>
         </div>
@@ -112,16 +170,6 @@
                     <p>"La ciudad donde la música nunca deja de girar"</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <ul>
-                        <li><a href="paginaprincipal.html">Inicio</a></li>
-                        <li><a href="nosotros.html">Nosotros</a></li>
-                        <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
-                        <li><a href="contactanos.html">Contáctanos</a></li>
-                        <li><a href="tienda.html">Tienda</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
                     <h3>Síguenos</h3>
                     <div class="social-links">
                         <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
@@ -141,6 +189,7 @@
         </div>
     </footer>
 
+    <script src="/client/javascript/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/client/javascript/grafica.js"></script>
 </body>

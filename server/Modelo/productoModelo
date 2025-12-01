@@ -50,6 +50,15 @@ async function deleteProducto(id) {
     return result.affectedRows;    
 }
 
+// Actualizar producto (todos los campos)
+async function updateProducto(id, titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta) {
+    const [result] = await pool.query(
+        'UPDATE productos SET titulo = ?, artista = ?, descripcion = ?, precio = ?, disponibilidad = ?, genero = ?, ventas = ?, imagen = ?, oferta = ? WHERE id = ?',
+        [titulo, artista, descripcion, precio, disponibilidad, genero, ventas, imagen, oferta, id]
+    );
+    return result.affectedRows;
+}
+
 module.exports = {
     getAllProductos,
     getProductoById,
@@ -58,4 +67,6 @@ module.exports = {
     getProductoByGenero,
     updateDisponibilidadYventas,
     updateOferta
+    ,
+    updateProducto
 };

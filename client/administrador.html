@@ -143,6 +143,7 @@
                                         <th>Ventas Acum. (Unidades)</th>
                                         <th>Existencias (Stock)</th>
                                         <th>Imagen</th>
+                                        <th>Oferta</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inventory-body">
@@ -199,9 +200,14 @@
                                         <input type="number" id="p-stock" min="0" placeholder="Ej: 150" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="p-image">Nombre Archivo Imagen (con extensión)</label>
-                                        <input type="text" id="p-image" placeholder="Ej: album_nuevo.jpg" required>
+                                        <label for="p-offer">Oferta (Descuento %)</label>
+                                        <input type="number" id="p-offer" min="0" max="100" value="0" placeholder="Ej: 16 (para 16% de descuento)">
                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="p-image">Nombre Archivo Imagen (con extensión)</label>
+                                    <input type="text" id="p-image" placeholder="Ej: album_nuevo.jpg" required>
                                 </div>
 
                                 <div class="form-group">
@@ -265,6 +271,13 @@
                                                     <label for="m-stock">Disponibilidad (Stock)</label>
                                                     <input type="number" id="m-stock" value="50" required>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="m-offer">Oferta (Descuento %)</label>
+                                                    <input type="number" id="m-offer" value="16" min="0" max="100">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
                                                 <div class="form-group">
                                                     <label for="m-image">Nombre Archivo Imagen</label>
                                                     <input type="text" id="m-image" value="cosmic_echoes.jpg" required>

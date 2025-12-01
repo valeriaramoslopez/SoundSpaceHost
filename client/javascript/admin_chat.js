@@ -4,7 +4,20 @@ console.log("[admin_chat.js] Iniciando script admin chat");
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
-        alert("Necesitas iniciar sesión como administrador");
+
+        Swal.fire({
+                        title: '¡Necesitas iniciar sesión como administrador!',
+                        text: 'Por favor, intentelo de nuevo',
+                        icon: 'warning',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+
         window.location.href = "tienda.html";
         return;
     }
@@ -54,7 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const id = e.target.dataset.id;
                     const ta = adminList.querySelector(`textarea[data-id="${id}"]`);
                     const respuesta = ta.value.trim();
-                    if (!respuesta) return alert("Escribe una respuesta");
+                    if (!respuesta) return Swal.fire({
+                        title: 'Faltan datos',
+                        text: 'Por favor, ingrese el mensaje',
+                        icon: 'warning',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                     console.log("[admin_chat.js] Enviando respuesta id:", id, respuesta);
 
                     try {
@@ -69,14 +93,48 @@ document.addEventListener('DOMContentLoaded', () => {
                         const j = await r.json();
                         console.log("[admin_chat.js] respuesta guardar:", j);
                         if (!r.ok) {
-                            alert("Error: " + (j.mensaje || 'no guardado'));
+                            Swal.fire({
+                        title: '¡Mensaje no guardado!',
+                        text: 'Por favor, intentelo de nuevo',
+                        icon: 'warning',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                            
                             return;
                         }
-                        alert("Respuesta guardada");
+                        Swal.fire({
+                        title: '¡Respuesta guardada!',
+                        text: 'Se realizo la accion con exito',
+                        icon: 'success',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                         cargarTodos();
                     } catch (err) {
                         console.error("[admin_chat.js] Error responder:", err);
-                        alert("Error de conexión");
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo lograr la conexion',
+                        icon: 'error',
+                        confirmButtonText: 'Continuar',
+                        showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                     }
                 });
             });

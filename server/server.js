@@ -9,7 +9,7 @@ const captchaRutas = require('./Rutas/captchaRutas');
 const chatRutas = require('./Rutas/chatRutas');
 const chatAdminRutas = require('./Rutas/chatAdminRutas');
 const carritoRutas = require('./Rutas/carrito.routes');
-const suscripcionRutas = require('./Rutas/suscripcion.routes');
+//const suscripcionRutas = require('./Rutas/suscripcion.routes');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
@@ -57,7 +57,7 @@ app.use('/api/correo', correoRutas);
 app.use('/api/captcha', captchaRutas);
 app.use('/api/chat', chatRutas);
 app.use('/api/chat-admin', chatAdminRutas);
-app.use('/api/suscripcion', suscripcionRutas);
+//app.use('/api/suscripcion', suscripcionRutas);
 
 // Probar conexión a BD
 async function testConnection() {

@@ -214,13 +214,24 @@ document.addEventListener("DOMContentLoaded", () => {
 let captchaId = null;
 
 async function cargarCaptcha() {
-    const res = await fetch("http://localhost:3000/api/captcha/generar");
-    const data = await res.json();
-
-    captchaId = data.id;
-    
-    localStorage.setItem("captchaId", data.id);
-    document.getElementById("captchaImage").innerHTML = data.image;
+    try {
+        const res = await fetch("http://localhost:3000/api/captcha/generar");
+        if (!res.ok) {
+            console.warn('Captcha endpoint returned', res.status);
+            return;
+        }
+        const data = await res.json();
+        captchaId = data.id;
+        localStorage.setItem("captchaId", data.id);
+        const captchaEl = document.getElementById("captchaImage");
+        if (captchaEl) {
+            captchaEl.innerHTML = data.image;
+        } else {
+            console.warn('Captcha element not found on this page (id: captchaImage). Skipping render.');
+        }
+    } catch (err) {
+        console.error('Error fetching captcha:', err);
+    }
 }
 
 function refreshCaptcha() {

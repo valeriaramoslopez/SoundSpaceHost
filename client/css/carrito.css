@@ -95,8 +95,12 @@
 
 .item-info p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #ccc;
+}
+
+.item-info {
+    width: 140px /* Ajuste para el espacio de la imagen */
 }
 
 /* Controles de Cantidad */

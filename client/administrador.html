@@ -95,10 +95,6 @@
                     </div>
                 </div>
                 
-                <button class="cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    Carrito
-                </button>
                 <a href="grafica.html" class="chart-btn">
                     <i class="fas fa-chart-bar"></i>
                     Gráfica
@@ -184,7 +180,7 @@
                                             <option value="" disabled selected>Seleccione un género</option>
                                             <option value="clasico">Clásico</option>
                                             <option value="rock">Rock</option>
-                                            <option value="corridos">Corridos</option>
+                                            <option value="corrido">Corridos</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -204,9 +200,12 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="p-image">Nombre Archivo Imagen (con extensión)</label>
-                                    <input type="text" id="p-image" placeholder="Ej: album_nuevo.jpg" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="m-image-file">Seleccionar Imagen</label>
+                                        <input type="text" id="p-image" placeholder="Nombre de imagen"> 
+                                        <input type="file" id="p-image-file" name="imageFile" accept="image/*" required>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -256,7 +255,7 @@
                                                     <select id="m-genre" required>
                                                         <option value="rock" selected>Rock</option>
                                                         <option value="clasico">Clásico</option>
-                                                        <option value="corridos">Corridos</option>
+                                                        <option value="corrido">Corridos</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -275,11 +274,12 @@
                                                     <input type="number" id="m-offer" value="16" min="0" max="100">
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="form-row">
                                                 <div class="form-group">
-                                                    <label for="m-image">Nombre Archivo Imagen</label>
-                                                    <input type="text" id="m-image" value="cosmic_echoes.jpg" required>
+                                                    <label for="m-image-file">Seleccionar Imagen</label>
+                                                    <input type="text" id="m-image" placeholder="Nombre de imagen (opcional)"> 
+                                                    <input type="file" id="m-image-file" name="imageFile" accept="image/*">
                                                 </div>
                                             </div>
 
@@ -324,7 +324,7 @@
                 </div>
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>spaceSound@gmail.com</p>
+                    <p>talesturntable@gmail.com</p>
                     <p>+1 234 567 8900</p>
                 </div>
             </div>

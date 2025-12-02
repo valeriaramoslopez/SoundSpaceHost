@@ -95,10 +95,11 @@
             const cartItemEl = document.createElement('div');
             cartItemEl.className = 'cart-item';
             cartItemEl.dataset.carritoId = item.carrito_id;
+            cartItemEl.dataset.nombreImagen = item.nombre_imagen || item.imagen || '';
         
             cartItemEl.innerHTML = `
                 <div class="cart-col product-col">
-                    <img src="../../server/uploads/${item.nombre_imagen}" alt="${item.titulo}" class="cart-item-img">
+                    <img src="${apiOrigin}/uploads/${item.nombre_imagen}" alt="${item.titulo}" class="cart-item-img" onerror="this.onerror=null; this.src='http://localhost:3000/uploads/${item.nombre_imagen}'">
                     <div class="item-info">
                         <h4>${item.titulo}</h4>
                         <p>${item.artista}</p>
@@ -167,9 +168,14 @@
     async function updateItemQuantity(carritoId, cantidad) {
         const url = `${primaryBase}/${carritoId}`;
         try {
-            let resp = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cantidad }) });
-            if (!resp.ok) {
-                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cantidad }) });
+                // Include nombre_imagen if present on the row
+                const cartRow = document.querySelector(`.cart-item[data-carrito-id="${carritoId}"]`);
+                const nombre_imagen = cartRow ? cartRow.dataset.nombreImagen : undefined;
+                let body = { cantidad };
+                if (typeof nombre_imagen !== 'undefined' && nombre_imagen !== null && nombre_imagen !== '') body.nombre_imagen = nombre_imagen;
+                let resp = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                if (!resp.ok) {
+                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
             }
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             // On success, refresh cart item subtotal and total

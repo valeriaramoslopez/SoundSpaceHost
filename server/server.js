@@ -10,6 +10,7 @@ const chatRutas = require('./Rutas/chatRutas');
 const chatAdminRutas = require('./Rutas/chatAdminRutas');
 const carritoRutas = require('./Rutas/carrito.routes');
 const cuponesRutas = require("./Rutas/cuponesRutas");
+const notaRutas = require('./Rutas/nota.routes');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
@@ -53,14 +54,12 @@ app.use('/api/productos', baseRutas);
 app.use('/api/cupones', cuponesRutas);
 app.use('/api/admin', adminRutas);
 app.use('/api/carrito', carritoRutas);
+app.use('/api/nota', notaRutas);
 app.use('/api/usuarios', usuarioRutas);
 app.use('/api/correo', correoRutas);  
 app.use('/api/captcha', captchaRutas);
 app.use('/api/chat', chatRutas);
 app.use('/api/chat-admin', chatAdminRutas);
-
-//app.use('/api/suscripcion', suscripcionRutas);
-
 // Probar conexión a BD
 async function testConnection() {
   try {
@@ -71,7 +70,24 @@ async function testConnection() {
   }
 }
 
+// Asegurar que la columna `nombre_imagen` exista en la tabla `carrito`
+async function ensureCarritoNombreImagenColumn() {
+  try {
+    const [cols] = await pool.query("SHOW COLUMNS FROM carrito LIKE 'nombre_imagen'");
+    if (!cols || cols.length === 0) {
+      console.log('Columna nombre_imagen no encontrada en carrito. Añadiendo...');
+      await pool.query("ALTER TABLE carrito ADD COLUMN nombre_imagen VARCHAR(255) DEFAULT NULL");
+      console.log('Columna nombre_imagen añadida con éxito.');
+    } else {
+      console.log('Columna nombre_imagen ya existe en carrito.');
+    }
+  } catch (err) {
+    console.error('Error al asegurar la columna nombre_imagen en carrito:', err.message);
+  }
+}
+
 app.listen(PORT, () => {
   console.log(`🚀 Servidor en http://localhost:${PORT}`);
   testConnection();
+  ensureCarritoNombreImagenColumn();
 });

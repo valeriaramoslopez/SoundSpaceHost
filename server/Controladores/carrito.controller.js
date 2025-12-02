@@ -3,6 +3,8 @@ const pool = require('../DB/conexion');
 // Añadir item al carrito (insertar o actualizar cantidad)
 async function addItem(req, res) {
     const { usuario_id, producto_id, cantidad, nombre_imagen } = req.body;
+    // Sanitizar nombre de imagen si se envía (podría ser una URL completa)
+    const safeNombreImagen = nombre_imagen ? (String(nombre_imagen).split('/').pop().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9._-]/g, '')) : null;
     if (!usuario_id || !producto_id || !cantidad) {
         return res.status(400).json({ success: false, message: 'usuario_id, producto_id y cantidad son requeridos' });
     }
@@ -12,15 +14,15 @@ async function addItem(req, res) {
         if (rows.length > 0) {
             // Actualizar cantidad y, si se proporciona, nombre_imagen
             let result;
-            if (nombre_imagen !== undefined && nombre_imagen !== null) {
-                [result] = await pool.query('UPDATE carrito SET cantidad = cantidad + ?, nombre_imagen = ? WHERE usuario_id = ? AND producto_id = ?', [Number(cantidad), nombre_imagen, usuario_id, producto_id]);
+            if (safeNombreImagen !== undefined && safeNombreImagen !== null) {
+                [result] = await pool.query('UPDATE carrito SET cantidad = cantidad + ?, nombre_imagen = ? WHERE usuario_id = ? AND producto_id = ?', [Number(cantidad), safeNombreImagen, usuario_id, producto_id]);
             } else {
                 [result] = await pool.query('UPDATE carrito SET cantidad = cantidad + ? WHERE usuario_id = ? AND producto_id = ?', [Number(cantidad), usuario_id, producto_id]);
             }
             return res.json({ success: true, updated: result.affectedRows });
         }
         // Insertar nueva fila al carrito (usando nombre_imagen si se proporciona)
-        const [result] = await pool.query('INSERT INTO carrito (usuario_id, producto_id, cantidad, nombre_imagen) VALUES (?, ?, ?, ?)', [usuario_id, producto_id, Number(cantidad), nombre_imagen || null]);
+        const [result] = await pool.query('INSERT INTO carrito (usuario_id, producto_id, cantidad, nombre_imagen) VALUES (?, ?, ?, ?)', [usuario_id, producto_id, Number(cantidad), safeNombreImagen || null]);
         return res.json({ success: true, id: result.insertId });
     } catch (error) {
         console.error('Error en carrito.addItem:', error);
@@ -52,12 +54,19 @@ async function getItemsByUser(req, res) {
 // Actualizar cantidad de item del carrito por id (carrito.id)
 async function updateItem(req, res) {
     const carritoId = req.params.id;
-    const { cantidad } = req.body;
+    const { cantidad, nombre_imagen } = req.body;
+    // Sanitizar nombre de imagen si se envía
+    const safeNombreImagen = nombre_imagen ? (String(nombre_imagen).split('/').pop().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9._-]/g, '')) : null;
     if (!carritoId || cantidad === undefined) {
         return res.status(400).json({ success: false, message: 'id y cantidad son requeridos' });
     }
     try {
-        const [result] = await pool.query('UPDATE carrito SET cantidad = ? WHERE id = ?', [Number(cantidad), carritoId]);
+        let result;
+        if (typeof safeNombreImagen !== 'undefined' && safeNombreImagen !== null) {
+            [result] = await pool.query('UPDATE carrito SET cantidad = ?, nombre_imagen = ? WHERE id = ?', [Number(cantidad), safeNombreImagen, carritoId]);
+        } else {
+            [result] = await pool.query('UPDATE carrito SET cantidad = ? WHERE id = ?', [Number(cantidad), carritoId]);
+        }
         if (result.affectedRows === 0) return res.status(404).json({ success: false, message: 'Item no encontrado' });
         return res.json({ success: true, updated: result.affectedRows });
     } catch (error) {

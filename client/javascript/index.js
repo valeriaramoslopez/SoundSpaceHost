@@ -86,12 +86,14 @@ class AdministradorAccesibilidad {
         console.log("🔍 Botón accesibilidad:", boton);
         console.log("🔍 Panel accesibilidad:", panel);
 
-        boton.addEventListener('click', () => {
-            console.log("👆 Clic en botón accesibilidad");
-            panel.classList.toggle('show');
-        });
+        if (boton) {
+            boton.addEventListener('click', () => {
+                console.log("👆 Clic en botón accesibilidad");
+                if (panel) panel.classList.toggle('show');
+            });
+        }
 
-        if (cerrar) {
+        if (cerrar && panel) {
             cerrar.addEventListener('click', () => {
                 console.log("❌ Cerrar accesibilidad");
                 panel.classList.remove('show');
@@ -272,6 +274,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 form.reset();
             }//else
         });
+    }
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (usuario) {
+        actualizarContadorCarritoDesdeBackend(usuario.id);
     }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -870,6 +876,7 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         const data = await resp.json();
         if (data && data.success) {
             console.info('Carrito actualizado en backend:', data);
+            actualizarContadorCarritoDesdeBackend(usuario.id);
         } else {
             console.warn('Respuesta inesperada al añadir al carrito:', data);
         }
@@ -901,6 +908,20 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
     });
     console.log("Producto añadido al carrito:", producto);
 });
+
+async function actualizarContadorCarritoDesdeBackend(usuarioId) {
+    try {
+        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`);
+        const data = await resp.json();
+
+        const cartCount = document.getElementById("cartCount");
+        if (cartCount) {
+            cartCount.textContent = data.data.length;
+        }
+    } catch (error) {
+        console.error("Error actualizando contador del carrito:", error);
+    }
+}
 
 function mostrarMensajeSinProductos() {
     const mensaje = '<p class="no-productos">⚠️ No hay productos disponibles en este momento</p>';

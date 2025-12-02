@@ -280,13 +280,24 @@ document.addEventListener("DOMContentLoaded", () => {
 let captchaId = null;
 
 async function cargarCaptcha() {
-    const res = await fetch("http://localhost:3000/api/captcha/generar");
-    const data = await res.json();
-
-    captchaId = data.id;
-    
-    localStorage.setItem("captchaId", data.id);
-    document.getElementById("captchaImage").innerHTML = data.image;
+    try {
+        const res = await fetch("http://localhost:3000/api/captcha/generar");
+        if (!res.ok) {
+            console.warn('Captcha endpoint returned', res.status);
+            return;
+        }
+        const data = await res.json();
+        captchaId = data.id;
+        localStorage.setItem("captchaId", data.id);
+        const captchaEl = document.getElementById("captchaImage");
+        if (captchaEl) {
+            captchaEl.innerHTML = data.image;
+        } else {
+            console.warn('Captcha element not found on this page (id: captchaImage). Skipping render.');
+        }
+    } catch (err) {
+        console.error('Error fetching captcha:', err);
+    }
 }
 
 function refreshCaptcha() {
@@ -733,6 +744,7 @@ function mostrarProductosOferta(productos, contenedorId) {
                 </span>
                 
                 <button class="btn-ver"
+                    data-id="${producto.id}"
                     data-nombre="${producto.titulo}"
                     data-descripcion="${producto.descripcion || 'Descripción no disponible'}"
                     data-precio="$${precioConDescuento}"
@@ -772,14 +784,15 @@ function configurarBotonesVerOferta(contenedorId) {
                 this.dataset.artista,
                 this.dataset.oferta,
                 this.dataset.precioOriginal,
-                this.dataset.porcentajeOferta
+                this.dataset.porcentajeOferta,
+                this.dataset.id
             );
         });
     });
 }
 
-// En la parte donde manejas el botón de agregar al carrito, agrega esta validación:
-document.querySelector(".btn-agregar-carrito").addEventListener("click", function() {
+// En la parte donde manejas el botón de agregar al carrito, agrega esta validación y el POST al backend:
+document.querySelector(".btn-agregar-carrito").addEventListener("click", async function() {
     // Verificar si el botón está deshabilitado (producto agotado)
     if (this.disabled) {
         Swal.fire({
@@ -798,13 +811,81 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", functio
         return;
     }
     
+    const productoId = this.dataset.productoId || this.dataset.id;
+    const usuario = JSON.parse(localStorage.getItem('usuario')) || null;
+    if (!usuario) {
+        alert('Debes iniciar sesión para agregar productos al carrito.');
+        return;
+    }
+    const cantidad = modalController ? modalController.getCantidad() : 1;
     const producto = {
         nombre: document.getElementById("modalNombre").textContent,
         precio: document.getElementById("modalPrecio").textContent,
         cantidad: cantidad,
-        imagen: document.getElementById("modalImagen").src
+        imagen: document.getElementById("modalImagen").src,
+        productoId
     };
     
+    console.log("Producto añadido al carrito (UI):", producto);
+
+    // Llamar a la API para guardar en la tabla carrito: { usuario_id, producto_id, cantidad }
+    const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
+    const primary = `${apiOrigin}/api/carrito/add`;
+    const fallback = 'http://localhost:3000/api/carrito/add';
+
+    const imagenUrlCompleta = document.getElementById("modalImagen").src;
+
+    // Función que extrae solo el nombre del archivo:
+    function getFileNameFromUrl(url) {
+        if (!url) return '';
+        // Reemplaza barras invertidas por normales (por si acaso) y luego divide por el separador '/'
+        const parts = url.replace(/\\/g, '/').split('/');
+        // Devuelve el último elemento, que es el nombre del archivo
+        return parts.pop();
+    }
+
+    const nombreImagenLimpio = getFileNameFromUrl(imagenUrlCompleta);
+    
+    const payload = {
+        usuario_id: usuario.id,
+        producto_id: Number(productoId),
+        cantidad: Number(cantidad),
+        nombre_imagen: nombreImagenLimpio
+    };
+
+    try {
+        let resp = await fetch(primary, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!resp.ok) {
+            console.warn(`POST carrito add respondió ${resp.status} en primary, intentando fallback`);
+            resp = await fetch(fallback, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        }
+        if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error(`HTTP ${resp.status} - ${text}`);
+        }
+        const data = await resp.json();
+        if (data && data.success) {
+            console.info('Carrito actualizado en backend:', data);
+        } else {
+            console.warn('Respuesta inesperada al añadir al carrito:', data);
+        }
+    } catch (err) {
+        console.error('Error al almacenar en carrito:', err);
+    }
+    
+    // Mostrar mensaje de confirmación
+    const originalText = this.innerHTML;
+    this.innerHTML = '<i class="fas fa-check"></i> Añadido al Carrito';
+    this.style.background = '#4CAF50';
+    
+    setTimeout(() => {
+        this.innerHTML = originalText;
+        this.style.background = '#ff5252';
+    }, 2000);
     // Aquí puedes agregar la lógica para añadir al carrito
     Swal.fire({
         title: 'Producto añadido al carrito',
@@ -880,6 +961,7 @@ function mostrarProductos(productos, contenedorId) {
                 </span>
                 
                 <button class="btn-ver"
+                    data-id="${producto.id}"
                     data-nombre="${producto.titulo}"
                     data-descripcion="${producto.descripcion || 'Descripción no disponible'}"
                     data-precio="${tieneOferta ? '$' + precioConDescuento : '$' + precioOriginal.toFixed(2)}"
@@ -940,9 +1022,8 @@ function configurarFiltros() {
     });
 }
 
-// Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
-// Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
-function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
+// Función para abrir el modal con datos del producto 
+function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta, productoId) {
     console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 
@@ -1008,6 +1089,7 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     
     // Mostrar modal
     const modal = document.getElementById('modalProducto');
+    const agregarBtn = document.querySelector('.btn-agregar-carrito');
     if (modal) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -1015,9 +1097,15 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     } else {
         console.error("No se encontró el modal");
     }
+    // Guardar id y nombre_imagen (archivo) para el botón de agregar al carrito
+    if (agregarBtn) {
+        agregarBtn.dataset.productoId = productoId || '';
+        // 'imagen' es el filename (dataset.imagen), no la URL; si se pasa URL, extract filename
+        agregarBtn.dataset.nombreImagen = imagen || '';
+    }
 }
 
-// Configurar botones "Ver" para el modal - VERSIÓN CORREGIDA
+// Configurar botones "Ver" para el modal 
 function configurarBotonesVer() {
     console.log("Configurando botones Ver Detalles...");
     
@@ -1041,14 +1129,14 @@ function configurarBotonesVer() {
                 this.dataset.artista,
                 this.dataset.oferta,
                 this.dataset.precioOriginal,
-                this.dataset.porcentajeOferta
+                this.dataset.porcentajeOferta,
+                this.dataset.id
             );
         });
     });
 }
 
 // Función de depuración para verificar productos en oferta
-// Función de depuración mejorada
 async function debugProductosOferta() {
     try {
         const productosOferta = await productosAPI.getProductosOferta();
@@ -1104,7 +1192,6 @@ async function cargarProductos() {
 }
 
 // Inicializar funcionalidad del modal
-// Inicializar funcionalidad del modal - VERSIÓN MEJORADA
 function inicializarModal() {
     const modal = document.getElementById('modalProducto');
     const closeBtn = document.querySelector('.close');

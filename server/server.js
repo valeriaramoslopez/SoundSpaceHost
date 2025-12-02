@@ -2,11 +2,14 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const baseRutas = require('./Rutas/dbProductoRutas');
+const adminRutas = require('./Rutas/administrador.routes');
 const usuarioRutas = require("./Rutas/usuarioRutas");
 const correoRutas = require("./Rutas/correoRutas");
 const captchaRutas = require('./Rutas/captchaRutas'); 
 const chatRutas = require('./Rutas/chatRutas');
 const chatAdminRutas = require('./Rutas/chatAdminRutas');
+const carritoRutas = require('./Rutas/carrito.routes');
+// const suscripcionRutas = require('./Rutas/suscripcion.routes');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
@@ -28,6 +31,10 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 const carpeta = path.join(__dirname, "uploads");
 app.use("/uploads", express.static(carpeta));
 
+// Servir archivos estáticos del cliente (HTML/CSS/JS) si se desea
+const clientDir = path.join(__dirname, '..', 'client');
+app.use(express.static(clientDir));
+
 app.get("/imagenes", (req, res) => {
   try {
     const archivos = fs.readdirSync(carpeta);
@@ -43,11 +50,14 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/productos', baseRutas);
+app.use('/api/admin', adminRutas);
+app.use('/api/carrito', carritoRutas);
 app.use('/api/usuarios', usuarioRutas);
 app.use('/api/correo', correoRutas);  
 app.use('/api/captcha', captchaRutas);
 app.use('/api/chat', chatRutas);
 app.use('/api/chat-admin', chatAdminRutas);
+//app.use('/api/suscripcion', suscripcionRutas);
 
 // Probar conexión a BD
 async function testConnection() {

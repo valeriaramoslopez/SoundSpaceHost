@@ -153,7 +153,7 @@
 
 .product-form.active {
     opacity: 1;
-    max-height: 1000px; 
+    max-height: 1600px; /* Aumenta el alto máximo para formularios largos */
 }
 
 .form-title {

@@ -273,6 +273,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }//else
         });
     }
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (usuario) {
+        actualizarContadorCarritoDesdeBackend(usuario.id);
+    }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -870,6 +874,7 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         const data = await resp.json();
         if (data && data.success) {
             console.info('Carrito actualizado en backend:', data);
+            actualizarContadorCarritoDesdeBackend(usuario.id);
         } else {
             console.warn('Respuesta inesperada al añadir al carrito:', data);
         }
@@ -901,6 +906,20 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
     });
     console.log("Producto añadido al carrito:", producto);
 });
+
+async function actualizarContadorCarritoDesdeBackend(usuarioId) {
+    try {
+        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`);
+        const data = await resp.json();
+
+        const cartCount = document.getElementById("cartCount");
+        if (cartCount) {
+            cartCount.textContent = data.data.length;
+        }
+    } catch (error) {
+        console.error("Error actualizando contador del carrito:", error);
+    }
+}
 
 function mostrarMensajeSinProductos() {
     const mensaje = '<p class="no-productos">⚠️ No hay productos disponibles en este momento</p>';

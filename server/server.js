@@ -9,7 +9,6 @@ const captchaRutas = require('./Rutas/captchaRutas');
 const chatRutas = require('./Rutas/chatRutas');
 const chatAdminRutas = require('./Rutas/chatAdminRutas');
 const carritoRutas = require('./Rutas/carrito.routes');
-//const suscripcionRutas = require('./Rutas/suscripcion.routes');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");

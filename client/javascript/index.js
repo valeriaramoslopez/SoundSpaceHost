@@ -2047,7 +2047,7 @@ function togglePassword(inputId) {
         input.type = 'password';
         icon.className = 'fas fa-eye';
     }
-} // ✅ CIERRE CORRECTO de la función
+}
 
 // Función para ver categorías - SEPARADA CORRECTAMENTE
 async function verCategoria(genero) {
@@ -2055,7 +2055,6 @@ async function verCategoria(genero) {
     contenedor.innerHTML = '<p class="loading-products">Cargando productos...</p>';
 
     try {
-        // Petición a tu backend
         const respuesta = await fetch(`http://localhost:3000/api/productos/genero/${genero}`);
         const data = await respuesta.json();
 
@@ -2064,9 +2063,7 @@ async function verCategoria(genero) {
             return;
         }
 
-        // Revisar si hay usuario logueado
-        const usuario = JSON.parse(localStorage.getItem('usuario')); 
-
+        // Mostrar productos
         contenedor.innerHTML = data.data.map(producto => `
             <div class="producto-card">
                 <img src="http://localhost:3000/uploads/${producto.imagen}" alt="${producto.titulo}">
@@ -2074,12 +2071,39 @@ async function verCategoria(genero) {
                 <p>Artista: ${producto.artista}</p>
                 <p>Precio: $${producto.precio}</p>
                 <p>${producto.descripcion}</p>
-                <button class="btn" ${usuario ? '' : 'disabled title="Inicia sesión para comprar"'}>Añadir al carrito</button>
+
+                <!-- Botón siempre habilitado -->
+                <button class="btn add-cart-btn" data-id="${producto.id}">
+                    Añadir al carrito
+                </button>
             </div>
         `).join('');
+
+        // EVENTO DE CLIC PARA CADA BOTÓN
+        document.querySelectorAll('.add-cart-btn').forEach(boton => {
+            boton.addEventListener('click', () => {
+
+                const usuarioLog = JSON.parse(localStorage.getItem('usuario'));
+
+                if (!usuarioLog) {
+                    Swal.fire({
+                        title: 'Debes iniciar sesion',
+                        text: 'Inicia sesión para añadir productos al carrito',
+                        icon: 'warning',
+                        confirmButtonText: 'Entendido',
+                        showClass: { popup: 'animate__animated animate__zoomIn' },
+                        hideClass: { popup: 'animate__animated animate__zoomOut' }
+                    });
+                    return;
+                }
+
+                // Si hay usuario logueado → aquí agregas al carrito
+                console.log("Producto añadido:", boton.dataset.id);
+            });
+        });
 
     } catch (error) {
         console.error(error);
         contenedor.innerHTML = '<p class="error">Error al cargar los productos.</p>';
     }
-} // ✅ CIERRE CORRECTO
+}

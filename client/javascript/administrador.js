@@ -81,28 +81,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // fetchTotalSales: obtiene el monto total de ventas desde el backend (/api/admin/totalventas) y actualiza la vista
+    // async function fetchTotalSales() {
+    //     const totalSalesEl = document.getElementById('total-sales');
+    //     if (!totalSalesEl) return;
+    //     try {
+    //         let resp = await fetch(TOTALSALES_API_URL);
+    //         if (!resp.ok) {
+    //             console.warn(`GET totalventas falló con ${resp.status}, intentando fallback`);
+    //             resp = await fetch(FALLBACK_TOTALSALES_API_URL);
+    //         }
+    //         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    //         const data = await resp.json();
+    //         if (data && typeof data.total !== 'undefined') {
+    //             totalSalesEl.textContent = `$${Number(data.total).toFixed(2)}`;
+    //         } else if (Array.isArray(data)) {
+    //             // Si el endpoint devolviera array de productos, calcular localmente
+    //             const total = data.reduce((acc, p) => acc + (Number(p.precio || p.Precio || 0) * Number(p.ventas || p.Ventas || 0)), 0);
+    //             totalSalesEl.textContent = `$${total.toFixed(2)}`;
+    //         }
+    //     } catch (err) {
+    //         console.error('Error al obtener ventas totales:', err);
+    //     }
+    //}
+
     async function fetchTotalSales() {
-        const totalSalesEl = document.getElementById('total-sales');
-        if (!totalSalesEl) return;
-        try {
-            let resp = await fetch(TOTALSALES_API_URL);
-            if (!resp.ok) {
-                console.warn(`GET totalventas falló con ${resp.status}, intentando fallback`);
-                resp = await fetch(FALLBACK_TOTALSALES_API_URL);
-            }
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const data = await resp.json();
-            if (data && typeof data.total !== 'undefined') {
-                totalSalesEl.textContent = `$${Number(data.total).toFixed(2)}`;
-            } else if (Array.isArray(data)) {
-                // Si el endpoint devolviera array de productos, calcular localmente
-                const total = data.reduce((acc, p) => acc + (Number(p.precio || p.Precio || 0) * Number(p.ventas || p.Ventas || 0)), 0);
-                totalSalesEl.textContent = `$${total.toFixed(2)}`;
-            }
-        } catch (err) {
-            console.error('Error al obtener ventas totales:', err);
+    try {
+        const response = await fetch("http://localhost:3000/api/productos");
+        const data = await response.json();
+
+        console.log("Productos cargados:", data);
+
+        if (response.ok) {
+            const totalSalesEl = document.getElementById("total-sales");
+            if (!totalSalesEl) return;
+
+            let total = 0;
+
+            data.forEach((producto) => {
+                const precio = Number(producto.precio || 0);
+                const vendidos = Number(producto.vendidos || 0);
+
+                total += precio * vendidos;
+            });
+
+            totalSalesEl.textContent = `$${total.toFixed(2)}`;
+        } else {
+            console.error("Error al obtener productos:", data.mensaje);
         }
+    } catch (error) {
+        console.error("Error de conexión:", error);
     }
+}
+
 
     // renderProductos: Dibuja filas <tr> y celdas <td> en la tabla de inventario
     // - Se espera una lista de objetos producto con campos: id, titulo, artista, genero, precio, disponibilidad, ventas, imagen
@@ -290,7 +320,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validar que los campos de texto estén llenos, y que exista una imagen (sea archivo o URL de texto)
         if (!titulo || !artista || !descripcion || !precio || !disponibilidad || !genero || !hasImage) {
-            alert('Por favor, completa todos los campos (incluyendo el archivo de imagen) antes de añadir el producto.');
+            Swal.fire({
+                    title: 'Datos incompletos',
+                    text: 'Por favor, completa todos los campos antes de añadir el producto',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
             return;
         }
 
@@ -350,15 +391,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (data && data.success) {
-                    alert('Producto añadido correctamente.');
+                    Swal.fire({
+                    title: 'Producto añadido',
+                    text: 'Se añadio el producto con exito',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                     loadProducts();
                     form.reset();
                 } else {
-                    alert('Error al añadir el producto: ' + (data.message || 'Respuesta inesperada.'));
+                    Swal.fire({
+                    title: 'Error al añadir el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
                 }
             } catch (err) {
                 console.error('Error al añadir producto:', err);
-                alert('Error al añadir el producto. Ver consola para detalles.');
+                Swal.fire({
+                    title: 'Error al añadir el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
             }
         }
 
@@ -394,12 +468,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultItem = document.querySelector('#search-results .result-item');
             const id = resultItem?.dataset.id;
             if (!id) {
-                alert('No se encontró el ID del producto para modificar. Realiza una búsqueda primero.');
+                Swal.fire({
+                    title: 'No se encontró el ID del producto para modificar',
+                    text: 'Realiza una búsqueda primero',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
                 return;
             }
             const form = resultItem.querySelector('.update-form');
             if (!form) {
-                alert('Formulario de modificación no encontrado.');
+                Swal.fire({
+                    title: 'Formulario de modificación no encontrado',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
                 return;
             }
             const tituloVal = (form.querySelector('#m-title')?.value ?? '').trim();
@@ -416,7 +512,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validar que haya algún campo para actualizar (al menos titulo o precio por ejemplo)
             if (!tituloVal && !artistaVal && !descripcionVal && !precioVal && !disponibilidadVal && !generoVal && !imagenVal && !ofertaVal) {
-                alert('Modificación vacía: cambia al menos un campo antes de guardar.');
+                Swal.fire({
+                    title: 'Modificación vacía',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
                 return;
             }
 
@@ -471,15 +578,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const data = await resp.json();
                 if (data && data.success) {
-                    alert('Producto modificado correctamente.');
+                    Swal.fire({
+                    title: 'Producto modificado',
+                    text: 'Se realizo la accion exitosamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
                     loadProducts();
                     document.getElementById('search-results').classList.add('hidden');
                 } else {
-                    alert('No se pudo modificar el producto: ' + (data.message || 'Respuesta inesperada'));
+                    Swal.fire({
+                    title: 'No se pudo modificar el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
                 }
             } catch (err) {
                 console.error('Error modificando producto:', err);
-                alert('Error modificando producto. Revisa la consola para más detalles.');
+                Swal.fire({
+                    title: 'No se pudo modificar el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
             }
         });
     }
@@ -492,7 +632,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultItem = document.querySelector('#search-results .result-item');
             const id = resultItem?.dataset.id;
             if (!id) {
-                alert('No se encontró el ID del producto para eliminar.');
+                Swal.fire({
+                    title: 'No se encontró el ID del producto para eliminar',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                
                 return;
             }
             const primary = `${apiOrigin}/api/admin/inventario/${id}`;
@@ -509,15 +661,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const data = await resp.json();
                 if (data && data.success) {
-                    alert('Producto eliminado correctamente.');
+                    Swal.fire({
+                    title: 'Producto eliminado',
+                    text: 'Se realizo la accion correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                     document.getElementById('search-results').classList.add('hidden');
                     loadProducts();
                 } else {
-                    alert('No se pudo eliminar el producto: ' + (data.message || 'Respuesta inesperada.'));
+                    Swal.fire({
+                    title: 'No se pudo eliminar el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
                 }
             } catch (err) {
                 console.error('Error eliminando producto:', err);
-                alert('Error eliminando producto. Revisa la consola para más detalles.');
+                Swal.fire({
+                    title: 'No se pudo eliminar el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
             }
         });
     }

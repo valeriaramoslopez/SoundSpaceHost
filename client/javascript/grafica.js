@@ -181,15 +181,15 @@ function updateStats(data) {
 async function loadData() {
     try {
         // Mostrar indicador de carga
-        Swal.fire({
-            title: 'Cargando datos...',
-            allowOutsideClick: false,
-            background: '#1a1a1a',
-            color: '#fff',
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+        // Swal.fire({
+        //     title: 'Cargando datos...',
+        //     allowOutsideClick: false,
+        //     background: '#1a1a1a',
+        //     color: '#fff',
+        //     didOpen: () => {
+        //         Swal.showLoading();
+        //     }
+        // });
         
         // Obtener datos de la API real
         const productsData = await fetchSalesData();
@@ -201,24 +201,24 @@ async function loadData() {
         Swal.close();
         
         // Mostrar mensaje de éxito
-        Swal.fire({
-            icon: 'success',
-            title: 'Datos cargados',
-            text: `Se han cargado ${productsData.length} productos`,
-            timer: 1500,
-            showConfirmButton: false,
-            background: '#1a1a1a',
-            color: '#fff'
-        });
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Datos cargados',
+        //     text: `Se han cargado ${productsData.length} productos`,
+        //     timer: 1500,
+        //     showConfirmButton: false,
+        //     background: '#1a1a1a',
+        //     color: '#fff'
+        // });
     } catch (error) {
-        console.error('Error al cargar datos:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error de conexión',
-            text: 'No se pudieron cargar los datos de la API. Verifica que el servidor esté ejecutándose.',
-            background: '#1a1a1a',
-            color: '#fff'
-        });
+        // console.error('Error al cargar datos:', error);
+        // Swal.fire({
+        //     icon: 'error',
+        //     title: 'Error de conexión',
+        //     text: 'No se pudieron cargar los datos de la API. Verifica que el servidor esté ejecutándose.',
+        //     background: '#1a1a1a',
+        //     color: '#fff'
+        // });
     }
 }
 

@@ -31,9 +31,9 @@ exports.enviarNotaCompra = async (req, res) => {
 
     if (!user) return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
 
-    // 2) Obtener items del carrito para el usuario
+    // 2) Obtener items del carrito para el usuario (incluye product_id para actualizar stock)
     const [items] = await pool.query(`
-      SELECT c.id as carrito_id, c.cantidad, c.nombre_imagen, p.titulo, p.precio, p.oferta
+      SELECT c.id as carrito_id, c.producto_id, c.cantidad, c.nombre_imagen, p.titulo, p.precio, p.oferta, p.disponibilidad
       FROM carrito c
       JOIN productos p ON c.producto_id = p.id
       WHERE c.usuario_id = ?
@@ -198,6 +198,29 @@ exports.enviarNotaCompra = async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
+
+    // 6) Reducir stock en BD (disponibilidad) por la cantidad que se compró
+    // Usamos una transacción para asegurar consistencia
+    try {
+      await pool.query('START TRANSACTION');
+      for (const item of items) {
+        const qtyToReduce = Number(item.cantidad) || 1;
+        // Evitar valores negativos
+        const [updateResult] = await pool.query(
+          'UPDATE productos SET disponibilidad = GREATEST(disponibilidad - ?, 0) WHERE id = ?'
+          , [qtyToReduce, item.producto_id]
+        );
+        if (updateResult.affectedRows === 0) {
+          console.warn(`No se actualizó stock para producto_id ${item.producto_id}`);
+        }
+      }
+      await pool.query('COMMIT');
+    } catch (txErr) {
+      console.error('Error actualizando stock en transacción, rollback:', txErr.message);
+      try { await pool.query('ROLLBACK'); } catch (rbErr) { console.error('Error en rollback:', rbErr.message); }
+      // No block email success; just inform
+      return res.status(500).json({ success: false, message: 'Error actualizando stock: ' + txErr.message });
+    }
 
     return res.json({ success: true, message: 'Nota enviada correctamente' });
 

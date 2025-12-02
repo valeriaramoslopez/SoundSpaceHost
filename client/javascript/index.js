@@ -1260,6 +1260,18 @@ function inicializarModal() {
         
         // Deshabilitar botón de agregar al carrito si no hay stock
         if (agregarCarritoBtn) {
+            Swal.fire({
+                    title: 'Producto agotado, no se puede agregar al carrito',
+                    text: 'Suscríbete y sé de los primeros en obtenerlo cuando vuelva',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+            });
             agregarCarritoBtn.disabled = existenciasDisponibles === 0;
             agregarCarritoBtn.style.opacity = existenciasDisponibles === 0 ? '0.5' : '1';
             agregarCarritoBtn.style.cursor = existenciasDisponibles === 0 ? 'not-allowed' : 'pointer';

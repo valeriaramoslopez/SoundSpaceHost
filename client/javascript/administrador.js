@@ -80,30 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // fetchTotalSales: obtiene el monto total de ventas desde el backend (/api/admin/totalventas) y actualiza la vista
-    // async function fetchTotalSales() {
-    //     const totalSalesEl = document.getElementById('total-sales');
-    //     if (!totalSalesEl) return;
-    //     try {
-    //         let resp = await fetch(TOTALSALES_API_URL);
-    //         if (!resp.ok) {
-    //             console.warn(`GET totalventas falló con ${resp.status}, intentando fallback`);
-    //             resp = await fetch(FALLBACK_TOTALSALES_API_URL);
-    //         }
-    //         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    //         const data = await resp.json();
-    //         if (data && typeof data.total !== 'undefined') {
-    //             totalSalesEl.textContent = `$${Number(data.total).toFixed(2)}`;
-    //         } else if (Array.isArray(data)) {
-    //             // Si el endpoint devolviera array de productos, calcular localmente
-    //             const total = data.reduce((acc, p) => acc + (Number(p.precio || p.Precio || 0) * Number(p.ventas || p.Ventas || 0)), 0);
-    //             totalSalesEl.textContent = `$${total.toFixed(2)}`;
-    //         }
-    //     } catch (err) {
-    //         console.error('Error al obtener ventas totales:', err);
-    //     }
-    //}
-
     async function fetchTotalSales() {
     try {
         const response = await fetch("http://localhost:3000/api/productos");
@@ -357,100 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const fallbackAdminUrl = `http://localhost:3000/api/admin/inventario`;
 
         // 3. Llamar a la nueva función de fetch con FormData
-        addProductFormDataFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, formData);
-
-        // Llamar a la API para añadir el producto; si falla en origen, intentar fallback (POST JSON)
-        /*async function addProductFetch(primary, fallback, payload) {
-            try {
-                console.info('Intentando añadir producto en:', primary);
-                let resp = await fetch(primary, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!resp.ok) {
-                    console.warn(`Respuesta ${resp.status} desde ${primary}, intentando fallback ${fallback}`);
-                    resp = await fetch(fallback, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                }
-                if (!resp.ok) {
-                    const text = await resp.text();
-                    throw new Error(`HTTP ${resp.status} - ${text}`);
-                }
-
-                // Intentar parsear como JSON; si no es JSON, fallo manejable
-                let data;
-                try {
-                    data = await resp.json();
-                } catch (parseErr) {
-                    const rawText = await resp.text();
-                    throw new Error(`La respuesta no es JSON válido: ${parseErr.message}. Contenido: ${rawText}`);
-                }
-
-                if (data && data.success) {
-                    Swal.fire({
-                    title: 'Producto añadido',
-                    text: 'Se añadio el producto con exito',
-                    icon: 'success',
-                    confirmButtonText: 'Continuar',
-                    showClass: {
-                        popup: 'animate__animated animate__zoomIn'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__zoomOut'
-                    }
-                });
-                    loadProducts();
-                    form.reset();
-                } else {
-                    Swal.fire({
-                    title: 'Error al añadir el producto',
-                    text: 'Por favor, intentelo de nuevo',
-                    icon: 'error',
-                    confirmButtonText: 'Continuar',
-                    showClass: {
-                        popup: 'animate__animated animate__zoomIn'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__zoomOut'
-                    }
-                    });
-                }
-            } catch (err) {
-                console.error('Error al añadir producto:', err);
-                Swal.fire({
-                    title: 'Error al añadir el producto',
-                    text: 'Por favor, intentelo de nuevo',
-                    icon: 'error',
-                    confirmButtonText: 'Continuar',
-                    showClass: {
-                        popup: 'animate__animated animate__zoomIn'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__zoomOut'
-                    }
-                    });
-            }
-        }
-
-        const payload = {
-            titulo,
-            artista,
-            descripcion,
-            precio: Number(precio) || 0,
-            disponibilidad: Number(disponibilidad) || 0,
-            genero,
-            ventas: Number(ventas) || 0,
-            imagen,
-            oferta: Number(oferta) || 0
-        };
-
-        addProductFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, payload);*/
-            });
-        }
+        addProductFormDataFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, formData);        
+        });
+    }
 
     // Manejar submit del formulario (tecla Enter) fuera del click para evitar listeners duplicados
     const addForm = document.getElementById('add-product-form');

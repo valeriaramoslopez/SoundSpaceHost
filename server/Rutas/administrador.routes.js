@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const productoModelo = require('../Modelo/productoModelo');
+const productoModelo = require('../Modelo/productoModelo.js');
 
 // Ruta POST /api/admin/inventario
 // body: { titulo, artista, descripcion, precio, disponibilidad, genero, ventas?, imagen, oferta? }

@@ -81,28 +81,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // fetchTotalSales: obtiene el monto total de ventas desde el backend (/api/admin/totalventas) y actualiza la vista
+    // async function fetchTotalSales() {
+    //     const totalSalesEl = document.getElementById('total-sales');
+    //     if (!totalSalesEl) return;
+    //     try {
+    //         let resp = await fetch(TOTALSALES_API_URL);
+    //         if (!resp.ok) {
+    //             console.warn(`GET totalventas falló con ${resp.status}, intentando fallback`);
+    //             resp = await fetch(FALLBACK_TOTALSALES_API_URL);
+    //         }
+    //         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    //         const data = await resp.json();
+    //         if (data && typeof data.total !== 'undefined') {
+    //             totalSalesEl.textContent = `$${Number(data.total).toFixed(2)}`;
+    //         } else if (Array.isArray(data)) {
+    //             // Si el endpoint devolviera array de productos, calcular localmente
+    //             const total = data.reduce((acc, p) => acc + (Number(p.precio || p.Precio || 0) * Number(p.ventas || p.Ventas || 0)), 0);
+    //             totalSalesEl.textContent = `$${total.toFixed(2)}`;
+    //         }
+    //     } catch (err) {
+    //         console.error('Error al obtener ventas totales:', err);
+    //     }
+    //}
+
     async function fetchTotalSales() {
-        const totalSalesEl = document.getElementById('total-sales');
-        if (!totalSalesEl) return;
-        try {
-            let resp = await fetch(TOTALSALES_API_URL);
-            if (!resp.ok) {
-                console.warn(`GET totalventas falló con ${resp.status}, intentando fallback`);
-                resp = await fetch(FALLBACK_TOTALSALES_API_URL);
-            }
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const data = await resp.json();
-            if (data && typeof data.total !== 'undefined') {
-                totalSalesEl.textContent = `$${Number(data.total).toFixed(2)}`;
-            } else if (Array.isArray(data)) {
-                // Si el endpoint devolviera array de productos, calcular localmente
-                const total = data.reduce((acc, p) => acc + (Number(p.precio || p.Precio || 0) * Number(p.ventas || p.Ventas || 0)), 0);
-                totalSalesEl.textContent = `$${total.toFixed(2)}`;
-            }
-        } catch (err) {
-            console.error('Error al obtener ventas totales:', err);
+    try {
+        const response = await fetch("http://localhost:3000/api/productos");
+        const data = await response.json();
+
+        console.log("Productos cargados:", data);
+
+        if (response.ok) {
+            const totalSalesEl = document.getElementById("total-sales");
+            if (!totalSalesEl) return;
+
+            let total = 0;
+
+            data.forEach((producto) => {
+                const precio = Number(producto.precio || 0);
+                const vendidos = Number(producto.vendidos || 0);
+
+                total += precio * vendidos;
+            });
+
+            totalSalesEl.textContent = `$${total.toFixed(2)}`;
+        } else {
+            console.error("Error al obtener productos:", data.mensaje);
         }
+    } catch (error) {
+        console.error("Error de conexión:", error);
     }
+}
+
 
     // renderProductos: Dibuja filas <tr> y celdas <td> en la tabla de inventario
     // - Se espera una lista de objetos producto con campos: id, titulo, artista, genero, precio, disponibilidad, ventas, imagen

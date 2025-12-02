@@ -140,21 +140,44 @@
                         </div>
                         
                         <div id="transfer-form" class="payment-form hidden">
-                            <p class="payment-info-text">Al finalizar la compra, se te proporcionarán los datos de la cuenta bancaria (CLABE, Banco) para realizar la transferencia SPEI. Tienes 24 horas para completar el pago.</p>
-                            <div class="form-group">
-                                <label for="email-transfer">Email para Recibir Instrucciones</label>
-                                <input type="email" id="email-transfer" placeholder="ejemplo@correo.com" required>
-                            </div>
-                        </div>
+                        <h4 class="form-title-secondary"><i class="fas fa-info-circle"></i> Instrucciones para Transferencia SPEI</h4>
+                        <p class="payment-info-text">Necesitamos tu información para enviarte la **Referencia SPEI única** y las instrucciones detalladas por correo electrónico. Tienes 24 horas para completar el pago.</p>
                         
-                        <div id="oxxo-form" class="payment-form hidden">
-                            <p class="payment-info-text">Al finalizar la compra, recibirás un código de barras en tu email, con el que podrás pagar en cualquier tienda OXXO o 7-Eleven. Se puede aplicar una comisión y el pago se acredita en 1-2 días hábiles.</p>
-                            <div class="form-group">
-                                <label for="email-oxxo">Email para Recibir Código de Barras</label>
-                                <input type="email" id="email-oxxo" placeholder="ejemplo@correo.com" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="transfer-email">Email de Contacto</label>
+                            <input type="email" id="transfer-email" placeholder="ejemplo@correo.com" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="transfer-nombre-completo">Nombre del Titular de la Cuenta (Para Referencia)</label>
+                            <input type="text" id="transfer-nombre-completo" placeholder="Nombre completo de quien paga la transferencia" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transfer-banco">Banco Emisor de la Transferencia</label>
+                            <input type="text" id="transfer-banco" placeholder="Ej: BBVA, Banamex, etc." required>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="oxxo-form" class="payment-form hidden">
+                        <h4 class="form-title-secondary"><i class="fas fa-barcode"></i> Instrucciones para Pago en Efectivo</h4>
+                        <p class="payment-info-text">Al finalizar la compra, recibirás el **código de barras de referencia** en tu email. Puedes pagar en cualquier tienda participante. El pago se acredita en 1-2 días hábiles.</p>
+                        
+                        <div class="form-group">
+                            <label for="oxxo-email">Email de Contacto</label>
+                            <input type="email" id="oxxo-email" placeholder="ejemplo@correo.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oxxo-telefono">Teléfono de Contacto (Opcional, para notificaciones)</label>
+                            <input type="tel" id="oxxo-telefono" placeholder="55 1234 5678 (opcional)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="oxxo-identificacion">Nombre para la Referencia de Pago</label>
+                            <input type="text" id="oxxo-identificacion" placeholder="Nombre completo del comprador" required>
+                        </div>
                     </div>
                     
                 </section>

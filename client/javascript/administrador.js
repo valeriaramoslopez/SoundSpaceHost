@@ -259,12 +259,21 @@ document.addEventListener('DOMContentLoaded', () => {
         addBtn.addEventListener('click', (e) => {
         console.info('btn-add-product clicked');
         e.preventDefault();
+
         // Obtener los valores del formulario de alta
         const form = document.getElementById('add-product-form');
         if (!form) {
             console.error('Formulario de alta no encontrado (id: add-product-form)');
             return;
         }
+
+        // 1. Crear el objeto FormData que encapsula el formulario y los archivos
+        const formData = new FormData();
+        
+        // Obtener la referencia al input type="file"
+        const imageFileEl = form.querySelector('#p-image-file'); // Asegúrate de usar el ID correcto
+        const imageFile = imageFileEl ? imageFileEl.files[0] : null;
+
         // Usar los IDs reales del HTML (p- prefix)
         const titulo = form.querySelector('#p-title') ? form.querySelector('#p-title').value.trim() : '';
         const artista = form.querySelector('#p-artist') ? form.querySelector('#p-artist').value.trim() : '';
@@ -277,18 +286,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const imagen = form.querySelector('#p-image') ? form.querySelector('#p-image').value.trim() : '';
         const oferta = form.querySelector('#p-offer') ? form.querySelector('#p-offer').value.trim() : '';
 
-        // Validar que todos los campos estén llenos
-        // Validar los campos que existen en el formulario; `ventas` es opcional en el form (usa default 0)
-        if (!titulo || !artista || !descripcion || !precio || !disponibilidad || !genero || !imagen) {
-            alert('Por favor, completa todos los campos antes de añadir el producto.');
+        const hasImage = imageFile || imagen; // Verifica si existe el archivo O si se llenó el campo de texto (legacy)
+
+        // Validar que los campos de texto estén llenos, y que exista una imagen (sea archivo o URL de texto)
+        if (!titulo || !artista || !descripcion || !precio || !disponibilidad || !genero || !hasImage) {
+            alert('Por favor, completa todos los campos (incluyendo el archivo de imagen) antes de añadir el producto.');
             return;
         }
+
+        // 2. Añadir todos los campos, incluyendo el archivo, al FormData
+        formData.append('title', titulo); // Nota: Multer puede usar los nombres del form
+        formData.append('titulo', titulo);
+        formData.append('artista', artista);
+        formData.append('descripcion', descripcion);
+        formData.append('precio', precio);
+        formData.append('disponibilidad', disponibilidad);
+        formData.append('genero', genero);
+        formData.append('oferta', oferta);
+        formData.append('ventas', 0); // Fijo a 0 en alta
+
+        // ¡Añadir el archivo con el nombre que espera Multer!
+        // El nombre 'imageFile' debe coincidir con el .single('imageFile') en la ruta del backend
+        formData.append('imageFile', imageFile);
+        // Si el usuario completó el campo de texto con el nombre de la imagen,
+        // incluirlo para que el backend lo use como nombre final de archivo
+        if (imagen) formData.append('imagen', imagen);
 
         // Construir payload y URLs
         const fallbackAdminUrl = `http://localhost:3000/api/admin/inventario`;
 
+        // 3. Llamar a la nueva función de fetch con FormData
+        addProductFormDataFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, formData);
+
         // Llamar a la API para añadir el producto; si falla en origen, intentar fallback (POST JSON)
-        async function addProductFetch(primary, fallback, payload) {
+        /*async function addProductFetch(primary, fallback, payload) {
             try {
                 console.info('Intentando añadir producto en:', primary);
                 let resp = await fetch(primary, {
@@ -343,9 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
             oferta: Number(oferta) || 0
         };
 
-        addProductFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, payload);
+        addProductFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, payload);*/
             });
-            }
+        }
 
     // Manejar submit del formulario (tecla Enter) fuera del click para evitar listeners duplicados
     const addForm = document.getElementById('add-product-form');
@@ -404,15 +435,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const primary = `${apiOrigin}/api/admin/inventario/${id}`;
             const fallback = `http://localhost:3000/api/admin/inventario/${id}`;
             try {
-                console.info('Intentando actualizar producto', id, payload);
-                let resp = await fetch(primary, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!resp.ok) {
-                    console.warn(`PUT respondió ${resp.status} en primary, intentando fallback`);
-                    resp = await fetch(fallback, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                // Si se seleccionó un archivo, enviamos FormData (para permitir subir nueva imagen)
+                const imageFileEl = form.querySelector('#m-image-file');
+                const imageFile = imageFileEl ? imageFileEl.files[0] : null;
+                let resp;
+                if (imageFile) {
+                    console.info('Actualizando producto con imagen (FormData)', id, payload);
+                    const formData = new FormData();
+                    // Añadir solo los campos definidos para no sobrescribir con undefined
+                    Object.keys(payload).forEach(k => {
+                        const v = payload[k];
+                        if (typeof v !== 'undefined') formData.append(k, v);
+                    });
+                    formData.append('imageFile', imageFile);
+                    resp = await fetch(primary, { method: 'PUT', body: formData });
+                    if (!resp.ok) {
+                        console.warn(`PUT (FormData) respondió ${resp.status} en primary, intentando fallback`);
+                        resp = await fetch(fallback, { method: 'PUT', body: formData });
+                    }
+                } else {
+                    console.info('Actualizando producto (JSON)', id, payload);
+                    resp = await fetch(primary, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!resp.ok) {
+                        console.warn(`PUT respondió ${resp.status} en primary, intentando fallback`);
+                        resp = await fetch(fallback, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    }
                 }
                 if (!resp.ok) {
                     const text = await resp.text();
@@ -469,5 +520,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Error eliminando producto. Revisa la consola para más detalles.');
             }
         });
+    }
+
+    // Nueva función para enviar FormData (archivos)
+    async function addProductFormDataFetch(primary, fallback, formData) {
+        try {
+            console.info('Intentando añadir producto (FormData) en:', primary);
+            
+            let resp = await fetch(primary, {
+                method: 'POST',
+                // NO se establece Content-Type para FormData. El navegador lo hace automáticamente.
+                body: formData 
+            });
+
+            if (!resp.ok) {
+                console.warn(`Respuesta ${resp.status} desde ${primary}, intentando fallback ${fallback}`);
+                resp = await fetch(fallback, {
+                    method: 'POST',
+                    body: formData
+                });
+            }
+            if (!resp.ok) {
+                const text = await resp.text();
+                throw new Error(`HTTP ${resp.status} - ${text}`);
+            }
+
+            let data;
+            try {
+                data = await resp.json();
+            } catch (parseErr) {
+                const rawText = await resp.text();
+                throw new Error(`La respuesta no es JSON válido: ${parseErr.message}. Contenido: ${rawText}`);
+            }
+
+            if (data && data.success) {
+                alert('Producto añadido correctamente.');
+                loadProducts();
+                document.getElementById('add-product-form').reset(); // Limpiar el formulario
+            } else {
+                alert('Error al añadir el producto: ' + (data.message || 'Respuesta inesperada.'));
+            }
+        } catch (err) {
+            console.error('Error al añadir producto:', err);
+            alert('Error al añadir el producto. Ver consola para detalles.');
+        }
     }
 });

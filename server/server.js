@@ -9,6 +9,7 @@ const captchaRutas = require('./Rutas/captchaRutas');
 const chatRutas = require('./Rutas/chatRutas');
 const chatAdminRutas = require('./Rutas/chatAdminRutas');
 const carritoRutas = require('./Rutas/carrito.routes');
+const notaRutas = require('./Rutas/nota.routes');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
@@ -51,6 +52,7 @@ app.get('/', (req, res) => {
 app.use('/api/productos', baseRutas);
 app.use('/api/admin', adminRutas);
 app.use('/api/carrito', carritoRutas);
+app.use('/api/nota', notaRutas);
 app.use('/api/usuarios', usuarioRutas);
 app.use('/api/correo', correoRutas);  
 app.use('/api/captcha', captchaRutas);

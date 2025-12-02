@@ -86,12 +86,14 @@ class AdministradorAccesibilidad {
         console.log("🔍 Botón accesibilidad:", boton);
         console.log("🔍 Panel accesibilidad:", panel);
 
-        boton.addEventListener('click', () => {
-            console.log("👆 Clic en botón accesibilidad");
-            panel.classList.toggle('show');
-        });
+        if (boton) {
+            boton.addEventListener('click', () => {
+                console.log("👆 Clic en botón accesibilidad");
+                if (panel) panel.classList.toggle('show');
+            });
+        }
 
-        if (cerrar) {
+        if (cerrar && panel) {
             cerrar.addEventListener('click', () => {
                 console.log("❌ Cerrar accesibilidad");
                 panel.classList.remove('show');

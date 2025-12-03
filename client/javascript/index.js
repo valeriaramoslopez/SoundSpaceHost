@@ -2028,7 +2028,7 @@ async function verifySecurityQuestion() {
     }
 }
 
-// Función para mostrar el formulario de login (ya debería existir, pero por si acaso)
+// Función para mostrar el formulario de login
 function showLogin() {
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('registerForm').style.display = 'none';
@@ -2039,6 +2039,25 @@ function showLogin() {
         securityQuestionForm.style.display = 'none';
     }
 }
+
+// Función para mostrar el formulario de registro
+function showRegister() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    
+    const securityQuestionForm = document.getElementById('securityQuestionForm');
+    if (securityQuestionForm) {
+        securityQuestionForm.style.display = 'none';
+    }
+    
+    // Scroll a la sección de registro si estamos en usuario.html
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
 // Función para alternar visibilidad de contraseña - CORREGIDA
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);

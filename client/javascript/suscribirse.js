@@ -102,6 +102,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para validar email
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple regex para validar formato de email
+    return emailRegex.test(email); // Retorna true si es válido, false si no
 }

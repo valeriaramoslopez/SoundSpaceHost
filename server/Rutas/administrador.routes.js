@@ -10,19 +10,19 @@ const verificarAdmin = require('../Middleware/verificarAdmin');
 const ctrl = require('../Controladores/adminController');
 
 // POST crear producto
-router.post('/inventario', verificarToken, verificarAdmin, upload.single('imageFile'), ctrl.createProducto);
+router.post('/inventario',  upload.single('imageFile'), ctrl.createProducto);
 
 // GET obtener inventario
-router.get('/inventario', verificarToken, verificarAdmin, ctrl.getInventario);
+router.get('/inventario',  ctrl.getInventario);
 
 // GET total ventas
-router.get('/totalventas', verificarToken, verificarAdmin, ctrl.totalVentas);
+router.get('/totalventas',  ctrl.totalVentas);
 
 // PUT actualizar producto
-router.put('/inventario/:id', verificarToken, verificarAdmin, upload.single('imageFile'), ctrl.updateProducto);
+router.put('/inventario/:id', upload.single('imageFile'), ctrl.updateProducto);
 
 // DELETE eliminar producto
-router.delete('/inventario/:id', verificarToken, verificarAdmin, ctrl.deleteProducto);
+router.delete('/inventario/:id',  ctrl.deleteProducto);
 
 
 module.exports = router;

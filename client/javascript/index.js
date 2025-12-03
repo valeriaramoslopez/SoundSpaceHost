@@ -310,6 +310,10 @@ function refreshCaptcha() {
 
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
+=======
+/*PARA LOGIN*/
+>>>>>>> 972e8c532c3e23d4392056306b2036fa630a7944
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
@@ -458,6 +462,37 @@ document.addEventListener("DOMContentLoaded", () => {
             accountPanel.classList.remove("active");
         });
     }
+<<<<<<< HEAD
+
+    // Logout
+    // Logout CORREGIDO
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        // Mostrar SweetAlert primero
+        Swal.fire({
+            title: 'Sesión cerrada correctamente',
+            text: 'Gracias por visitarnos',
+            icon: 'success',
+            confirmButtonText: 'Continuar',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        }).then((result) => {
+            // Cuando el usuario hace clic en "Continuar", ejecutar el logout
+            if (result.isConfirmed) {
+                localStorage.removeItem("usuario");
+                localStorage.removeItem("token");
+                localStorage.removeItem("rol"); // También remover el rol si existe
+                window.location.href = "paginaprincipal.html";
+            }
+        });
+    });
+}
+});
+=======
 });
 
 //LOGOUT
@@ -528,6 +563,7 @@ if (logoutBtn) {
 }
 //////////////////////////////////////////////////////////////////////////////////////7
 
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -807,6 +843,7 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         return;
     }
     const cantidad = modalController ? modalController.getCantidad() : 1;
+    
     const producto = {
         nombre: document.getElementById("modalNombre").textContent,
         precio: document.getElementById("modalPrecio").textContent,
@@ -815,6 +852,8 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         productoId
     };
     
+<<<<<<< HEAD
+=======
     console.log("Producto añadido al carrito (UI):", producto);
 
     // Llamar a la API para guardar en la tabla carrito: { usuario_id, producto_id, cantidad }
@@ -843,14 +882,23 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
     };
 
     try {
+        const token = localStorage.getItem("token");
+        
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
         let resp = await fetch(primary, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify(payload)
         });
         if (!resp.ok) {
             console.warn(`POST carrito add respondió ${resp.status} en primary, intentando fallback`);
-            resp = await fetch(fallback, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            resp = await fetch(fallback, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
         }
         if (!resp.ok) {
             const text = await resp.text();
@@ -876,6 +924,7 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         this.innerHTML = originalText;
         this.style.background = '#ff5252';
     }, 2000);
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     // Aquí puedes agregar la lógica para añadir al carrito
     Swal.fire({
         title: 'Producto añadido al carrito',
@@ -894,11 +943,22 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
 
 async function actualizarContadorCarritoDesdeBackend(usuarioId) {
     try {
-        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`);
+        const token = localStorage.getItem("token");
+        
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`, { headers });
+        if (!resp.ok) {
+            console.error("Error en respuesta del carrito:", resp.status);
+            return;
+        }
         const data = await resp.json();
 
         const cartCount = document.getElementById("cartCount");
-        if (cartCount) {
+        if (cartCount && data.data && Array.isArray(data.data)) {
             cartCount.textContent = data.data.length;
         }
     } catch (error) {
@@ -1026,8 +1086,14 @@ function configurarFiltros() {
     });
 }
 
+<<<<<<< HEAD
+// Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
+// Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
+function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
+=======
 // Función para abrir el modal con datos del producto 
 function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta, productoId) {
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 
@@ -1100,12 +1166,15 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
         console.log("Modal abierto correctamente. Existencias:", existencias);
     } else {
         console.error("No se encontró el modal");
+<<<<<<< HEAD
+=======
     }
     // Guardar id y nombre_imagen (archivo) para el botón de agregar al carrito
     if (agregarBtn) {
         agregarBtn.dataset.productoId = productoId || '';
         // 'imagen' es el filename (dataset.imagen), no la URL; si se pasa URL, extract filename
         agregarBtn.dataset.nombreImagen = imagen || '';
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     }
 }
 
@@ -1604,7 +1673,11 @@ window.mostrarTodosProductos = function() {
     if (noResults) noResults.remove();
     if (contador) contador.remove();
     
+<<<<<<< HEAD
+    console.log("🔄 Búsqueda limpiada - Mostrando todos los productos");
+=======
     console.log("Búsqueda limpiada - Mostrando todos los productos");
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
 };
 
 // Remover resaltado de términos - MEJORADA

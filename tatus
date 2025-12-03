@@ -1,0 +1,99 @@
+[33m55f4c0e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mGINA[m[33m, [m[1;31morigin/GINA[m[33m)[m Modifique telefono
+[33m3250fed[m[33m ([m[1;31morigin/master[m[33m)[m Fix: Fixing verifyToken in nota
+[33m489ccac[m Fix: Fixing verifyToken in carrito
+[33m86b0690[m Fix: Fixing administrador rutas, implementenado verificacion de token y admin
+[33m1c88d0c[m Fix: Fixing links to pagina principal
+[33m43538bc[m Feat: Aumento de numero de ventas por producto
+[33m679eca2[m Fix: Validation compra problems and design improvement in admin
+[33m469ae1f[m Administrador protegido
+[33m05995c9[m Fix: Fixing rutas, controladores y modelo
+[33ma6c6a8c[m Feat: Decrease in stock when user pays
+[33m96b01b2[m Feat: Improvement of extra payment methods
+[33m689c539[m Feat: Nota de Compra se envía al correo
+[33m343db52[m Fix: Conflicts resolved in administrator.js and administrator.routes.js
+[33m0d5202c[m Feat: Upload images in panel de administrador, adding renaming of images
+[33ma6d0f49[m Feat: Upload images in panel de administrador
+[33mac6304a[m Conflicto resuelto entre Dulce y master
+[33mceb274f[m Se agrego el contador en el carrito
+[33m78b72e3[m Adicion de redes sociales
+[33m721e9db[m Errores
+[33mc8e9add[m Adicion de alerts
+[33m18e0018[m Adicion de alerts
+[33m55e42ae[m Adicion de total de ventas
+[33m383d04b[m Adicion de total de ventas
+[33mdb81562[m x
+[33m569e16d[m Merge remote-tracking branch 'origin/master' into Dulce
+[33mc956bbf[m x
+[33mceb8238[m Fix: Fixing stuff carrito
+[33m276b3d8[m Fix: Fixing conflict
+[33meab9cf8[m Fix: Fixing stuff
+[33m83d7fda[m Fix: Carrito working now
+[33m4adb7d9[m Integracion de mensajes
+[33md3ecbb3[m Fix: Conflicts resolved
+[33mfecf215[m Fix: Conflicts resolved in server.js
+[33m33493ac[m Fix: Conflicts resolved in server.js
+[33m90ee97c[m Feat: Updating json
+[33m0129c76[m Feat: Lógica para Tienda y Carrito
+[33m9d6bc2c[m Feat: Se agregaron las apis para suscrripcion, admin y carrito
+[33mfb7ec8c[m Feat: Frontend Compra
+[33m371a220[m Feat: Agregar productos al carrito
+[33m2a1bec0[m Feat: Alta, Baja y Modificación en el panel de Admin
+[33m52bfacb[m Cambios en el header y footer de la gráfica
+[33m7177f54[m Correccion de correo
+[33mf0a367e[m Adicion de grafica al panel de administracion
+[33m79510ce[m Manejo de errores
+[33m98c237c[m Grafica y api modificacion
+[33m5eb67a1[m arreglo conflicto y dejo lo de ELIA
+[33m6aeb653[m[33m ([m[1;32mELIA[m[33m)[m Subiendo mis cambios temporalmente en la rama ELIA
+[33m0a142d6[m Fix: Conflict administrador.html fixed
+[33m5bfb6b1[m Feat: Frontend del panel de administración
+[33m11bcb28[m Chat corregido
+[33m1fa8bb2[m Aparecen los productos en la pagina principal
+[33m350e2db[m Se agregó la aportación del chat
+[33ma2ad510[m[33m ([m[1;31morigin/Dulce[m[33m)[m Algunas imagenes no se veían en los encabezados y eso se soluciono
+[33m3e8931c[m[33m ([m[1;31morigin/ELIA[m[33m)[m Imagen fondo agregada al back
+[33m78d1309[m Eliminacion de carpeta imagenes en front
+[33m990a258[m Imagenes desde back
+[33m5990549[m[33m ([m[1;31morigin/Valeria[m[33m, [m[1;32mValeria[m[33m)[m Modifique la función para que aparezca el nombre en la página de tienda
+[33maa1f05b[m Le agregue un script a la de contactanos porque no jalaba
+[33md1a2252[m Me falto poner una ruta
+[33mc5f5f30[m Nombre en archivos
+[33me3eb30b[m Ya jala
+[33m6478530[m Se verifica el token y se coloco lo de Middleware
+[33m285590d[m Ya funciona y ya valida el captcha
+[33m47d265e[m Ya se puede ver el nombre de los usuarios que inician sesion en todas las páginas
+[33m53f5f8c[m Lo de accesibilidad ya se puede quedar guardado en cada usuario cuando inicie sesión
+[33m422c706[m Envio de correo de suscripcion
+[33m99e121d[m Envio de mensaje al enviar correo
+[33mfbcbdb2[m Envio de correo de contacto
+[33mf0a1b84[m[33m ([m[1;32mDulce[m[33m)[m Se agregó lo de inicio de sesión y lo de mostrar nombres de usuarios en las página
+[33me1169f2[m Se agregó lo de inicio de sesión y lo de mostrar nombres de usuarios en las páginas
+[33m3a7a1af[m Cambios guardados
+[33me04e8b0[m Lo de registrarse ya quedó, se van guardando en la base de datos
+[33mfda7425[m Merge branch 'Dulce' of https://github.com/DelgadoLia/Ecommerce-API-SoundSpace into Dulce
+[33mc3ee694[m Fix: Deleting line in carrito.css
+[33m9f34033[m Merge remote-tracking branch 'origin/main'
+[33m2cbd390[m Accesibilidad listo
+[33m3693bd7[m Trate de agregar lo de accesibilidad
+[33m022294a[m Funcionan los de búsqueda que se encuentran en Tienda y en preguntas frecuentes
+[33m44670e9[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Adicion de filtrar por categorias y ofertas
+[33ma8afe7f[m Adicion de ruta de ofertas en db productos
+[33m8d5e9f7[m Adicion de oferta a la db productos
+[33mfe85371[m Vista de productos 1.2
+[33m002974e[m Merge remote-tracking branch 'origin/main'
+[33md71b40d[m mensaje arreglado
+[33m8c6ac6d[m Merge pull request #1 from DelgadoLia/ELIA
+[33ma30ee09[m db productos
+[33m081ec8d[m Eliminar node_modules del repositorio y agregar .gitignore
+[33m30e16ae[m Feat: Front Carrito
+[33m0fc76cd[m[33m ([m[1;31morigin/feature/carrito[m[33m)[m Fix: Deleting index.html
+[33m31b57a4[m Inicio del back
+[33m6734f01[m feat: agregar imágenes
+[33m4b49a02[m feat: agregar carpeta uploads
+[33mdc361d6[m feat: agregar modal de productos
+[33m82039f1[m Transicion en pagina principal
+[33m7a7b59b[m Se agrego lo básico del front
+[33m0db8860[m Merge branch 'main' of https://github.com/DelgadoLia/Ecommerce-API-SoundSpace
+[33mb36e3e1[m Estructura del proyecto
+[33mc4c6538[m Estructura del proyecto
+[33m4bcb91f[m Initial commit

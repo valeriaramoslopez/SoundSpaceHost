@@ -178,10 +178,23 @@
     async function loadCartItems(usuarioId) {
         const url = `${primaryBase}/${usuarioId}`;
         try {
-            let resp = await fetch(url);
+            // Obtener token del localStorage
+            const token = localStorage.getItem('token');
+            
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            let resp = await fetch(url, { headers });
             if (!resp.ok) {
+<<<<<<< HEAD
                 // intentar con fallback
                 resp = await fetch(`${fallbackBase}/${usuarioId}`);
+=======
+                // try fallback
+                resp = await fetch(`${fallbackBase}/${usuarioId}`, { headers });
+>>>>>>> 972e8c532c3e23d4392056306b2036fa630a7944
             }
             if (!resp.ok) {
                 const text = await resp.text();
@@ -319,6 +332,7 @@
     async function updateItemQuantity(carritoId, cantidad) {
         const url = `${primaryBase}/${carritoId}`;
         try {
+<<<<<<< HEAD
             // Incluir nombre_imagen si está presente en la fila
             const cartRow = document.querySelector(`.cart-item[data-carrito-id="${carritoId}"]`);
             const nombre_imagen = cartRow ? cartRow.dataset.nombreImagen : undefined;
@@ -326,6 +340,24 @@
             
             if (typeof nombre_imagen !== 'undefined' && nombre_imagen !== null && nombre_imagen !== '') {
                 body.nombre_imagen = nombre_imagen;
+=======
+                // Obtener token del localStorage
+                const token = localStorage.getItem('token');
+                
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                // Include nombre_imagen if present on the row
+                const cartRow = document.querySelector(`.cart-item[data-carrito-id="${carritoId}"]`);
+                const nombre_imagen = cartRow ? cartRow.dataset.nombreImagen : undefined;
+                let body = { cantidad };
+                if (typeof nombre_imagen !== 'undefined' && nombre_imagen !== null && nombre_imagen !== '') body.nombre_imagen = nombre_imagen;
+                let resp = await fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
+                if (!resp.ok) {
+                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'PUT', headers, body: JSON.stringify(body) });
+>>>>>>> 972e8c532c3e23d4392056306b2036fa630a7944
             }
             
             let resp = await fetch(url, {
@@ -371,9 +403,17 @@
     async function removeItem(carritoId) {
         const url = `${primaryBase}/${carritoId}`;
         try {
-            let resp = await fetch(url, { method: 'DELETE' });
+            // Obtener token del localStorage
+            const token = localStorage.getItem('token');
+            
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            let resp = await fetch(url, { method: 'DELETE', headers });
             if (!resp.ok) {
-                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'DELETE' });
+                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'DELETE', headers });
             }
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             

@@ -132,8 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const fallback = `http://localhost:3000/api/carrito/${usuario.id}`;
 
         try {
-            let resp = await fetch(primary);
-            if (!resp.ok) resp = await fetch(fallback);
+            const token = localStorage.getItem('token');
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            let resp = await fetch(primary, { headers });
+            if (!resp.ok) resp = await fetch(fallback, { headers });
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const json = await resp.json();
             const items = Array.isArray(json.data) ? json.data : [];
@@ -227,14 +233,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Podríamos extraer más campos si es necesario
 
         try {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
             let resp = await fetch(primary, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
                 body: JSON.stringify(formData)
             });
             if (!resp.ok) {
                 console.warn(`POST nota comp failed (${resp.status}) at primary, falling back to ${fallback}`);
-                resp = await fetch(fallback, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+                resp = await fetch(fallback, { method: 'POST', headers: headers, body: JSON.stringify(formData) });
             }
             if (!resp.ok) {
                 const text = await resp.text();

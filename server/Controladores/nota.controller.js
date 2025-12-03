@@ -51,8 +51,18 @@ exports.enviarNotaCompra = async (req, res) => {
     });
     const impuestos = subtotal * 0.16; // IVA 16%
     const gastosEnvio = subtotal > 0 ? 15.00 : 0.00;
-    const cuponNombre = 'ROCK25'; // static for now ------------- FALTA LOGICA DE CUPON
-    const cuponAplicado = 0.00; // static for now ------------- FALTA LOGICA DE CUPON
+    // Cupón enviado desde el front
+    const { cupon_codigo, cupon_descuento } = req.body;
+
+    // Aplicar cupón si existe
+    let cuponNombre = null;
+    let cuponAplicado = 0;
+
+    if (cupon_codigo && cupon_descuento) {
+        cuponNombre = cupon_codigo;
+        cuponAplicado = (subtotal * (cupon_descuento / 100));
+    }
+
     const total = subtotal + impuestos + gastosEnvio - cuponAplicado;
 
     // 4) Crear PDF en memoria con pdfkit

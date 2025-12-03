@@ -34,7 +34,6 @@ app.use("/uploads", express.static(carpeta));
 
 // Servir archivos estáticos del cliente (HTML/CSS/JS) si se desea
 const clientDir = path.join(__dirname, '..', 'client');
-app.use(express.static(clientDir));
 
 app.get("/imagenes", (req, res) => {
   try {
@@ -85,6 +84,8 @@ async function ensureCarritoNombreImagenColumn() {
     console.error('Error al asegurar la columna nombre_imagen en carrito:', err.message);
   }
 }
+
+app.use(express.static(clientDir));
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor en http://localhost:${PORT}`);

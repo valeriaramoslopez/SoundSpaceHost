@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Lógica para mostrar/ocultar formularios de pago
+
+    // --------------------- MOSTRAR FORMULARIOS DE PAGO ---------------------
     const paymentOptions = document.querySelectorAll('input[name="payment-method"]');
     const formContainers = {
         'card': document.getElementById('card-form'),
@@ -8,13 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function showPaymentForm(method) {
-        // Ocultar todos los formularios
         Object.values(formContainers).forEach(form => {
             form.classList.remove('active');
             form.classList.add('hidden');
         });
 
-        // Mostrar el formulario seleccionado
         const activeForm = formContainers[method];
         if (activeForm) {
             activeForm.classList.add('active');
@@ -22,18 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Inicializar con la forma de pago por defecto (Tarjeta)
-    showPaymentForm('card');
+    showPaymentForm('card'); // Default
 
-    // Escuchar cambios en los métodos de pago
     paymentOptions.forEach(option => {
         option.addEventListener('change', (e) => {
             showPaymentForm(e.target.value);
         });
     });
 
-    // --- Lógica de Habilitar Botón de Compra (Simulación) ---
-    // Revisa si los campos requeridos de envío tienen contenido
+    // --------------------- HABILITAR BOTÓN SI ENVÍO ESTÁ COMPLETO ---------------------
     const shippingInputs = document.querySelectorAll('#shipping-form input[required], #shipping-form select[required]');
     const finalizarCompraBtn = document.querySelector('.btn-finalizar-pago');
 
@@ -44,24 +40,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 isComplete = false;
             }
         });
-        
-        // Simulación: el botón se habilita si el formulario de envío está lleno
+
         finalizarCompraBtn.disabled = !isComplete;
         finalizarCompraBtn.textContent = isComplete ? 'Terminar Compra' : 'Rellena los campos de Envío';
     }
 
-    // Escuchar eventos en los campos del formulario de envío
     shippingInputs.forEach(input => {
         input.addEventListener('input', checkShippingForm);
     });
 
-    // Revisar al cargar
     checkShippingForm();
-    // Acción al clicar Finalizar Compra
+
+
+    // --------------------- FINALIZAR COMPRA ---------------------
     finalizarCompraBtn.addEventListener('click', async () => {
-        // Asegurarse de que el botón esté habilitado
+
         if (finalizarCompraBtn.disabled) return;
+
         const usuario = JSON.parse(localStorage.getItem('usuario')) || null;
+
         if (!usuario || !usuario.id) {
             Swal.fire('Debes iniciar sesión', 'Debes iniciar sesión para finalizar la compra', 'warning');
             return;
@@ -78,42 +75,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!confirmResult.isConfirmed) return;
 
-            // Opcional: incluir datos de dirección para incluirlos en el PDF
-            const shippingForm = document.getElementById('shipping-form');
-            const formData = { usuario_id: usuario.id };
-            const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
-            const primary = `${apiOrigin}/api/nota/compra`;
-            const fallback = 'http://localhost:3000/api/nota/compra';
-        // Podríamos extraer más campos si es necesario
+        // Obtener cupón de localStorage
+        const cupon = JSON.parse(localStorage.getItem("cupon")) || {};
+
+        // Crear rutas correctas
+        const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
+        const primary = `${apiOrigin}/api/nota/compra`;
+        const fallback = 'http://localhost:3000/api/nota/compra';
 
         try {
+            // ----- PETICIÓN PRINCIPAL -----
             let resp = await fetch(primary, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    usuario_id: usuario.id,
+                    cupon_codigo: cupon.codigo || null,
+                    cupon_descuento: cupon.descuento || 0
+                })
             });
+
+            // ----- FALLBACK -----
             if (!resp.ok) {
-                console.warn(`POST nota comp failed (${resp.status}) at primary, falling back to ${fallback}`);
-                resp = await fetch(fallback, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+                console.warn(`POST nota sending failed (${resp.status}), fallback → ${fallback}`);
+
+                resp = await fetch(fallback, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        usuario_id: usuario.id,
+                        cupon_codigo: cupon.codigo || null,
+                        cupon_descuento: cupon.descuento || 0
+                    })
+                });
             }
+
             if (!resp.ok) {
                 const text = await resp.text();
-                throw new Error(`HTTP ${resp.status} - ${text}`);
+                throw new Error(`HTTP ${resp.status} ➜ ${text}`);
             }
+
             const json = await resp.json();
+
             if (json && json.success) {
                 Swal.fire('Enviado', 'La nota de compra ha sido enviada a tu correo', 'success');
-                // Redirect to main page shortly after confirmation
-                setTimeout(() => { window.location.href = 'tienda.html'; }, 1300);
+
+                // Limpiar cupón
+                localStorage.removeItem("cupon");
+
+                // Redirigir a tienda
+                setTimeout(() => { 
+                    window.location.href = 'tienda.html'; 
+                }, 1300);
+
             } else {
                 Swal.fire('Error', json.message || 'Ocurrió un error', 'error');
             }
-        } catch (err) {
-            console.error('Error al finalizar compra:', err);
-            Swal.fire('Error', 'No se pudo enviar la nota de compra. Ver consola para detalles', 'error');
-        }
-    });
-});
 
-// Nota: el listener anterior para btnPDF antiguo ha sido reemplazado por el botón
-// .btn-finalizar-pago y el listener agregado arriba para enviar /api/nota/compra.
+        } catch (err) {
+            console.error("Error al finalizar compra:", err);
+            Swal.fire('Error', 'No se pudo enviar la nota de compra. Revisa la consola.', 'error');
+        }
+
+    });
+
+});

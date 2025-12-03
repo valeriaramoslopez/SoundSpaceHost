@@ -1414,6 +1414,31 @@ function copiarCupon() {
         console.error('Error al copiar: ', err);//
     });
 }
+
+async function aplicarCupon() {
+    const codigo = document.getElementById("cuponInput").value.trim();
+
+    if (!codigo) return alert("Escribe un cupón");
+
+    const res = await fetch("http://localhost:3000/api/cupones/validar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) return alert(data.message);
+
+    // Guardarlo temporalmente para el pago
+    localStorage.setItem("cupon", JSON.stringify({
+        codigo: data.cupon.codigo,
+        descuento: data.cupon.descuento
+    }));
+
+    alert("Cupón aplicado: -" + data.cupon.descuento + "%");
+}
+
 // Función principal de búsqueda de productos
 window.buscarProductos = function() {
     const searchTerm = document.getElementById('producto-search').value.toLowerCase().trim();

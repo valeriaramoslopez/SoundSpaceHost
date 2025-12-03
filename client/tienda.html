@@ -21,7 +21,12 @@
                 <div class="logo">SpaceSound</div>
             </div>
             <nav>
-                
+                <ul>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                    <li><a href="contactanos.html">Contáctanos</a></li>
+                </ul> 
             </nav>
             <div class="user-actions">
                 <!-- Botón de Accesibilidad -->
@@ -49,7 +54,15 @@
                         </div>
                         
                         <!-- Tamaño de Texto -->
-                       
+                        <div class="accessibility-option">
+                            <label>Tamaño de Texto</label>
+                            <div class="text-size-controls">
+                                <button class="size-btn" data-size="small">A-</button>
+                                <button class="size-btn active" data-size="normal">A</button>
+                                <button class="size-btn" data-size="large">A+</button>
+                                <button class="size-btn" data-size="xlarge">A++</button>
+                            </div>
+                        </div>
                         
                         <!-- Espaciado -->
                         <div class="accessibility-option">
@@ -72,7 +85,11 @@
                     </button>
 
                     <!-- ventanita -->
-                    
+                    <div class="account-panel" id="accountPanel">
+                        <div class="account-header">
+                            <h4>Mi Cuenta</h4>
+                            <button class="close-account">&times;</button>
+                        </div>
 
                         <div class="account-info">
                             <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>

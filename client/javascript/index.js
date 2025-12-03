@@ -819,6 +819,7 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         return;
     }
     const cantidad = modalController ? modalController.getCantidad() : 1;
+    
     const producto = {
         nombre: document.getElementById("modalNombre").textContent,
         precio: document.getElementById("modalPrecio").textContent,
@@ -855,14 +856,23 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
     };
 
     try {
+        const token = localStorage.getItem("token");
+        
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
         let resp = await fetch(primary, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify(payload)
         });
         if (!resp.ok) {
             console.warn(`POST carrito add respondió ${resp.status} en primary, intentando fallback`);
-            resp = await fetch(fallback, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            resp = await fetch(fallback, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
         }
         if (!resp.ok) {
             const text = await resp.text();
@@ -906,11 +916,22 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
 
 async function actualizarContadorCarritoDesdeBackend(usuarioId) {
     try {
-        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`);
+        const token = localStorage.getItem("token");
+        
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`, { headers });
+        if (!resp.ok) {
+            console.error("Error en respuesta del carrito:", resp.status);
+            return;
+        }
         const data = await resp.json();
 
         const cartCount = document.getElementById("cartCount");
-        if (cartCount) {
+        if (cartCount && data.data && Array.isArray(data.data)) {
             cartCount.textContent = data.data.length;
         }
     } catch (error) {

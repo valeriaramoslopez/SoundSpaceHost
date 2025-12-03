@@ -223,6 +223,15 @@ exports.enviarNotaCompra = async (req, res) => {
       return res.status(500).json({ success: false, message: 'Error actualizando stock/ventas: ' + txErr.message });
     }
 
+    //Limpiar carrito después de compra
+    try {
+      await pool.query("DELETE FROM carrito WHERE usuario_id = ?", [usuario_id]);
+      console.log(`Carrito del usuario ${usuario_id} limpiado`);
+    } catch (err) {
+      console.error("Error al limpiar carrito:", err.message);
+      // No detenemos la compra porque el usuario ya pagó y ya se envió el email.
+    }
+
     return res.json({ success: true, message: 'Nota enviada correctamente' });
 
   } catch (err) {

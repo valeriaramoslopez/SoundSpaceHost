@@ -199,27 +199,28 @@ exports.enviarNotaCompra = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    // 6) Reducir stock en BD (disponibilidad) por la cantidad que se compró
+
+    // 6) Reducir stock y aumentar ventas en BD por la cantidad que se compró
     // Usamos una transacción para asegurar consistencia
     try {
       await pool.query('START TRANSACTION');
       for (const item of items) {
-        const qtyToReduce = Number(item.cantidad) || 1;
-        // Evitar valores negativos
+        const qty = Number(item.cantidad) || 1;
+        // Reducir stock y aumentar ventas
         const [updateResult] = await pool.query(
-          'UPDATE productos SET disponibilidad = GREATEST(disponibilidad - ?, 0) WHERE id = ?'
-          , [qtyToReduce, item.producto_id]
+          'UPDATE productos SET disponibilidad = GREATEST(disponibilidad - ?, 0), ventas = ventas + ? WHERE id = ?',
+          [qty, qty, item.producto_id]
         );
         if (updateResult.affectedRows === 0) {
-          console.warn(`No se actualizó stock para producto_id ${item.producto_id}`);
+          console.warn(`No se actualizó stock/ventas para producto_id ${item.producto_id}`);
         }
       }
       await pool.query('COMMIT');
     } catch (txErr) {
-      console.error('Error actualizando stock en transacción, rollback:', txErr.message);
+      console.error('Error actualizando stock/ventas en transacción, rollback:', txErr.message);
       try { await pool.query('ROLLBACK'); } catch (rbErr) { console.error('Error en rollback:', rbErr.message); }
       // No block email success; just inform
-      return res.status(500).json({ success: false, message: 'Error actualizando stock: ' + txErr.message });
+      return res.status(500).json({ success: false, message: 'Error actualizando stock/ventas: ' + txErr.message });
     }
 
     return res.json({ success: true, message: 'Nota enviada correctamente' });

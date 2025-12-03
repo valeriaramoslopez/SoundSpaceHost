@@ -189,11 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatCurrency(value) {
         return `$${Number(value).toFixed(2)}`;
     }
-
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-    }
-
+    
     // Cargar resumen al inicio
     loadCartSummary();
     // Acción al clicar Finalizar Compra

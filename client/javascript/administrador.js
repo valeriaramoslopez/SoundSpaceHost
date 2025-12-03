@@ -81,33 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchTotalSales() {
-    try {
-        const response = await fetch("http://localhost:3000/api/productos");
-        const data = await response.json();
-
-        console.log("Productos cargados:", data);
-
-        if (response.ok) {
-            const totalSalesEl = document.getElementById("total-sales");
-            if (!totalSalesEl) return;
-
-            let total = 0;
-
-            data.forEach((producto) => {
-                const precio = Number(producto.precio || 0);
-                const vendidos = Number(producto.vendidos || 0);
-
-                total += precio * vendidos;
-            });
-
-            totalSalesEl.textContent = `$${total.toFixed(2)}`;
-        } else {
-            console.error("Error al obtener productos:", data.mensaje);
+        const totalSalesEl = document.getElementById("total-sales");
+        if (!totalSalesEl) return;
+        try {
+            let resp = await fetch(TOTALSALES_API_URL);
+            if (!resp.ok) resp = await fetch(FALLBACK_TOTALSALES_API_URL);
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const data = await resp.json();
+            if (data && data.success && data.total !== undefined) {
+                totalSalesEl.textContent = `$${Number(data.total).toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            } else {
+                totalSalesEl.textContent = '$0.00';
+            }
+        } catch (err) {
+            console.error('Error obteniendo ventas totales:', err);
+            totalSalesEl.textContent = '$0.00';
         }
-    } catch (error) {
-        console.error("Error de conexión:", error);
     }
-}
 
 
     // renderProductos: Dibuja filas <tr> y celdas <td> en la tabla de inventario

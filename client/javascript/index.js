@@ -298,8 +298,6 @@ async function cargarCaptcha() {
         const captchaEl = document.getElementById("captchaImage");
         if (captchaEl) {
             captchaEl.innerHTML = data.image;
-        } else {
-            console.warn('Captcha element not found on this page (id: captchaImage). Skipping render.');
         }
     } catch (err) {
         console.error('Error fetching captcha:', err);
@@ -312,7 +310,7 @@ function refreshCaptcha() {
 
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*PARA LOGIN*/
+
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
@@ -465,7 +463,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //LOGOUT
-// LOGOUT MEJORADO - Combina ambas versiones
 if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
         const token = localStorage.getItem("token");

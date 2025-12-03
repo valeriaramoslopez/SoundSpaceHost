@@ -91,9 +91,37 @@ async function deleteItem(req, res) {
     }
 }
 
+// Vaciar carrito completo por usuario
+async function vaciarCarrito(req, res) {
+    const { usuario_id } = req.params;
+
+    if (!usuario_id) {
+        return res.status(400).json({ success: false, message: 'usuario_id es requerido' });
+    }
+
+    try {
+        const [result] = await pool.query(
+            'DELETE FROM carrito WHERE usuario_id = ?',
+            [usuario_id]
+        );
+
+        return res.json({
+            success: true,
+            message: 'Carrito vaciado correctamente',
+            deleted: result.affectedRows
+        });
+
+    } catch (err) {
+        console.error('Error al vaciar carrito:', err);
+        return res.status(500).json({ success: false, message: err.message });
+    }
+}
+
+
 module.exports = {
     addItem,
     getItemsByUser,
     updateItem,
-    deleteItem
+    deleteItem,
+    vaciarCarrito
 };

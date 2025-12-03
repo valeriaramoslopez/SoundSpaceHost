@@ -4,17 +4,16 @@ module.exports = {
 
     async enviarMensaje(req, res) {
         try {
-            const { idUsuario, mensaje } = req.body;
+            const idUsuario = req.usuario.id;   // El ID viene del token
+            const { mensaje } = req.body;
 
-            if (!idUsuario || !mensaje) {
-                return res.status(400).json({ mensaje: "Faltan datos" });
+            if (!mensaje) {
+                return res.status(400).json({ mensaje: "Falta el mensaje" });
             }
 
             await chatModelo.guardarMensaje(idUsuario, mensaje);
 
-            return res.json({
-                mensaje: "Mensaje procesado"
-            });
+            return res.json({ mensaje: "Mensaje enviado" });
 
         } catch (error) {
             console.log("Error en enviarMensaje:", error);
@@ -24,10 +23,14 @@ module.exports = {
 
     async historial(req, res) {
         try {
-            const idUsuario = req.params.id;
+            const idToken = req.usuario.id;       // viene del middleware
+            const idConsulta = req.params.id;     // viene de la URL
 
-            const historial = await chatModelo.obtenerHistorial(idUsuario);
+            if (idToken != idConsulta) {
+                return res.status(403).json({ mensaje: "Acceso denegado" });
+            }
 
+            const historial = await chatModelo.obtenerHistorial(idToken);
             return res.json(historial);
 
         } catch (error) {

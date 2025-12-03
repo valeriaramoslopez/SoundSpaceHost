@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const json = await resp.json();
             if (json && json.success) {
                 Swal.fire('Enviado', 'La nota de compra ha sido enviada a tu correo', 'success');
+                // Redirect to main page shortly after confirmation
+                setTimeout(() => { window.location.href = 'paginaprincipal.html'; }, 1300);
             } else {
                 Swal.fire('Error', json.message || 'Ocurrió un error', 'error');
             }

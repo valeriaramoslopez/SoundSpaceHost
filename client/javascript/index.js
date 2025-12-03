@@ -313,7 +313,6 @@ function refreshCaptcha() {
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*PARA LOGIN*/
-/*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
     const contrasena = document.getElementById("login-password").value;
@@ -425,7 +424,6 @@ async function loginUsuario() {
         }
     });
 }
-
 
 //Para que se vea en todas las páginas la cuenta
 document.addEventListener("DOMContentLoaded", () => {

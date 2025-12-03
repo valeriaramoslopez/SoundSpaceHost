@@ -50,9 +50,10 @@ exports.validarCupon = async (req, res) => {
             return res.status(400).json({ message: "Cupón expirado ❌" });
         }
 
-        if (cupon.usos >= cupon.usos_maximos) {
-            return res.status(400).json({ message: "Cupón sin usos disponibles ❌" });
-        }
+        if (cupon.usos_actuales >= cupon.usos_maximos) {
+    return res.status(400).json({ message: "Cupón sin usos disponibles ❌" });
+}
+
 
         // Si es válido
         res.json({

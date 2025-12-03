@@ -171,25 +171,15 @@
                 
                 <div class="cart-summary-card">
                     <h2>Resumen del Pedido</h2>
-                    
-                    <div class="coupon-section">
-                        <label for="coupon-code">Cupón de Descuento:</label>
-                        <div class="coupon-input-group">
-                            <input type="text" id="coupon-code" placeholder="Ej: SPACE10">
-                            <button class="btn-apply-coupon">Aplicar</button>
-                        </div>
-                        <p class="coupon-message success-message"><i class="fas fa-check-circle"></i> Cupón "SPACE10" aplicado (10% de descuento).</p>
-                        </div>
-                    <!--
-                    <div class="shipping-section">
-                        <label for="country-select">Selecciona tu País:</label>
-                        <select id="country-select">
-                            <option value="MX" selected>México (IVA 16%, Envío $15.00)</option>
-                            <option value="US">Estados Unidos (Tax 8%, Envío $20.00)</option>
-                            <option value="CA">Canadá (Tax 13%, Envío $25.00)</option>
-                            <option value="ES">España (IVA 21%, Envío $30.00)</option>
-                        </select>
-                    </div> -->
+<!-- Por esto: -->
+<div class="coupon-section">
+    <label for="coupon-code">Cupón de Descuento:</label>
+    <div class="coupon-input-group">
+        <input type="text" id="coupon-code" placeholder="Ej: COMPRA1">
+        <button class="btn-apply-coupon">Aplicar</button>
+    </div>
+    <p class="coupon-message"></p> <!-- Este elemento se llenará dinámicamente -->
+</div>
 
                     <div class="summary-details">
                         <div class="summary-row">

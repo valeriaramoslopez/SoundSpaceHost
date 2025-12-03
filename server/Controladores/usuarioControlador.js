@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 
 async function registrarUsuario(req, res) {
     try {
-        const { nombreCompleto, nombreUsuario, pais, contrasena, rol, correo} = req.body;
+        const { nombreCompleto, nombreUsuario, pais, contrasena, palabra, correo} = req.body;
 
-        if (!nombreCompleto || !nombreUsuario || !pais || !contrasena || !rol || !correo) {
+        if (!nombreCompleto || !nombreUsuario || !pais || !contrasena || !palabra || !correo) {
             return res.status(400).json({ mensaje: "Faltan datos obligatorios" });
         }
 
@@ -23,7 +23,7 @@ async function registrarUsuario(req, res) {
             nombreUsuario,
             pais,
             contra,
-            rol,
+            palabra,
             correo
         );
 
@@ -92,6 +92,8 @@ async function loginUsuario(req, res) {
             { expiresIn: "3h" }
         );
 
+        console.log(`[LOGIN] Usuario "${usuario.nombreUsuario}" inició sesión. Token: ${token}`);
+
         return res.json({
             mensaje: "Login correcto",
             token,
@@ -107,7 +109,71 @@ async function loginUsuario(req, res) {
     }
 }
 
+const updateProducto = async(req, res) => {
+    try{
+        const {id} = req.params;
+        const {disponibilidad, ventas} = req.body;
+        const filas = await productoModelo.updateDisponibilidadYventas(id, disponibilidad, ventas);
+        if(filas === 0)
+            return res.status(404).json({mensaje: 'Producto no encontrado'});
+        res.json({mensaje: 'Producto actualizado correctamente'});
+    }catch(error){
+        console.error('Error al actualizar el producto: ', error);
+        res.status(500).json({mensaje: 'Error al actualizar el producto'});
+    }
+};
+
+async function recuperarContrasena(req, res) {
+    try {
+        const { nombreUsuario, respuestaSeguridad, nuevaContrasena } = req.body;
+
+        if (!nombreUsuario || !respuestaSeguridad || !nuevaContrasena) {
+            return res.status(400).json({ mensaje: "Faltan datos obligatorios" });
+        }
+
+        const usuario = await usuarioModelo.getUsuarioPorNombre(nombreUsuario);
+
+        if (!usuario) {
+            return res.status(404).json({ mensaje: "Usuario no encontrado" });
+        }
+
+        // Verificar respuesta de seguridad
+        if (usuario.palabra !== respuestaSeguridad) {
+            return res.status(400).json({ mensaje: "Respuesta de seguridad incorrecta" });
+        }
+
+        // Encriptar nueva contraseña
+        const contra = await bcrypt.hash(nuevaContrasena, 10);
+
+        // Actualizar contraseña
+        const filas = await usuarioModelo.updateContrasena(usuario.id, contra);
+        
+        if (filas === 0)
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+
+        res.json({ mensaje: 'Contraseña restablecida correctamente' });
+
+    } catch (error) {
+        console.error('Error al recuperar contraseña:', error);
+        res.status(500).json({ mensaje: 'Error al recuperar contraseña' });
+    }
+}
+
+async function logoutUsuario(req, res) {
+    try {
+        console.log(`[LOGOUT] Usuario cerró sesión:`, req.usuario);
+
+        return res.json({ mensaje: "Logout exitoso" });
+
+    } catch (error) {
+        console.error("[LOGOUT] Error:", error);
+        res.status(500).json({ mensaje: "Error en logout" });
+    }
+}
+
 module.exports = {
     registrarUsuario,
-    loginUsuario
+    loginUsuario,
+    logoutUsuario,
+    recuperarContrasena
 };

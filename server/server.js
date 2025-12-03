@@ -2,9 +2,14 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const baseRutas = require('./Rutas/dbProductoRutas');
+const adminRutas = require('./Rutas/administrador.routes');
 const usuarioRutas = require("./Rutas/usuarioRutas");
 const correoRutas = require("./Rutas/correoRutas");
 const captchaRutas = require('./Rutas/captchaRutas'); 
+const chatRutas = require('./Rutas/chatRutas');
+const chatAdminRutas = require('./Rutas/chatAdminRutas');
+const carritoRutas = require('./Rutas/carrito.routes');
+const notaRutas = require('./Rutas/nota.routes');
 const pool = require('./DB/conexion');
 const fs = require("fs");
 const path = require("path");
@@ -26,6 +31,10 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 const carpeta = path.join(__dirname, "uploads");
 app.use("/uploads", express.static(carpeta));
 
+// Servir archivos estáticos del cliente (HTML/CSS/JS) si se desea
+const clientDir = path.join(__dirname, '..', 'client');
+app.use(express.static(clientDir));
+
 app.get("/imagenes", (req, res) => {
   try {
     const archivos = fs.readdirSync(carpeta);
@@ -41,9 +50,14 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/productos', baseRutas);
+app.use('/api/admin', adminRutas);
+app.use('/api/carrito', carritoRutas);
+app.use('/api/nota', notaRutas);
 app.use('/api/usuarios', usuarioRutas);
 app.use('/api/correo', correoRutas);  
 app.use('/api/captcha', captchaRutas);
+app.use('/api/chat', chatRutas);
+app.use('/api/chat-admin', chatAdminRutas);
 
 // Probar conexión a BD
 async function testConnection() {
@@ -55,7 +69,24 @@ async function testConnection() {
   }
 }
 
+// Asegurar que la columna `nombre_imagen` exista en la tabla `carrito`
+async function ensureCarritoNombreImagenColumn() {
+  try {
+    const [cols] = await pool.query("SHOW COLUMNS FROM carrito LIKE 'nombre_imagen'");
+    if (!cols || cols.length === 0) {
+      console.log('Columna nombre_imagen no encontrada en carrito. Añadiendo...');
+      await pool.query("ALTER TABLE carrito ADD COLUMN nombre_imagen VARCHAR(255) DEFAULT NULL");
+      console.log('Columna nombre_imagen añadida con éxito.');
+    } else {
+      console.log('Columna nombre_imagen ya existe en carrito.');
+    }
+  } catch (err) {
+    console.error('Error al asegurar la columna nombre_imagen en carrito:', err.message);
+  }
+}
+
 app.listen(PORT, () => {
   console.log(`🚀 Servidor en http://localhost:${PORT}`);
   testConnection();
+  ensureCarritoNombreImagenColumn();
 });

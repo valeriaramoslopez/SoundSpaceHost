@@ -1,0 +1,344 @@
+/* --- PANEL DE ADMINISTRACIÓN --- */
+
+.admin-page {
+    padding: 150px 0 80px;
+    background-color: #0a0a0a;
+}
+
+.admin-page .section-title {
+    margin-bottom: 50px;
+}
+
+.admin-layout {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* --- Reportes y Métricas (Columna 1) --- */
+.admin-reports {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.report-card, .report-section {
+    background: #1a1a1a;
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.report-card h2, .report-section h2 {
+    font-family: 'Momo Trust Display', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.metric-value {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ff5252;
+    font-family: 'Momo Trust Display', serif;
+    margin-bottom: 5px;
+}
+
+.sales-card .metric-value {
+    color: #4CAF50; /* Verde para las ventas */
+}
+
+.report-card small {
+    color: #ccc;
+    font-style: italic;
+}
+
+/* Tabla de Inventario */
+.inventory-detail-card {
+    padding: 30px 20px;
+}
+
+.report-description {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th, .data-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    font-size: 0.95rem;
+}
+
+.data-table th {
+    background: #222;
+    color: #ff5252;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.data-table tbody tr:hover {
+    background: #111;
+}
+
+/* Indicadores de Stock */
+.stock-high {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.stock-low {
+    color: #FFC107; /* Amarillo */
+    font-weight: bold;
+}
+
+.stock-critical {
+    color: #F44336; /* Rojo */
+    font-weight: bold;
+}
+
+/* --- Gestión de Productos (Columna 2) --- */
+.admin-product-management {
+    margin: 0 10px 0 0;
+}
+
+.product-crud-card {
+    padding: 30px;
+    position: sticky;
+    top: 100px;
+}
+
+.tabs-container {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 15px 20px;
+    color: #ccc;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-size: 1rem;
+}
+
+.tab-btn:hover {
+    color: #fff;
+}
+
+.tab-btn.active {
+    color: #ff5252;
+    border-bottom-color: #ff5252;
+}
+
+.product-form {
+    transition: opacity 0.3s, max-height 0.5s;
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0;
+}
+
+.product-form.active {
+    opacity: 1;
+    max-height: 1600px; /* Aumenta el alto máximo para formularios largos */
+}
+
+.form-title {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    border-left: 3px solid #ff5252;
+    padding-left: 10px;
+}
+
+/* Formulario */
+.product-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.product-form .form-group {
+    margin-bottom: 20px;
+}
+
+.product-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ccc;
+    font-weight: 500;
+}
+
+.product-form input,
+.product-form select,
+.product-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: #0a0a0a;
+    color: #fff;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.product-form input:focus,
+.product-form select:focus,
+.product-form textarea:focus {
+    outline: none;
+    border-color: #ff5252;
+}
+
+.btn-add-product {
+    width: 100%;
+    margin-top: 10px;
+    background: #ff5252;
+    padding: 15px;
+    font-size: 1rem;
+}
+
+/* Búsqueda y Resultados */
+.search-group {
+    margin-bottom: 30px;
+}
+
+.search-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input-group input {
+    flex: 1;
+}
+
+.search-btn {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-btn:hover {
+    background: #ff5252;
+}
+
+.search-results-box {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #444;
+}
+
+.result-item h4 {
+    color: #ff5252;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.update-form {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.update-form .form-row {
+    margin-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-update-product {
+    background: #4CAF50;
+    flex: 1;
+}
+
+.btn-update-product:hover {
+    background: #43a047;
+}
+
+.btn-delete-product {
+    background: #F44336;
+    flex: 1;
+}
+
+.btn-delete-product:hover {
+    background: #d32f2f;
+}
+
+.no-results-message {
+    text-align: center;
+    color: #F44336;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#p-image {
+    width: 300px;
+}
+
+#p-image-file {
+    font-size: 14px;
+    width: 300px;
+}
+
+#m-image {
+    width: 300px;
+}
+
+#m-image-file {
+    font-size: 14px;
+    width: 300px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-crud-card {
+        position: relative;
+        top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-form .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .data-table th, .data-table td {
+        font-size: 0.9rem;
+        padding: 8px 5px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}

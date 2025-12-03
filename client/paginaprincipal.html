@@ -53,24 +53,29 @@
         <div class="container">
             <h2 class="section-title">Categorías</h2>
             <div class="categories-grid">
-                <div class="category-card">
+                <div class="category-card" onclick="verCategoria('rock')">
                     <img src="http://localhost:3000/uploads/image10.png" alt="SpaceSound rock" class="rock-img"> 
                     <div class="category-info">
                         <h3>Rock</h3>
                     </div>
                 </div>
-                <div class="category-card">
+                <div class="category-card" onclick="verCategoria('clasico')">
                     <img src="http://localhost:3000/uploads/image2.png" alt="SpaceSound clasico" class="clasico-img">
                     <div class="category-info">
                         <h3>Clásico</h3>
                     </div>
                 </div>
-                <div class="category-card">
+                <div class="category-card" onclick="verCategoria('corrido')">
                     <img src="http://localhost:3000/uploads/image21.png" alt="SpaceSound corridos" class="corridos-img">
                     <div class="category-info">
                         <h3>Corridos</h3>
                     </div>
                 </div>
+            </div>
+
+            <!-- Contenedor para mostrar los productos -->
+            <div class="productos-grid" id="productos-categoria">
+                <p class="mensaje-categoria">Selecciona una categoría...</p>
             </div>
         </div>
     </section>
@@ -81,14 +86,14 @@
         <h3 class="section-subtitle">¡Mantente al día con los nuevos productos!</h3>
         
         <div class="form-container">
-            <form id="subscription-form" class="subscription-form">
-                <div class="form-group">
-                    <label for="email-suscripcion">Correo electrónico:</label>
-                    <input type="email" id="email-suscripcion" name="email" placeholder="tucorreo@ejemplo.com" required>
-                </div>
-                <button type="submit" class="btn-submit">Suscribirse</button>
-            </form>
+    <form id="subscription-form" class="subscription-form">
+        <div class="form-group">
+            <label for="email-suscripcion">Correo electrónico:</label>
+            <input type="email" id="email-suscripcion" name="email" placeholder="tucorreo@ejemplo.com" required>
         </div>
+        <button type="submit" class="btn-submit" id="botonSuscripcion">Suscribirse</button>
+    </form>
+</div>
     </div>
 </section>
     <!-- Sección de registrarse -->
@@ -115,15 +120,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="rol">Rol:</label>
-                        <select id="rol" name="rol" required>
-                            <option value="">Selecciona tu rol</option>
-                            <option value="usuario">Usuario</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="country">País:</label>
                         <select id="country" name="country" required>
                             <option value="">Selecciona tu país</option>
@@ -145,6 +141,17 @@
                     <div class="form-group">
                         <label for="confirm-password">Confirmar contraseña:</label>
                         <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite tu contraseña" required>
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="rol">Rol:</label>
+                        <select id="rol" name="rol" required>
+                            <option value=""></option>
+                            <option value="usuario">Usuario</option>
+                            <option value="admin">Administrador</option>
+                        </select> -->
+                        <label for="palabra">En caso de olvidar tu contraseña...</label>
+                        <label for="palabra">¿Cuál es el nombre de tu primera mascota?</label>
+                        <input type="text" id="palabra" name="palabra" placeholder="Ejemplo: Panchita" required>
                     </div>
                     <button type="submit" class="btn-submit">Registrarse</button>
                 </form>
@@ -172,14 +179,14 @@
                 <div class="footer-section">
                     <h3>Síguenos</h3>
                     <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100083262605033&locale=es_LA"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/space_sound_of/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/SpaceSoundMx"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>spaceSound@gmail.com</p>
+                    <p>talesturntable@gmail.com</p>
                     <p>+1 234 567 8900</p>
                 </div>
             </div>
@@ -190,5 +197,7 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
+    <script src="javascript/paginaprincipal.js"></script>
+    <script src="javascript/suscribirse.js"></script>
 </body>
 </html>

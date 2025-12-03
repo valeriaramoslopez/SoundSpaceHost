@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - SpaceSound</title>
+    <link rel="icon" type="image/png" href="imagenes/logo.png">
+    <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/compra.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="http://localhost:3000/uploads/logo.png" alt="SpaceSound Logo" class="logo-img">
+                <div class="logo">SpaceSound</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="paginaprincipal.html">Inicio</a></li>
+                    <li><a href="nosotros.html" style="color: #ff5252;">Nosotros</a></li>
+                    <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                    <li><a href="contactanos.html">Contáctanos</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
+                </ul> 
+            </nav>
+            <div class="user-actions">
+                <button class="user-btn" onclick="window.location.href='usuario.html'">
+                    <i class="fas fa-user"></i>
+                    Mi Cuenta
+                </button>
+                <button class="cart-btn" onclick="window.location.href='carrito.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    Carrito
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="checkout-page">
+    <div class="container">
+        <h1 class="section-title">Finalizar Compra</h1>
+        
+        <div class="checkout-layout">
+            
+            <div class="checkout-details-container">
+                
+                <section class="checkout-section shipping-form-card">
+                    <h2><i class="fas fa-shipping-fast"></i> 1. Dirección de Envío</h2>
+                    <form id="shipping-form" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo</label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Nombre Apellido" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="direccion">Calle y Número</label>
+                            <input type="text" id="direccion" name="direccion" placeholder="Calle Ejemplo #123, Int. A" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pais">País</label>
+                                <select id="pais" name="pais" required>
+                                    <option value="MX" selected>México</option>
+                                    <option value="US">Estados Unidos</option>
+                                    <option value="CA">Canadá</option>
+                                    <option value="ES">España</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cp">Código Postal</label>
+                                <input type="text" id="cp" name="cp" placeholder="01234" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ciudad">Ciudad</label>
+                                <input type="text" id="ciudad" name="ciudad" placeholder="Ciudad de México" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="estado">Estado/Provincia</label>
+                                <input type="text" id="estado" name="estado" placeholder="CDMX" required>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="checkout-section payment-methods-card">
+                    <h2><i class="fas fa-credit-card"></i> 2. Método de Pago</h2>
+                    
+                    <div class="payment-options">
+                        <label class="payment-option-label">
+                            <input type="radio" name="payment-method" value="card" checked>
+                            <div class="payment-info-box"><i class="fas fa-credit-card"></i> Tarjeta de Crédito/Débito</div>
+                        </label>
+                        
+                        <label class="payment-option-label">
+                            <input type="radio" name="payment-method" value="transfer">
+                            <div class="payment-info-box"><i class="fas fa-university"></i> Transferencia Electrónica (SPEI)</div>
+                        </label>
+                        
+                        <label class="payment-option-label">
+                            <input type="radio" name="payment-method" value="oxxo">
+                            <div class="payment-info-box"><i class="fas fa-cash-register"></i> Pago en Tienda (OXXO/7-Eleven)</div>
+                        </label>
+                    </div>
+
+                    <div id="payment-form-container" class="payment-form-container">
+                        
+                        <div id="card-form" class="payment-form active">
+                            <div class="form-group">
+                                <label for="card-number">Número de Tarjeta</label>
+                                <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="16" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="card-name">Nombre en la Tarjeta</label>
+                                <input type="text" id="card-name" placeholder="Como aparece en la tarjeta" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="card-expiry">Fecha de Vencimiento</label>
+                                    <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-cvv">CVV</label>
+                                    <input type="text" id="card-cvv" placeholder="123" maxlength="4" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="transfer-form" class="payment-form hidden">
+                        <h4 class="form-title-secondary"><i class="fas fa-info-circle"></i> Instrucciones para Transferencia SPEI</h4>
+                        <p class="payment-info-text">Necesitamos tu información para enviarte la **Referencia SPEI única** y las instrucciones detalladas por correo electrónico. Tienes 24 horas para completar el pago.</p>
+                        
+                        <div class="form-group">
+                            <label for="transfer-email">Email de Contacto</label>
+                            <input type="email" id="transfer-email" placeholder="ejemplo@correo.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transfer-nombre-completo">Nombre del Titular de la Cuenta (Para Referencia)</label>
+                            <input type="text" id="transfer-nombre-completo" placeholder="Nombre completo de quien paga la transferencia" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transfer-banco">Banco Emisor de la Transferencia</label>
+                            <input type="text" id="transfer-banco" placeholder="Ej: BBVA, Banamex, etc." required>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="oxxo-form" class="payment-form hidden">
+                        <h4 class="form-title-secondary"><i class="fas fa-barcode"></i> Instrucciones para Pago en Efectivo</h4>
+                        <p class="payment-info-text">Al finalizar la compra, recibirás el **código de barras de referencia** en tu email. Puedes pagar en cualquier tienda participante. El pago se acredita en 1-2 días hábiles.</p>
+                        
+                        <div class="form-group">
+                            <label for="oxxo-email">Email de Contacto</label>
+                            <input type="email" id="oxxo-email" placeholder="ejemplo@correo.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oxxo-telefono">Teléfono de Contacto (Opcional, para notificaciones)</label>
+                            <input type="tel" id="oxxo-telefono" placeholder="55 1234 5678 (opcional)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="oxxo-identificacion">Nombre para la Referencia de Pago</label>
+                            <input type="text" id="oxxo-identificacion" placeholder="Nombre completo del comprador" required>
+                        </div>
+                    </div>
+                    
+                </section>
+            </div>
+            
+            <div class="cart-summary-card">
+                <h2>Resumen de la Compra</h2>
+                
+                <div class="order-items-summary">
+                    <p>3 Productos en total (Total de tu carrito)</p>
+                    <a href="carrito.html" class="btn-edit-cart"><i class="fas fa-edit"></i> Editar Carrito</a>
+                </div>
+                
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Subtotal (Sin descuentos):</span>
+                        <span id="order-subtotal">$204.99</span>
+                    </div>
+                    <div class="summary-row discount-row">
+                        <span>Descuento Aplicado:</span>
+                        <span id="order-discount">-$20.50</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Impuestos (IVA 16%):</span>
+                        <span id="order-tax">$29.52</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Gastos de Envío:</span>
+                        <span id="order-shipping">$15.00</span>
+                    </div>
+                </div>
+                
+                <div class="summary-total">
+                    <h3>Total a Pagar:</h3>
+                    <span id="order-total-amount">$229.01</span>
+                </div>
+                
+                <button class="btn-submit btn-finalizar-pago" disabled>Terminar Compra <i class="fas fa-lock"></i></button>
+                <p class="payment-secure-message"><i class="fas fa-shield-alt"></i> Tu pago es 100% seguro y cifrado.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Space Sound</h3>
+                    <p>"La ciudad donde la música nunca deja de girar"</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="paginaprincipal.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                        <li><a href="contactanos.html">Contáctanos</a></li>
+                        <li><a href="tienda.html">Tienda</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100083262605033&locale=es_LA"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/space_sound_of/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/SpaceSoundMx"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>talesturntable@gmail.com</p>
+                    <p>+1 234 567 8900</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="copy">© 2025 SpaceSound. ProyectoFinal Programación de Sistemas Web.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="javascript/index.js"></script>
+    <script src="javascript/compra.js"></script>
+</body>
+</html>

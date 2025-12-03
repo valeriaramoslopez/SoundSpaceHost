@@ -10,6 +10,7 @@
     <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <!-- Header -->
@@ -104,6 +105,7 @@
                 <button class="cart-btn" onclick="window.location.href='carrito.html'">
                     <i class="fas fa-shopping-cart"></i>
                     Carrito
+                    <span id="cartCount" class="cart-count">0</span>
                 </button>
             </div>
         </div>
@@ -268,6 +270,24 @@
         </div>
     </section>
 
+    <!-- Botón flotante -->
+    <div id="chatToggle" class="chat-toggle">💬</div>
+
+    <!-- Panel de chat -->
+    <div id="chatPanel" class="chat-panel">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button id="closeChat" class="close-chat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+            <button id="sendChat">Enviar</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -288,14 +308,14 @@
                 <div class="footer-section">
                     <h3>Síguenos</h3>
                     <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100083262605033&locale=es_LA"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/space_sound_of/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/SpaceSoundMx"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>spaceSound@gmail.com</p>
+                    <p>talesturntable@gmail.com</p>
                     <p>+1 234 567 8900</p>
                 </div>
             </div>
@@ -306,5 +326,7 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
+    <script src="javascript/carrito.js"></script>
+    <script src="javascript/chat.js"></script>
 </body>
 </html>

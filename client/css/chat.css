@@ -1,0 +1,82 @@
+/* --- Botón flotante --- */
+.chat-toggle {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    background: #ad1700;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 22px;
+    z-index: 1000;
+}
+
+/* --- Panel del chat --- */
+.chat-panel {
+    position: fixed;
+    right: 20px;
+    bottom: 90px;
+    width: 320px;
+    height: 420px;
+    background: #ffffff;
+    color: black;
+    border-radius: 15px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 1000;
+}
+
+.chat-panel.show {
+    display: flex;
+}
+
+.chat-header {
+    background: #8c1111;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px 15px 0 0;
+}
+
+.chat-messages {
+    padding: 10px;
+    overflow-y: auto;
+    flex: 1;
+    background-color: #e5e3e3;
+}
+
+.chat-input-container {
+    padding: 10px;
+    background: #8b0505;
+    display: flex;
+    border-radius: 0px 0px 15px 15px;
+}
+
+.chat-input-container input {
+    flex: 1;
+    padding: 8px;
+}
+
+.chat-input-container button {
+    margin-left: 5px;
+    padding: 8px 12px;
+}
+
+/* --- Modo claro (tu tema claro) --- */
+body.light-theme .chat-panel {
+    background: #bebcbc;
+}
+
+body.light-theme .chat-header {
+    background: #d4d4d5;
+    color: black;
+}
+
+body.light-theme .chat-input-container {
+    background: #dad5d5;
+}

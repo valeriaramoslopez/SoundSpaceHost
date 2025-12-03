@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/carrito.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <!-- Header -->
@@ -147,7 +148,7 @@
                     <div class="cart-item">
                         <div class="cart-col product-col">
                             <!--EJEMPLO DE PRODUCTO EN EL CARRITO-->
-                            <img src="http://localhost:3000/uploads/image2.png" alt="Auriculares Inalámbricos" class="cart-item-img">
+                            <img src="image2.png" alt="Auriculares Inalámbricos" class="cart-item-img">
                             <div class="item-info">
                                 <h3>Auriculares: Nova Sound Pro</h3>
                                 <p>Categoría: Accesorios</p>
@@ -166,8 +167,7 @@
                             <button class="btn-remove" data-id="2"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
-
-                    </div>
+                </div>
                 
                 <div class="cart-summary-card">
                     <h2>Resumen del Pedido</h2>
@@ -175,12 +175,12 @@
                     <div class="coupon-section">
                         <label for="coupon-code">Cupón de Descuento:</label>
                         <div class="coupon-input-group">
-                            <input type="text" id="coupon-code" placeholder="Ej: SPACE10" value="SPACE10">
+                            <input type="text" id="coupon-code" placeholder="Ej: SPACE10">
                             <button class="btn-apply-coupon">Aplicar</button>
                         </div>
                         <p class="coupon-message success-message"><i class="fas fa-check-circle"></i> Cupón "SPACE10" aplicado (10% de descuento).</p>
                         </div>
-
+                    <!--
                     <div class="shipping-section">
                         <label for="country-select">Selecciona tu País:</label>
                         <select id="country-select">
@@ -189,7 +189,7 @@
                             <option value="CA">Canadá (Tax 13%, Envío $25.00)</option>
                             <option value="ES">España (IVA 21%, Envío $30.00)</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="summary-details">
                         <div class="summary-row">
@@ -215,7 +215,7 @@
                         <span id="summary-total-amount">$229.01</span>
                     </div>
                     
-                    <button class="btn-submit btn-checkout">Finalizar Compra <i class="fas fa-arrow-right"></i></button>
+                    <button id="btn-finalizar-pago" class="btn-submit btn-checkout">Finalizar Compra <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
             
@@ -242,14 +242,14 @@
                 <div class="footer-section">
                     <h3>Síguenos</h3>
                     <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100083262605033&locale=es_LA"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/space_sound_of/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/SpaceSoundMx"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Contacto</h3>
-                    <p>spaceSound@gmail.com</p>
+                    <p>talesturntable@gmail.com</p>
                     <p>+1 234 567 8900</p>
                 </div>
             </div>
@@ -261,5 +261,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="javascript/index.js"></script>
     <script src="javascript/carrito.js"></script>
+    <script src="javascript/chat.js"></script>
 </body>
 </html>

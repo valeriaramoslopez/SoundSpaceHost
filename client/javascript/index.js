@@ -86,17 +86,14 @@ class AdministradorAccesibilidad {
         console.log("🔍 Botón accesibilidad:", boton);
         console.log("🔍 Panel accesibilidad:", panel);
 
-        if (!boton || !panel) {
-            console.warn("❌ No se encontró el panel o el botón de accesibilidad.");
-            return;
+        if (boton) {
+            boton.addEventListener('click', () => {
+                console.log("👆 Clic en botón accesibilidad");
+                if (panel) panel.classList.toggle('show');
+            });
         }
 
-        boton.addEventListener('click', () => {
-            console.log("👆 Clic en botón accesibilidad");
-            panel.classList.toggle('show');
-        });
-
-        if (cerrar) {
+        if (cerrar && panel) {
             cerrar.addEventListener('click', () => {
                 console.log("❌ Cerrar accesibilidad");
                 panel.classList.remove('show');
@@ -207,7 +204,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const nombreCompleto = document.getElementById("fullname").value;
             const nombreUsuario = document.getElementById("username").value;
             const pais = document.getElementById("country").value;
-            const rol = document.getElementById("rol").value;
+            // const rol = document.getElementById("rol").value;
+            const palabra = document.getElementById("palabra").value;
             const correo = document.getElementById("correo").value;
             const contrasena = document.getElementById("password").value;
             const confContra = document.getElementById("confirm-password").value;
@@ -232,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 nombreCompleto,
                 nombreUsuario,
                 pais,
-                rol,
+                palabra,
                 correo,
                 contrasena,
             };
@@ -277,6 +275,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }//else
         });
     }
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (usuario) {
+        actualizarContadorCarritoDesdeBackend(usuario.id);
+    }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -284,13 +286,22 @@ document.addEventListener("DOMContentLoaded", () => {
 let captchaId = null;
 
 async function cargarCaptcha() {
-    const res = await fetch("http://localhost:3000/api/captcha/generar");
-    const data = await res.json();
-
-    captchaId = data.id;
-    
-    localStorage.setItem("captchaId", data.id);
-    document.getElementById("captchaImage").innerHTML = data.image;
+    try {
+        const res = await fetch("http://localhost:3000/api/captcha/generar");
+        if (!res.ok) {
+            console.warn('Captcha endpoint returned', res.status);
+            return;
+        }
+        const data = await res.json();
+        captchaId = data.id;
+        localStorage.setItem("captchaId", data.id);
+        const captchaEl = document.getElementById("captchaImage");
+        if (captchaEl) {
+            captchaEl.innerHTML = data.image;
+        }
+    } catch (err) {
+        console.error('Error fetching captcha:', err);
+    }
 }
 
 function refreshCaptcha() {
@@ -413,7 +424,6 @@ async function loginUsuario() {
     });
 }
 
-
 //Para que se vea en todas las páginas la cuenta
 document.addEventListener("DOMContentLoaded", () => {
     const accountToggle = document.getElementById("accountToggle");
@@ -449,6 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
             accountPanel.classList.remove("active");
         });
     }
+<<<<<<< HEAD
 
     // Logout
     // Logout CORREGIDO
@@ -478,6 +489,78 @@ if (logoutBtn) {
     });
 }
 });
+=======
+});
+
+//LOGOUT
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+        const token = localStorage.getItem("token");
+
+        // Mostrar SweetAlert de confirmación
+        Swal.fire({
+            title: '¿Cerrar sesión?',
+            text: 'Estás a punto de cerrar tu sesión',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar sesión',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    // Notificar al servidor (de la versión 2)
+                    if (token) {
+                        await fetch("http://localhost:3000/api/usuarios/logout", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            }
+                        });
+                        console.log("[FRONT] Logout notificado al servidor");
+                    }
+                } catch (error) {
+                    console.warn("[FRONT] No se pudo notificar logout al servidor", error);
+                    // Continuamos igual con el logout local
+                }
+
+                // Limpiar localStorage (combinación de ambas versiones)
+                localStorage.removeItem("usuario");
+                localStorage.removeItem("token");
+                localStorage.removeItem("rol");
+                localStorage.removeItem("captchaId"); // Limpiar también el captcha
+
+                // Mostrar mensaje de éxito (de la versión 1)
+                Swal.fire({
+                    title: 'Sesión cerrada correctamente',
+                    text: 'Gracias por visitarnos',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    timer: 2000,
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                }).then(() => {
+                    // Redirigir después del mensaje
+                    window.location.href = "paginaprincipal.html";
+                });
+            }
+        });
+    });
+}
+//////////////////////////////////////////////////////////////////////////////////////7
+
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -695,6 +778,7 @@ function mostrarProductosOferta(productos, contenedorId) {
                 </span>
                 
                 <button class="btn-ver"
+                    data-id="${producto.id}"
                     data-nombre="${producto.titulo}"
                     data-descripcion="${producto.descripcion || 'Descripción no disponible'}"
                     data-precio="$${precioConDescuento}"
@@ -734,14 +818,15 @@ function configurarBotonesVerOferta(contenedorId) {
                 this.dataset.artista,
                 this.dataset.oferta,
                 this.dataset.precioOriginal,
-                this.dataset.porcentajeOferta
+                this.dataset.porcentajeOferta,
+                this.dataset.id
             );
         });
     });
 }
 
-// En la parte donde manejas el botón de agregar al carrito, agrega esta validación:
-document.querySelector(".btn-agregar-carrito").addEventListener("click", function() {
+// En la parte donde manejas el botón de agregar al carrito, agrega esta validación y el POST al backend:
+document.querySelector(".btn-agregar-carrito").addEventListener("click", async function() {
     // Verificar si el botón está deshabilitado (producto agotado)
     if (this.disabled) {
         Swal.fire({
@@ -760,13 +845,95 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", functio
         return;
     }
     
+    const productoId = this.dataset.productoId || this.dataset.id;
+    const usuario = JSON.parse(localStorage.getItem('usuario')) || null;
+    if (!usuario) {
+        alert('Debes iniciar sesión para agregar productos al carrito.');
+        return;
+    }
+    const cantidad = modalController ? modalController.getCantidad() : 1;
+    
     const producto = {
         nombre: document.getElementById("modalNombre").textContent,
         precio: document.getElementById("modalPrecio").textContent,
         cantidad: cantidad,
-        imagen: document.getElementById("modalImagen").src
+        imagen: document.getElementById("modalImagen").src,
+        productoId
     };
     
+<<<<<<< HEAD
+=======
+    console.log("Producto añadido al carrito (UI):", producto);
+
+    // Llamar a la API para guardar en la tabla carrito: { usuario_id, producto_id, cantidad }
+    const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
+    const primary = `${apiOrigin}/api/carrito/add`;
+    const fallback = 'http://localhost:3000/api/carrito/add';
+
+    const imagenUrlCompleta = document.getElementById("modalImagen").src;
+
+    // Función que extrae solo el nombre del archivo:
+    function getFileNameFromUrl(url) {
+        if (!url) return '';
+        // Reemplaza barras invertidas por normales (por si acaso) y luego divide por el separador '/'
+        const parts = url.replace(/\\/g, '/').split('/');
+        // Devuelve el último elemento, que es el nombre del archivo
+        return parts.pop();
+    }
+
+    const nombreImagenLimpio = getFileNameFromUrl(imagenUrlCompleta);
+    
+    const payload = {
+        usuario_id: usuario.id,
+        producto_id: Number(productoId),
+        cantidad: Number(cantidad),
+        nombre_imagen: nombreImagenLimpio
+    };
+
+    try {
+        const token = localStorage.getItem("token");
+        
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        let resp = await fetch(primary, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(payload)
+        });
+        if (!resp.ok) {
+            console.warn(`POST carrito add respondió ${resp.status} en primary, intentando fallback`);
+            resp = await fetch(fallback, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+        }
+        if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error(`HTTP ${resp.status} - ${text}`);
+        }
+        const data = await resp.json();
+        if (data && data.success) {
+            console.info('Carrito actualizado en backend:', data);
+            actualizarContadorCarritoDesdeBackend(usuario.id);
+        } else {
+            console.warn('Respuesta inesperada al añadir al carrito:', data);
+        }
+    } catch (err) {
+        console.error('Error al almacenar en carrito:', err);
+    }
+    
+    // Mostrar mensaje de confirmación
+    const originalText = this.innerHTML;
+    this.innerHTML = '<i class="fas fa-check"></i> Añadido al Carrito';
+    this.style.background = '#4CAF50';
+    
+    setTimeout(() => {
+        this.innerHTML = originalText;
+        this.style.background = '#ff5252';
+    }, 2000);
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     // Aquí puedes agregar la lógica para añadir al carrito
     Swal.fire({
         title: 'Producto añadido al carrito',
@@ -782,6 +949,31 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", functio
     });
     console.log("Producto añadido al carrito:", producto);
 });
+
+async function actualizarContadorCarritoDesdeBackend(usuarioId) {
+    try {
+        const token = localStorage.getItem("token");
+        
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`, { headers });
+        if (!resp.ok) {
+            console.error("Error en respuesta del carrito:", resp.status);
+            return;
+        }
+        const data = await resp.json();
+
+        const cartCount = document.getElementById("cartCount");
+        if (cartCount && data.data && Array.isArray(data.data)) {
+            cartCount.textContent = data.data.length;
+        }
+    } catch (error) {
+        console.error("Error actualizando contador del carrito:", error);
+    }
+}
 
 function mostrarMensajeSinProductos() {
     const mensaje = '<p class="no-productos">⚠️ No hay productos disponibles en este momento</p>';
@@ -842,6 +1034,7 @@ function mostrarProductos(productos, contenedorId) {
                 </span>
                 
                 <button class="btn-ver"
+                    data-id="${producto.id}"
                     data-nombre="${producto.titulo}"
                     data-descripcion="${producto.descripcion || 'Descripción no disponible'}"
                     data-precio="${tieneOferta ? '$' + precioConDescuento : '$' + precioOriginal.toFixed(2)}"
@@ -902,9 +1095,14 @@ function configurarFiltros() {
     });
 }
 
+<<<<<<< HEAD
 // Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
 // Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
 function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
+=======
+// Función para abrir el modal con datos del producto 
+function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta, productoId) {
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 
@@ -970,16 +1168,26 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     
     // Mostrar modal
     const modal = document.getElementById('modalProducto');
+    const agregarBtn = document.querySelector('.btn-agregar-carrito');
     if (modal) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         console.log("Modal abierto correctamente. Existencias:", existencias);
     } else {
         console.error("No se encontró el modal");
+<<<<<<< HEAD
+=======
+    }
+    // Guardar id y nombre_imagen (archivo) para el botón de agregar al carrito
+    if (agregarBtn) {
+        agregarBtn.dataset.productoId = productoId || '';
+        // 'imagen' es el filename (dataset.imagen), no la URL; si se pasa URL, extract filename
+        agregarBtn.dataset.nombreImagen = imagen || '';
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     }
 }
 
-// Configurar botones "Ver" para el modal - VERSIÓN CORREGIDA
+// Configurar botones "Ver" para el modal 
 function configurarBotonesVer() {
     console.log("Configurando botones Ver Detalles...");
     
@@ -1003,14 +1211,14 @@ function configurarBotonesVer() {
                 this.dataset.artista,
                 this.dataset.oferta,
                 this.dataset.precioOriginal,
-                this.dataset.porcentajeOferta
+                this.dataset.porcentajeOferta,
+                this.dataset.id
             );
         });
     });
 }
 
 // Función de depuración para verificar productos en oferta
-// Función de depuración mejorada
 async function debugProductosOferta() {
     try {
         const productosOferta = await productosAPI.getProductosOferta();
@@ -1066,7 +1274,6 @@ async function cargarProductos() {
 }
 
 // Inicializar funcionalidad del modal
-// Inicializar funcionalidad del modal - VERSIÓN MEJORADA
 function inicializarModal() {
     const modal = document.getElementById('modalProducto');
     const closeBtn = document.querySelector('.close');
@@ -1456,7 +1663,11 @@ window.mostrarTodosProductos = function() {
     if (noResults) noResults.remove();
     if (contador) contador.remove();
     
+<<<<<<< HEAD
     console.log("🔄 Búsqueda limpiada - Mostrando todos los productos");
+=======
+    console.log("Búsqueda limpiada - Mostrando todos los productos");
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
 };
 
 // Remover resaltado de términos - MEJORADA
@@ -1531,4 +1742,454 @@ function removerResaltado() {
         const parent = element.parentNode;
         parent.innerHTML = parent.textContent;
     });
+}
+
+// Código para el menú desplegable Sort By
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortByDropdown = document.getElementById('sortByDropdown');
+            const sortByBtn = document.getElementById('sortByBtn');
+            const selectedSortOption = document.getElementById('selectedSortOption');
+            const sortOptions = document.querySelectorAll('.sort-option');
+            
+            // Alternar la visibilidad del menú desplegable
+            sortByBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                sortByDropdown.classList.toggle('active');
+            });
+            
+            // Seleccionar una opción del menú
+            sortOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover la clase active de todas las opciones
+                    sortOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Agregar la clase active a la opción seleccionada
+                    this.classList.add('active');
+                    
+                    // Actualizar el texto del botón
+                    selectedSortOption.textContent = this.textContent;
+                    
+                    // Cerrar el menú desplegable
+                    sortByDropdown.classList.remove('active');
+                    
+                    // Obtener el rango seleccionado
+                    const selectedRange = this.getAttribute('data-range');
+                    
+                    // Filtrar productos según el rango de precio seleccionado
+                    filterProductsByPrice(selectedRange);
+                    
+                    // Mostrar mensaje de filtro aplicado
+                    showFilterMessage(this.textContent);
+                });
+            });
+            
+            // Cerrar el menú desplegable al hacer clic fuera de él
+            document.addEventListener('click', function() {
+                sortByDropdown.classList.remove('active');
+            });
+            
+            // Función para filtrar productos por rango de precio
+function filterProductsByPrice(priceRange) {
+    const productos = document.querySelectorAll('.producto-card');
+    let visibleCount = 0;
+    
+    productos.forEach(producto => {
+        let precio = 0;
+        
+        // Buscar precio en productos normales
+        const precioElement = producto.querySelector('.producto-precio');
+        if (precioElement) {
+            const precioTexto = precioElement.textContent;
+            precio = parseFloat(precioTexto.replace(/[^0-9.]/g, ''));
+        }
+        
+        // Si no se encontró precio normal, buscar en productos con oferta
+        if (precio === 0 || isNaN(precio)) {
+            const precioOfertaElement = producto.querySelector('.precio-oferta');
+            if (precioOfertaElement) {
+                const precioOfertaTexto = precioOfertaElement.textContent;
+                precio = parseFloat(precioOfertaTexto.replace(/[^0-9.]/g, ''));
+            }
+        }
+        
+        // Si aún no se encontró precio, buscar en cualquier elemento que contenga precio
+        if (precio === 0 || isNaN(precio)) {
+            const precioCualquierElemento = producto.querySelector('[class*="precio"]');
+            if (precioCualquierElemento) {
+                const precioTexto = precioCualquierElemento.textContent;
+                precio = parseFloat(precioTexto.replace(/[^0-9.]/g, ''));
+            }
+        }
+        
+        console.log(`Producto: ${producto.querySelector('h3')?.textContent}, Precio encontrado: ${precio}`);
+        
+        // Mostrar u ocultar según el rango seleccionado
+        let mostrarProducto = false;
+        
+        switch(priceRange) {
+            case 'all':
+                mostrarProducto = true;
+                break;
+            case '300-400':
+                mostrarProducto = (precio >= 300 && precio <= 400);
+                break;
+            case '400-500':
+                mostrarProducto = (precio >= 400 && precio <= 500);
+                break;
+            case '500-700':
+                mostrarProducto = (precio >= 500 && precio <= 700);
+                break;
+            default:
+                mostrarProducto = true;
+        }
+        
+        if (mostrarProducto) {
+            producto.style.display = 'block';
+            visibleCount++;
+        } else {
+            producto.style.display = 'none';
+        }
+    });
+    
+    console.log(`Productos visibles después del filtro: ${visibleCount}`);
+    
+    // Si no hay productos visibles, mostrar mensaje
+    if (visibleCount === 0 && priceRange !== 'all') {
+        const productosGrid = document.getElementById('productos-mas-vendidos');
+        productosGrid.innerHTML = `
+            <div class="no-products-message">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron productos en este rango de precio</h3>
+                <p>Intenta con otro rango o <a href="#" class="reset-filter">mostrar todos los productos</a></p>
+            </div>
+        `;
+        
+        // Agregar evento al enlace de reset
+        const resetLink = document.querySelector('.reset-filter');
+        if (resetLink) {
+            resetLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Encontrar y hacer clic en la opción "Todos los productos"
+                const allOption = document.querySelector('.sort-option[data-range="all"]');
+                if (allOption) {
+                    allOption.click();
+                }
+            });
+        }
+    }
+}
+            
+            // Función para mostrar mensaje de filtro aplicado
+            function showFilterMessage(filterText) {
+                // Puedes implementar aquí un toast o notificación si lo deseas
+                console.log(`Filtro aplicado: ${filterText}`);
+            }
+        });
+
+// Agrega estas funciones al final de tu archivo JavaScript
+
+// Función para mostrar el formulario de recuperación de contraseña
+function showForgotPassword() {
+    // Ocultar otros formularios
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    
+    // Mostrar formulario de pregunta de seguridad
+    const securityQuestionForm = document.getElementById('securityQuestionForm') || createSecurityQuestionForm();
+    securityQuestionForm.style.display = 'block';
+}
+
+// Función para crear el formulario de pregunta de seguridad si no existe
+function createSecurityQuestionForm() {
+    const authContainer = document.querySelector('.auth-container');
+    
+    const securityQuestionForm = document.createElement('div');
+    securityQuestionForm.className = 'auth-form';
+    securityQuestionForm.id = 'securityQuestionForm';
+    securityQuestionForm.style.display = 'none';
+    
+    securityQuestionForm.innerHTML = `
+        <div class="form-header">
+            <h2>Verificación de Seguridad</h2>
+            <p>Responde tu pregunta de seguridad para recuperar tu contraseña</p>
+        </div>
+
+        <form id="securityQuestionFormElement">
+            <div class="form-group">
+                <label for="security-username">Nombre de Usuario</label>
+                <input type="text" id="security-username" name="username" placeholder="Ingresa tu nombre de usuario" required>
+                <span class="error-message" id="securityUsernameError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="security-question">Pregunta de Seguridad</label>
+                <div class="security-question-display">
+                    <p><strong>¿Cuál es el nombre de tu primera mascota?</strong></p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="security-answer">Respuesta</label>
+                <input type="text" id="security-answer" name="security_answer" placeholder="Ingresa tu respuesta" required>
+                <span class="error-message" id="securityAnswerError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="new-password">Nueva Contraseña</label>
+                <div class="password-input">
+                    <input type="password" id="new-password" name="new_password" placeholder="Ingresa tu nueva contraseña" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('new-password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <span class="error-message" id="newPasswordError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-new-password">Confirmar Nueva Contraseña</label>
+                <div class="password-input">
+                    <input type="password" id="confirm-new-password" name="confirm_new_password" placeholder="Confirma tu nueva contraseña" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('confirm-new-password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <span class="error-message" id="confirmNewPasswordError"></span>
+            </div>
+
+            <button type="submit" class="btn-submit" id="securitySubmitBtn">
+                <i class="fas fa-key"></i>
+                Restablecer Contraseña
+            </button>
+
+            <div class="auth-switch">
+                <p><a href="#" onclick="showLogin()">Volver al inicio de sesión</a></p>
+            </div>
+        </form>
+    `;
+    
+    authContainer.appendChild(securityQuestionForm);
+    
+    // Configurar el evento del formulario
+    document.getElementById('securityQuestionFormElement').addEventListener('submit', function(e) {
+        e.preventDefault();
+        verifySecurityQuestion();
+    });
+    
+    return securityQuestionForm;
+}
+
+// Función para verificar la pregunta de seguridad y restablecer la contraseña
+async function verifySecurityQuestion() {
+    const username = document.getElementById('security-username').value;
+    const securityAnswer = document.getElementById('security-answer').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+    // Validaciones básicas
+    if (!username || !securityAnswer || !newPassword || !confirmNewPassword) {
+        Swal.fire({
+            title: 'Campos incompletos',
+            text: 'Por favor completa todos los campos',
+            icon: 'warning',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+        return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        Swal.fire({
+            title: 'Contraseñas no coinciden',
+            text: 'Las contraseñas deben ser iguales',
+            icon: 'error',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+        return;
+    }
+
+    // Mostrar loading
+    const submitBtn = document.getElementById('securitySubmitBtn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+    submitBtn.disabled = true;
+
+    try {
+        // Llamar a la API para verificar la pregunta de seguridad
+        const response = await fetch("http://localhost:3000/api/usuarios/recuperar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombreUsuario: username,
+                respuestaSeguridad: securityAnswer,
+                nuevaContrasena: newPassword
+            })
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+            Swal.fire({
+                title: '¡Contraseña restablecida!',
+                text: 'Tu contraseña ha sido cambiada exitosamente',
+                icon: 'success',
+                confirmButtonText: 'Iniciar Sesión',
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                }
+            }).then(() => {
+                // Limpiar formulario y volver al login
+                document.getElementById('securityQuestionFormElement').reset();
+                showLogin();
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: resultado.mensaje || 'Respuesta incorrecta o usuario no encontrado',
+                icon: 'error',
+                confirmButtonText: 'Intentar de nuevo',
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut'
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error al recuperar contraseña:', error);
+        Swal.fire({
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor',
+            icon: 'error',
+            confirmButtonText: 'Entendido',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+        });
+    } finally {
+        // Restaurar botón
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Función para mostrar el formulario de login
+function showLogin() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    
+    const securityQuestionForm = document.getElementById('securityQuestionForm');
+    if (securityQuestionForm) {
+        securityQuestionForm.style.display = 'none';
+    }
+}
+
+// Función para mostrar el formulario de registro
+function showRegister() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    
+    const securityQuestionForm = document.getElementById('securityQuestionForm');
+    if (securityQuestionForm) {
+        securityQuestionForm.style.display = 'none';
+    }
+    
+    // Scroll a la sección de registro si estamos en usuario.html
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Función para alternar visibilidad de contraseña - CORREGIDA
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.parentNode.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+// Función para ver categorías - SEPARADA CORRECTAMENTE
+async function verCategoria(genero) {
+    const contenedor = document.getElementById('productos-categoria');
+    contenedor.innerHTML = '<p class="loading-products">Cargando productos...</p>';
+
+    try {
+        const respuesta = await fetch(`http://localhost:3000/api/productos/genero/${genero}`);
+        const data = await respuesta.json();
+
+        if (!data.success || data.count === 0) {
+            contenedor.innerHTML = `<p class="no-productos">No hay productos para la categoría ${genero}</p>`;
+            return;
+        }
+
+        // Mostrar productos
+        contenedor.innerHTML = data.data.map(producto => `
+            <div class="producto-card">
+                <img src="http://localhost:3000/uploads/${producto.imagen}" alt="${producto.titulo}">
+                <h3>${producto.titulo}</h3>
+                <p>Artista: ${producto.artista}</p>
+                <p>Precio: $${producto.precio}</p>
+                <p>${producto.descripcion}</p>
+
+                <!-- Botón siempre habilitado -->
+                <button class="btn add-cart-btn" data-id="${producto.id}">
+                    Añadir al carrito
+                </button>
+            </div>
+        `).join('');
+
+        // EVENTO DE CLIC PARA CADA BOTÓN
+        document.querySelectorAll('.add-cart-btn').forEach(boton => {
+            boton.addEventListener('click', () => {
+
+                const usuarioLog = JSON.parse(localStorage.getItem('usuario'));
+
+                if (!usuarioLog) {
+                    Swal.fire({
+                        title: 'Debes iniciar sesion',
+                        text: 'Inicia sesión para añadir productos al carrito',
+                        icon: 'warning',
+                        confirmButtonText: 'Entendido',
+                        showClass: { popup: 'animate__animated animate__zoomIn' },
+                        hideClass: { popup: 'animate__animated animate__zoomOut' }
+                    });
+                    return;
+                }
+
+                // Si hay usuario logueado → aquí agregas al carrito
+                console.log("Producto añadido:", boton.dataset.id);
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+        contenedor.innerHTML = '<p class="error">Error al cargar los productos.</p>';
+    }
 }

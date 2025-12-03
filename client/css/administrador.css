@@ -12,7 +12,7 @@
 .admin-layout {
     display: grid;
     grid-template-columns: 2fr 1.5fr;
-    gap: 40px;
+    gap: 30px;
     align-items: start;
 }
 
@@ -109,6 +109,9 @@
 }
 
 /* --- Gestión de Productos (Columna 2) --- */
+.admin-product-management {
+    margin: 0 10px 0 0;
+}
 
 .product-crud-card {
     padding: 30px;
@@ -293,6 +296,24 @@
 
 .hidden {
     display: none !important;
+}
+
+#p-image {
+    width: 300px;
+}
+
+#p-image-file {
+    font-size: 14px;
+    width: 300px;
+}
+
+#m-image {
+    width: 300px;
+}
+
+#m-image-file {
+    font-size: 14px;
+    width: 300px;
 }
 
 /* Responsive */

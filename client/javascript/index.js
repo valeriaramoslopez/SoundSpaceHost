@@ -798,18 +798,6 @@ function configurarBotonesVerOferta(contenedorId) {
 document.querySelector(".btn-agregar-carrito").addEventListener("click", async function() {
     // Verificar si el botón está deshabilitado (producto agotado)
     if (this.disabled) {
-        Swal.fire({
-                    title: 'Producto agotado, no se puede agregar al carrito',
-                    text: 'Suscríbete y sé de los primeros en obtenerlo cuando vuelva',
-                    icon: 'warning',
-                    confirmButtonText: 'Continuar',
-                    showClass: {
-                        popup: 'animate__animated animate__zoomIn'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__zoomOut'
-                    }
-        });
         console.log("Producto agotado, no se puede agregar al carrito");//
         return;
     }
@@ -1136,12 +1124,13 @@ function configurarBotonesVer() {
     document.querySelectorAll('.btn-ver').forEach(btn => {
         btn.addEventListener('click', function() {
             console.log("Botón Ver Detalles clickeado:", this.dataset.nombre);
+
             abrirModalProducto(
                 this.dataset.nombre,
                 this.dataset.descripcion,
                 this.dataset.precio,
-                this.dataset.disponibilidad, // Número de existencias
-                this.dataset.disponibilidadTexto, // Texto "En stock" o "Agotado"
+                this.dataset.disponibilidad,        // Número de existencias
+                this.dataset.disponibilidadTexto,   // Texto "En stock" o "Agotado"
                 this.dataset.categoria,
                 this.dataset.imagen,
                 this.dataset.artista,
@@ -1150,9 +1139,26 @@ function configurarBotonesVer() {
                 this.dataset.porcentajeOferta,
                 this.dataset.id
             );
+
+            // ⬇️ Aquí va el if, FUERA de los parámetros.
+            if (Number(this.dataset.disponibilidad) === 0) {
+                Swal.fire({
+                    title: 'Producto agotado, no se puede agregar al carrito',
+                    text: 'Suscríbete y sé de los primeros en obtenerlo cuando vuelva',
+                    icon: 'warning',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+            }
         });
     });
 }
+
 
 // Función de depuración para verificar productos en oferta
 async function debugProductosOferta() {
@@ -1257,6 +1263,7 @@ function inicializarModal() {
         
         // Deshabilitar botón de agregar al carrito si no hay stock
         if (agregarCarritoBtn) {
+            
             agregarCarritoBtn.disabled = existenciasDisponibles === 0;
             agregarCarritoBtn.style.opacity = existenciasDisponibles === 0 ? '0.5' : '1';
             agregarCarritoBtn.style.cursor = existenciasDisponibles === 0 ? 'not-allowed' : 'pointer';

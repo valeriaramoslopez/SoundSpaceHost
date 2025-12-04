@@ -805,7 +805,19 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
     const productoId = this.dataset.productoId || this.dataset.id;
     const usuario = JSON.parse(localStorage.getItem('usuario')) || null;
     if (!usuario) {
-        alert('Debes iniciar sesión para agregar productos al carrito.');
+        Swal.fire({
+            title: 'Debes iniciar secion para añadir producto',
+            text: 'Por favor, intentelo de nuevo',
+            icon: 'warning',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        
         return;
     }
     const cantidad = modalController ? modalController.getCantidad() : 1;
@@ -1418,7 +1430,18 @@ function copiarCupon() {
 async function aplicarCupon() {
     const codigo = document.getElementById("cuponInput").value.trim();
 
-    if (!codigo) return alert("Escribe un cupón");
+    if (!codigo) return Swal.fire({
+            title: 'Debes introducir un cupon',
+            text: 'Por favor, intentelo de nuevo',
+            icon: 'warning',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
 
     const res = await fetch("http://localhost:3000/api/cupones/validar", {
         method: "POST",
@@ -1428,7 +1451,20 @@ async function aplicarCupon() {
 
     const data = await res.json();
 
-    if (!res.ok) return alert(data.message);
+    if (!res.ok) return Swal.fire({
+            title: 'Error',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'Continuar',
+            confirmButtonColor: '#d33',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+    });
+
 
     // Guardarlo temporalmente para el pago
     localStorage.setItem("cupon", JSON.stringify({
@@ -1436,7 +1472,18 @@ async function aplicarCupon() {
         descuento: data.cupon.descuento
     }));
 
-    alert("Cupón aplicado: -" + data.cupon.descuento + "%");
+    Swal.fire({
+            title: 'Cupon aplicado',
+            text: " " + data.cupon.descuento + "%",
+            icon: 'success',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
 }
 
 // Función principal de búsqueda de productos

@@ -471,3 +471,55 @@
     border-radius: 50%;
     margin-left: 5px;
 }
+
+/* Estilo para contenedor del cupón */
+.coupon-input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Input del cupón */
+#cuponInput {
+    flex: 1;
+    padding: 12px 15px;
+    background: #0a0a0a;
+    border: 2px solid #333;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+#cuponInput:focus {
+    outline: none;
+    border-color: #ff5252;
+    box-shadow: 0 0 8px rgba(255, 82, 82, 0.4);
+}
+
+/* Botón aplicar cupón - ESTILO ESPACIAL ROJO PRO */
+.coupon-input-group button {
+    background: linear-gradient(135deg, #ff5252, #e04141);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: 0.25s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 82, 82, 0.4);
+}
+
+/* Hover */
+.coupon-input-group button:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+    box-shadow: 0 0 15px rgba(255, 82, 82, 0.7);
+}
+
+/* Clic */
+.coupon-input-group button:active {
+    transform: scale(0.95);
+}

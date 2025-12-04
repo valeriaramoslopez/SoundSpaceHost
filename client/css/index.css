@@ -3782,3 +3782,26 @@ background-color: #999;
 cursor: not-allowed;
 }
 
+/* ====== ESTILOS DE VALIDACIÓN ====== */
+
+.input-error {
+    border-color: #ff5252 !important;
+    box-shadow: 0 0 6px rgba(255, 82, 82, 0.6) !important;
+}
+
+.input-valid {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.5) !important;
+}
+
+.error-msg {
+    color: #ff5252;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: none;
+    font-family: 'Playfair Display', serif;
+}
+
+.error-msg.active {
+    display: block;
+}

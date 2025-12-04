@@ -20,22 +20,86 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="paginaprincipal.html">Inicio</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
                     <li><a href="nosotros.html" style="color: #ff5252;">Nosotros</a></li>
                     <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
                     <li><a href="contactanos.html">Contáctanos</a></li>
-                    <li><a href="tienda.html">Tienda</a></li>
                 </ul> 
             </nav>
-            <div class="user-actions">
-                <button class="user-btn" onclick="window.location.href='usuario.html'">
-                    <i class="fas fa-user"></i>
-                    Mi Cuenta
-                </button>
-                <button class="cart-btn" onclick="window.location.href='carrito.html'">
-                    <i class="fas fa-shopping-cart"></i>
-                    Carrito
-                </button>
+                        <div class="user-actions">
+                <!-- Botón de Accesibilidad -->
+                <div class="accessibility-widget">
+                    <button class="accessibility-btn" id="accessibilityToggle">
+                        <i class="fas fa-universal-access"></i>
+                    </button>
+                    <div class="accessibility-panel" id="accessibilityPanel">
+                        <div class="accessibility-header">
+                            <h4>Accesibilidad</h4>
+                            <button class="close-panel">&times;</button>
+                        </div>
+                        
+                        <!-- Modo Contraste -->
+                        <div class="accessibility-option">
+                            <label>Modo de Contraste</label>
+                            <div class="toggle-switch">
+                                <button class="toggle-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Oscuro
+                                </button>
+                                <button class="toggle-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i> Claro
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Tamaño de Texto -->
+                        <div class="accessibility-option">
+                            <label>Tamaño de Texto</label>
+                            <div class="text-size-controls">
+                                <button class="size-btn" data-size="small">A-</button>
+                                <button class="size-btn active" data-size="normal">A</button>
+                                <button class="size-btn" data-size="large">A+</button>
+                                <button class="size-btn" data-size="xlarge">A++</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Espaciado -->
+                        <div class="accessibility-option">
+                            <label>Espaciado de Texto</label>
+                            <div class="spacing-controls">
+                                <button class="spacing-btn active" data-spacing="normal">Normal</button>
+                                <button class="spacing-btn" data-spacing="large">Amplio</button>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                
+                <!-- Botones de cuenta y de carrito -->
+                <!-- Botón de Cuenta -->
+                <div class="user-account">
+                    <button class="user-btn" id="accountToggle">
+                        <i class="fas fa-user"></i>
+                        <span id="accountName">Mi Cuenta</span>
+                    </button>
+
+                    <!-- ventanita -->
+                    <div class="account-panel" id="accountPanel">
+                        <div class="account-header">
+                            <h4>Mi Cuenta</h4>
+                            <button class="close-account">&times;</button>
+                        </div>
+
+                        <div class="account-info">
+                            <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>
+                            <p><strong>Cuenta:</strong> <span id="panel-username">-</span></p>
+                            <p><strong>Rol:</strong> <span id="panel-rol">-</span></p>
+                        </div>
+
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -71,15 +135,12 @@
                             <div class="form-group">
                                 <label for="pais">País</label>
                                 <select id="pais" name="pais" required>
-                                    <option value="MX" selected>México</option>
-                                    <option value="US">Estados Unidos</option>
-                                    <option value="CA">Canadá</option>
-                                    <option value="ES">España</option>
+                                    <option value="México" selected>México</option>
+                                    <option value="Estados Unidos">Estados Unidos</option>
+                                    <option value="España">España</option>
+                                    <option value="Argentina">Argentina</option>
+                                    <option value="Colombia">Colombia</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="cp">Código Postal</label>
-                                <input type="text" id="cp" name="cp" placeholder="01234" required>
                             </div>
                         </div>
 
@@ -188,11 +249,7 @@
                 <div class="order-items-summary">
                     <a href="carrito.html" class="btn-edit-cart"><i class="fas fa-edit"></i> Editar Carrito</a>
                 </div>
-                
-                
-                
-       
-                
+
                 <button class="btn-submit btn-finalizar-pago" disabled>Terminar Compra <i class="fas fa-lock"></i></button>
                 <p class="payment-secure-message"><i class="fas fa-shield-alt"></i> Tu pago es 100% seguro y cifrado.</p>
             </div>
@@ -211,11 +268,10 @@
                 <div class="footer-section">
                     <h3>Enlaces Rápidos</h3>
                     <ul>
-                        <li><a href="paginaprincipal.html">Inicio</a></li>
+                        <li><a href="tienda.html">Tienda</a></li>
                         <li><a href="nosotros.html">Nosotros</a></li>
                         <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
                         <li><a href="contactanos.html">Contáctanos</a></li>
-                        <li><a href="tienda.html">Tienda</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
